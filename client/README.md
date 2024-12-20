@@ -1,4 +1,4 @@
-# NexusEvnt (Server)
+# NexusEvnt (Client)
 
 This is a web-based platform that allows users, both Organizers and Attendees to:
 
