@@ -8,9 +8,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello World!' });
+  res.json({ message: 'NexusEvnt Web Application!' });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is runnng on PORT: ${PORT}`);
+  console.log(
+    `Server started at http://localhost:${PORT} and is runnng on PORT: ${PORT}`
+  );
 });
