@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is a web-based platform that allows users to create, manage,  promote, browse, book and receive updates about events.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --env-file=.env server.js",
