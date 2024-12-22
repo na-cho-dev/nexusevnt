@@ -1,13 +1,24 @@
 #!/usr/bin/node
 import express from 'express';
 import db_connection from './utils/db.js';
-import authRoutes from './routers/userRouter.js';
+import authRouter from './routers/authRouter.js';
+import attendeeRouter from './routers/api/attendeeRouter.js';
+import corsMiddleware from './middlwares/corsMiddleware.js';
+import verifyJWT from './middlwares/verifyJWT.js';
+import cookieParser from 'cookie-parser';
+import refreshTokenRouter from './routers/refreshTokenRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(corsMiddleware);
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use('/auth', authRoutes);
+app.use(cookieParser());
+app.use('/auth', authRouter);
+app.use('/refresh', refreshTokenRouter);
+app.use(verifyJWT);
+app.use('/user', attendeeRouter);
 
 db_connection();
 
