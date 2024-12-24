@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 
 const verifyJWT = (req, res, next) => {
+  // Gets the token from the header
   const authHeader = req.headers['authorization'];
   console.log(authHeader); // Bearer <token>
   if (!authHeader)
@@ -18,8 +19,10 @@ const verifyJWT = (req, res, next) => {
       if (err) return res.status(403).json({ message: 'Invalid Token' });
       const user = await User.findOne({ email: decoded.email });
 
+      // If user is not found in the database return 404
       if (!user) return res.status(404).json({ message: 'User not found' });
 
+      // If user is found, attach the user to the request object and call the next middleware
       req.user = user;
       next();
     }
