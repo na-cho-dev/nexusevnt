@@ -4,9 +4,9 @@ import db_connection from './utils/db.js';
 import authRouter from './routers/authRouter.js';
 import attendeeRouter from './routers/api/attendeeRouter.js';
 import corsMiddleware from './middlwares/corsMiddleware.js';
-import verifyJWT from './middlwares/verifyJWT.js';
+import verifyJWT from './middlwares/verifyJWTMiddleware.js';
 import cookieParser from 'cookie-parser';
-import refreshTokenRouter from './routers/refreshTokenRouter.js';
+import refreshTokenRouter from './routers/requestAccessTokenRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

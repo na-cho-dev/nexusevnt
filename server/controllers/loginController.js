@@ -44,9 +44,13 @@ const loginController = async (req, res) => {
     res.cookie('JWT', refresh_token, {
       httpOnly: true,
       sameSite: 'None',
-      secure: true,
+      secure: process.env.NODE_ENV_MODE === 'prod',
       maxAge: 24 * 60 * 60 * 1000,
     });
+
+    const cookies = req.cookies;
+    console.log(`JWT Token: ${cookies.JWT}`);
+
     res.status(200).json({
       message: 'Logged in successfully',
       accessToken: access_token,

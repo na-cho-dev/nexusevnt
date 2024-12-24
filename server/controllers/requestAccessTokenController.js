@@ -1,10 +1,12 @@
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
-const refreshTokenController = async (req, res) => {
+const requestAccessTokenController = async (req, res) => {
   const cookies = req.cookies;
-  console.log(cookies.JWT);
+  console.log(`JWT Token: ${cookies.JWT}`);
+  // Check Token in Cookie, Forbidden if not
   if (!cookies?.JWT) return res.sendStatus(401);
+  // Else, get save the token to memory and use it to create an access token
   const refreshToken = cookies.JWT;
   try {
     const existingUser = await User.findOne({ refresh_token: refreshToken });
@@ -13,6 +15,7 @@ const refreshTokenController = async (req, res) => {
         .status(403)
         .json({ message: 'Forbidden: Failed to find User' });
 
+    // Check if refresh token is correct
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
@@ -39,4 +42,4 @@ const refreshTokenController = async (req, res) => {
   }
 };
 
-export default refreshTokenController;
+export default requestAccessTokenController;

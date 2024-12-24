@@ -12,7 +12,7 @@ const logoutController = async (req, res) => {
       res.clearCookie('JWT', {
         httpOnly: true,
         sameSite: 'None',
-        secure: true,
+        secure: process.env.NODE_ENV_MODE === 'prod',
         path: '/',
       });
       return res.sendStatus(204);
@@ -28,7 +28,7 @@ const logoutController = async (req, res) => {
     res.clearCookie('JWT', {
       httpOnly: true,
       sameSite: 'None',
-      secure: true,
+      secure: process.env.NODE_ENV_MODE === 'prod',
       path: '/',
     });
     return res.sendStatus(204);

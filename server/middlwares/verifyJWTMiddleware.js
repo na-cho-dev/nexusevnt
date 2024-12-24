@@ -6,9 +6,9 @@ const verifyJWT = (req, res, next) => {
   if (!authHeader)
     return res
       .status(401)
-      .json({ message: 'Unauthorized Access from verifyJWT.js' });
-  const token = authHeader.split(' ')[1];
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      .json({ message: 'Unauthorized Access: TOKEN required!' });
+  const access_token = authHeader.split(' ')[1];
+  jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: 'Invalid Token' });
     req.user = decoded.email;
     next();
