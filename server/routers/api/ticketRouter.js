@@ -11,7 +11,7 @@ import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
 
 router
   .route('/ticket/user/:attendee_id/event/:event_id/')
-  .get(roleMiddleware(['Attendee']), createTicket);
+  .get(roleMiddleware(['Attendee', 'Organizer']), createTicket);
 router.route('/tickets').get(getTickets);
 router
   .route('/ticket/:id')

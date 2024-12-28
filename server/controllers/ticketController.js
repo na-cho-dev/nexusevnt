@@ -15,10 +15,7 @@ export const createTicket = async (req, res) => {
   if (!event) return res.status(400).json({ message: 'Event not found' });
   //console.log(event);
 
-  const order_id = parseInt(
-    uuidv4().replace(/-/g, '').slice(0, 8).toUpperCase(),
-    16
-  );
+  const order_id = parseInt(uuidv4().replace(/-/g, '').slice(0, 8), 16);
   // console.log(typeof order_id);
 
   const ticketData = {
@@ -93,15 +90,15 @@ export const updateTicket = async (req, res) => {
 export const deleteTicket = async (req, res) => {
   const ticket_id = req.params.id;
   try {
-    const ticket = await Ticket.findByIdAndDelete(ticket_id);
-    res.status(200).json({
-      message: 'Deleted ticket successfully',
-      ticket: ticket,
-    });
+    // const ticket = await Ticket.findByIdAndDelete(ticket_id);
+    // res.status(200).json({
+    //   message: 'Deleted ticket successfully',
+    //   ticket: ticket,
+    // });
   } catch (err) {
-    res.status(400).json({
-      message: 'An error occurred while deleting ticket!',
-      error: err.message,
-    });
+    // res.status(400).json({
+    //   message: 'An error occurred while deleting ticket!',
+    //   error: err.message,
+    // });
   }
 };
