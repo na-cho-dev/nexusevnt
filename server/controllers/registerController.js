@@ -1,17 +1,22 @@
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 import { hashPassword } from '../utils/hash.js';
 
 const registerController = async (req, res) => {
-  const { first_name, last_name, email, phone_number, password } = req.body;
+  const { first_name, last_name, email, phone_number, role, password } =
+    req.body;
+
   const userData = {
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    phone_number: phone_number,
-    password: password,
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    role,
+    password,
   };
 
   for (const key in userData) {
+    if (key === 'role') continue;
+
     if (!userData[key])
       return res.status(400).json({ message: `${key} is required` });
   }

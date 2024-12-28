@@ -3,8 +3,11 @@ import express from 'express';
 import db_connection from './utils/db.js';
 import authRouter from './routers/authRouter.js';
 import attendeeRouter from './routers/api/attendeeRouter.js';
+import organizerRouter from './routers/api/organizerRouter.js';
+import eventsRouter from './routers/api/eventsRouter.js';
+import ticketRouter from './routers/api/ticketRouter.js';
 import corsMiddleware from './middlwares/corsMiddleware.js';
-import verifyJWT from './middlwares/verifyJWTMiddleware.js';
+import verifyJWTMiddleware from './middlwares/verifyJWTMiddleware.js';
 import cookieParser from 'cookie-parser';
 import refreshTokenRouter from './routers/requestAccessTokenRouter.js';
 
@@ -17,8 +20,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/refresh', refreshTokenRouter);
-app.use(verifyJWT);
-app.use('/user', attendeeRouter);
+app.use(verifyJWTMiddleware);
+app.use('/', eventsRouter);
+app.use('/', ticketRouter);
+app.use('/user', attendeeRouter, organizerRouter);
 
 db_connection();
 

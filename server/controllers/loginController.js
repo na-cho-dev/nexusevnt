@@ -1,13 +1,10 @@
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 import bcrypt from 'bcryptjs';
 import { accessToken, refreshToken } from '../utils/generateJWT.js';
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  const userData = {
-    email: email,
-    password: password,
-  };
+  const userData = { email, password };
 
   for (const key in userData) {
     if (!userData[key])
@@ -47,9 +44,6 @@ const loginController = async (req, res) => {
       secure: process.env.NODE_ENV_MODE === 'prod',
       maxAge: 24 * 60 * 60 * 1000,
     });
-
-    const cookies = req.cookies;
-    console.log(`JWT Token: ${cookies.JWT}`);
 
     res.status(200).json({
       message: 'Logged in successfully',

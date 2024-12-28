@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 
 const verifyJWT = (req, res, next) => {
   // Gets the token from the header
@@ -17,6 +17,7 @@ const verifyJWT = (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET,
     async (err, decoded) => {
       if (err) return res.status(403).json({ message: 'Invalid Token' });
+
       const user = await User.findOne({ email: decoded.email });
 
       // If user is not found in the database return 404
