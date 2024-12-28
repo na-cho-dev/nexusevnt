@@ -4,34 +4,34 @@ const userSchema = new mongoose.Schema(
   {
     first_name: {
       type: String,
-      required: [true, 'Field is required'],
+      required: [true, 'First Name is required'],
       trim: true,
     },
     last_name: {
       type: String,
-      required: [true, 'Field is required'],
+      required: [true, 'Last Name is required'],
       trim: true,
     },
     email: {
       type: String,
       unique: true,
-      required: [true, 'Field is required'],
+      required: [true, 'Email is required'],
       trim: true,
     },
     phone_number: {
       type: Number,
-      required: [true, 'Field is required'],
+      required: [true, 'Phone Number is required'],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, 'Field is required'],
+      required: [true, 'Password is required'],
       trim: true,
       select: false,
     },
     role: {
       type: String,
-      required: true,
+      required: false,
       enum: ['Organizer', 'Attendee'],
       default: 'Attendee',
     },

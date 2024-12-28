@@ -1,17 +1,9 @@
-import User from '../models/userModel.js';
-
+// Desc: Middleware to verify if the user has the required role to access a route
 export const roleMiddleware = (roles) => {
   const verifyRole = async (req, res, next) => {
-    // Check if the user is authenticated
-    const user = await User.findOne({ email: userData.email });
-    if (!user) {
-      console.log(`User with email: ${userData.email} does not exists!`);
-      return res.status(400).json({
-        message: `User with email: ${userData.email} does not exists!`,
-      });
-    }
     // Gets the user role from the user object
     const userRole = req.user.role;
+    console.log(userRole);
 
     // Check if the user role is in the roles array
     if (!roles.includes(userRole)) {
