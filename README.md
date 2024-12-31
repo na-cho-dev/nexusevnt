@@ -14,9 +14,3 @@ This is a web-based platform that allows users, both Organizers and Attendees to
 ## Goal:
 
 Streamline event management while improving attendee experiences.
-
-## API ENDPOINTS
-
-### Authentication Endpoint (Registration & Login)
-
-POST
