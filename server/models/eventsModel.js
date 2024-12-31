@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const eventSchema = new mongoose.Schema(
   {
+    event_organizer: {
+      type: String,
+      required: [true, 'Event Organizer is required'],
+      trim: true,
+    },
     event_name: {
       type: String,
       required: [true, 'Event Name is required'],
