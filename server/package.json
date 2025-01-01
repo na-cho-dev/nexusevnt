@@ -30,6 +30,9 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
+    "nodemailer": "^6.9.16",
+    "stripe": "^17.5.0",
+    "twilio": "^5.4.0",
     "uuid": "^11.0.3"
   }
 }
