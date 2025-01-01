@@ -1,15 +1,11 @@
 import Ticket from '../models/ticketsModel.js';
-import User from '../models/usersModel.js';
 import Event from '../models/eventsModel.js';
 import { v4 as uuidv4 } from 'uuid';
 
 // Create a new ticket
 export const createTicket = async (req, res) => {
-  const { attendee_id, event_id } = req.params;
-
-  const attendee = await User.findOne({ _id: attendee_id, role: 'Attendee' });
-  if (!attendee) return res.status(400).json({ message: 'Attendee not found' });
-  //console.log(attendee);
+  const { event_id } = req.params;
+  const current_user = req.user;
 
   const event = await Event.findOne({ _id: event_id });
   if (!event) return res.status(400).json({ message: 'Event not found' });
@@ -20,8 +16,8 @@ export const createTicket = async (req, res) => {
 
   const ticketData = {
     order_id,
-    attendee_id: attendee_id,
-    attendee_full_name: `${attendee.first_name} ${attendee.last_name}`,
+    attendee_id: current_user._id,
+    attendee_full_name: `${current_user.first_name} ${current_user.last_name}`,
     event_id: event_id,
     event_name: event.event_name,
     event_date: event.event_date,
@@ -47,13 +43,31 @@ export const createTicket = async (req, res) => {
   }
 };
 
-// Get all tickets
-export const getTickets = async (req, res) => {
+// Get all Event Tickets
+export const getEventTickets = async (req, res) => {
   try {
-    const tickets = await Ticket.find();
+    const event_id = req.params.event_id;
+    const event_tickets = await Ticket.find({ event_id: event_id });
     res.status(200).json({
-      message: 'Fetched all tickets successfully',
-      tickets: tickets,
+      message: 'Fetched all Event Tickets successfully',
+      tickets: event_tickets,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: 'An error occurred while fetching tickets!',
+      error: err.message,
+    });
+  }
+};
+
+// Get all Attendee Tickets
+export const getAttendeeTickets = async (req, res) => {
+  try {
+    const attendee_id = req.user._id;
+    const attendee_tickets = await Ticket.find({ attendee_id: attendee_id });
+    res.status(200).json({
+      message: 'Fetched all Attendee Tickets successfully',
+      tickets: attendee_tickets,
     });
   } catch (err) {
     res.status(400).json({
@@ -65,7 +79,7 @@ export const getTickets = async (req, res) => {
 
 // Get a single ticket
 export const getTicket = async (req, res) => {
-  const ticket_id = req.params.id;
+  const ticket_id = req.params.ticket_id;
   try {
     const ticket = await Ticket.findById(ticket_id);
     res.status(200).json({

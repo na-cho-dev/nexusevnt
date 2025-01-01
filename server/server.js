@@ -23,7 +23,7 @@ app.use('/refresh', refreshTokenRouter);
 app.use(verifyJWTMiddleware);
 app.use('/', eventsRouter);
 app.use('/', ticketRouter);
-app.use('/user', attendeeRouter, organizerRouter);
+app.use('/account', attendeeRouter, organizerRouter);
 
 mongodb_connection();
 

@@ -2,7 +2,8 @@ import express from 'express';
 const router = express.Router();
 import {
   createTicket,
-  getTickets,
+  getEventTickets,
+  getAttendeeTickets,
   getTicket,
   updateTicket,
   deleteTicket,
@@ -10,11 +11,12 @@ import {
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
 
 router
-  .route('/ticket/user/:attendee_id/event/:event_id/')
+  .route('/events/:event_id/create-ticket')
   .get(roleMiddleware(['Attendee', 'Organizer']), createTicket);
-router.route('/tickets').get(getTickets);
+router.route('/events/:event_id/tickets').get(getEventTickets);
+router.route('/attendee/:attendee_id/tickets').get(getAttendeeTickets);
 router
-  .route('/ticket/:id')
+  .route('/tickets/:ticket_id')
   .get(getTicket)
   .put(updateTicket)
   .delete(deleteTicket);
