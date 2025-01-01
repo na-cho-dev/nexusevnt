@@ -67,7 +67,7 @@ export const getEvents = async (req, res) => {
 };
 
 export const getEvent = async (req, res) => {
-  const { id } = req.params;
+  const { event_id } = req.params;
   if (!id) return res.status(400).json({ message: 'Event ID is required' });
 
   try {
@@ -84,7 +84,7 @@ export const getEvent = async (req, res) => {
 };
 
 export const updateEvent = async (req, res) => {
-  const { id } = req.params;
+  const { event_id } = req.params;
   const updatedFields = req.body;
 
   if (!id) return res.status(400).json({ message: 'Event ID is required' });
@@ -111,7 +111,7 @@ export const updateEvent = async (req, res) => {
 
 export const deleteEvent = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { event_id } = req.params;
     if (!id) return res.status(400).json({ message: 'Event ID is required' });
 
     const event = await Event.findByIdAndDelete(id);
