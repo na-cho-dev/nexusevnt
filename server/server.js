@@ -1,6 +1,6 @@
 #!/usr/bin/node
 import express from 'express';
-import db_connection from './utils/db.js';
+import mongodb_connection from './database/mongoDBConnect.js';
 import authRouter from './routers/authRouter.js';
 import attendeeRouter from './routers/api/attendeeRouter.js';
 import organizerRouter from './routers/api/organizerRouter.js';
@@ -19,13 +19,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter);
-app.use(verifyJWTMiddleware);
 app.use('/refresh', refreshTokenRouter);
+app.use(verifyJWTMiddleware);
 app.use('/', eventsRouter);
 app.use('/', ticketRouter);
 app.use('/user', attendeeRouter, organizerRouter);
 
-db_connection();
+mongodb_connection();
 
 app.get('/', (req, res) => {
   res.json({ message: 'NexusEvnt Web Application!' });

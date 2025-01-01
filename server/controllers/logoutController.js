@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+import redisClient from '../database/redisDBConnect.js';
 import User from '../models/usersModel.js';
 
 const logoutController = async (req, res) => {
@@ -7,6 +9,7 @@ const logoutController = async (req, res) => {
   const refreshToken = cookies.JWT;
   try {
     const existingUser = await User.findOne({ refresh_token: refreshToken });
+
     // console.log(existingUser);
     if (!existingUser) {
       res.clearCookie('JWT', {
@@ -17,6 +20,9 @@ const logoutController = async (req, res) => {
       });
       return res.sendStatus(204);
     }
+
+    const tokenVersionKey = `tokenVersion:${existingUser.email}`;
+    await redisClient.incr(tokenVersionKey);
 
     // Delete Refresh Token from DB
     await User.findByIdAndUpdate(
@@ -31,7 +37,7 @@ const logoutController = async (req, res) => {
       secure: process.env.NODE_ENV_MODE === 'prod',
       path: '/',
     });
-    return res.sendStatus(204);
+    return res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     console.log(`An error occured while Logging Out! ${error}`);
     return res
