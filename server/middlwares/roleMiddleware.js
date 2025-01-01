@@ -9,7 +9,7 @@ export const roleMiddleware = (roles) => {
     if (!roles.includes(userRole)) {
       return res
         .status(403)
-        .json({ message: 'Access denied: insufficient permissions' });
+        .json({ message: 'Access denied: Insufficient Permissions' });
     }
 
     // Else, the user has the required role and can proceed to the next middleware

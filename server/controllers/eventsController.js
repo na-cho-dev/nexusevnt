@@ -13,6 +13,7 @@ export const createEvent = async (req, res) => {
   } = req.body;
 
   const eventObj = {
+    event_organizer_id: String(req.user._id),
     event_name,
     event_description,
     event_date,
@@ -22,6 +23,9 @@ export const createEvent = async (req, res) => {
     event_price,
     ticket_tier,
   };
+
+  console.log(`Event Object: ${eventObj}`);
+  console.log(`Logged In User ${req.user}`);
 
   for (const key in eventObj) {
     if (!eventObj[key]) {
@@ -47,6 +51,8 @@ export const createEvent = async (req, res) => {
 
 export const getEvents = async (req, res) => {
   try {
+    console.log(req.user._id);
+
     const events = await Event.find();
     if (events.length === 0)
       return res.status(404).json({ message: 'Events not found' });
