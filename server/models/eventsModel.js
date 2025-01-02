@@ -27,6 +27,11 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'Event Location is required'],
       trim: true,
     },
+    event_venue: {
+      type: String,
+      required: [true, 'Event Venue is required'],
+      trim: true,
+    },
     event_start_time: {
       type: Date,
       required: [true, 'Event Start Time is required'],
