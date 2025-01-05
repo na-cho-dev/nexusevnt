@@ -55,14 +55,15 @@ const ticketSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    //payment_status: {
-      //type: String,
-      //enum: ['Pending', 'Paid', 'Failed'],
-      //default: 'Pending',
-    //},
+    payment_status: {
+      type: String,
+      enum: ['Pending', 'Paid', 'Failed'],
+      default: 'Pending',
+    },
     purchased_at: {
       type: Date,
       default: Date.now,
+    },
   },
   { timestamps: true }
 );
