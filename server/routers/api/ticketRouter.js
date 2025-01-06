@@ -5,7 +5,7 @@ import {
   getEventTickets,
   getAttendeeTickets,
   getTicket,
-  updateTicket,
+  //updateTicket,
   deleteTicket,
 } from '../../controllers/ticketController.js';
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
@@ -18,7 +18,7 @@ router.route('/attendee/:attendee_id/tickets').get(getAttendeeTickets);
 router
   .route('/tickets/:ticket_id')
   .get(getTicket)
-  .put(updateTicket)
+  //.put(updateTicket)
   .delete(deleteTicket);
 
 export default router;
