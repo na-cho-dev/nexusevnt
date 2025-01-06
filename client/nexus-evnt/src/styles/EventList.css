@@ -1,0 +1,40 @@
+.category-section h5 {
+  margin: 30px;
+}
+
+.category-container ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  cursor: pointer;
+}
+.category-container li img {
+  border-radius: 130px;
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.category-container li div {
+  text-align: center;
+  margin-top: 10px;
+}
+
+@keyframes dissolve {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.dissolve {
+  animation-name: dissolve;
+  animation-timing-function: ease-out;
+  animation-duration: 200ms;
+}
