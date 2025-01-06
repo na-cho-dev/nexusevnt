@@ -1,0 +1,28 @@
+.card-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    margin: 0 auto;
+   
+  }
+  
+  .custom-col {
+    display: flex;
+    justify-content: center; /* Centers each card within its column */
+  }
+  
+  .custom-card {
+    width: 80%;
+    height: 100%;
+  }
+/*   
+  .custom-card .card-text {
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;  
+  }
+   */
