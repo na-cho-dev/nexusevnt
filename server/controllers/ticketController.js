@@ -1,6 +1,7 @@
 import Ticket from '../models/ticketsModel.js';
 import Event from '../models/eventsModel.js';
 import { v4 as uuidv4 } from 'uuid';
+import { sendEmail } from '../utils/emailService.js';
 
 // Create Ticket
 export const createTicket = async (req, res) => {
@@ -44,6 +45,14 @@ export const createTicket = async (req, res) => {
 
     tier.available_tickets -= quantity;
     await event.save();
+
+    const attendee = req.user;
+    await sendEmail(
+      attendee.email,
+      'Event Ticket Confirmation',
+      'Your ticket has been booked successfully.',
+      `<p>Dear ${attendee.first_name},<br>Your ticket for ${event.event_name} is confirmed.</p>`
+    );
 
     res.status(201).json({ message: 'Ticket created successfully', ticket: newTicket });
   } catch (error) {
