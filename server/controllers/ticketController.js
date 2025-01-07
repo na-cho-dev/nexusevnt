@@ -2,6 +2,7 @@ import Ticket from '../models/ticketsModel.js';
 import Event from '../models/eventsModel.js';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmail } from '../utils/emailService.js';
+import { sendSMS } from '../utils/smsService.js';
 
 // Create Ticket
 export const createTicket = async (req, res) => {
@@ -54,11 +55,47 @@ export const createTicket = async (req, res) => {
       `<p>Dear ${attendee.first_name},<br>Your ticket for ${event.event_name} is confirmed.</p>`
     );
 
+    //const smsMessage = `Hi ${attendee.first_name}, your ticket for "${event.event_name}" is confirmed!`;
+    //await sendSMS(attendee.phone_number, smsMessage);
+
     res.status(201).json({ message: 'Ticket created successfully', ticket: newTicket });
   } catch (error) {
     res.status(500).json({ message: 'Error creating ticket', error: error.message });
   }
 };
+
+// Get Available Tickets for Each Tier
+export const getAvailableTickets = async (req, res) => {
+  const { event_id } = req.params; // Extract event ID from request params
+
+  try {
+    // Find the event by ID
+    const event = await Event.findById(event_id);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Extract ticket tiers and their available tickets
+    const ticketTiers = event.ticket_tiers.map((tier) => ({
+      tier_type: tier.tier_type,
+      price: tier.price,
+      total_tickets: tier.total_tickets,
+      available_tickets: tier.available_tickets,
+    }));
+
+    // Return ticket tier details
+    res.status(200).json({
+      message: 'Fetched available tickets successfully',
+      ticket_tiers: ticketTiers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching available tickets',
+      error: error.message,
+    });
+  }
+};
+
 
 // Get Tickets for Event
 export const getEventTickets = async (req, res) => {
