@@ -19,17 +19,20 @@ const Home = () => {
         <h5>Popular events right now</h5>
         <EventCard />
         <div className="button-container">
-           <Button href="/" className="event-button">
-              View More
-            </Button>
+          <Button href="/" className="event-button">
+            View More
+          </Button>
         </div>
-        <section className="cta-banner bg-dark" >
-          <div className="container-lg text-center text-light "> 
+        <section className="cta-banner bg-dark">
+          <div className="container-lg text-center text-light ">
             <h3>Events specially curated for you!</h3>
-            <p className="mt-3">Get event suggestions tailored to your interests! Don't let your favorite events slip away.</p>
+            <p className="mt-3">
+              Get event suggestions tailored to your interests! Don't let your
+              favorite events slip away.
+            </p>
             <div className="button-container">
               <Button href="/" className="cta-button">
-                  Get Started
+                Book Now
               </Button>
             </div>
           </div>
@@ -39,8 +42,8 @@ const Home = () => {
         <EventSlider />
       </section>
       <footer>
-            <Footer />
-      </footer>   
+        <Footer />
+      </footer>
     </div>
   );
 };

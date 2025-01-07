@@ -8,9 +8,11 @@ import Event from "./pages/EventPage";
 import Profile from "./pages/ProfilePage";
 import SignIn from "./pages/SignInPage";
 import SignUp from "./pages/SignUpPage";
-import TicketBooking from "./pages/TicketBookingPage";
+import Booking from "./pages/BookingPage";
 import CreateEvent from "./pages/CreateEventPage";
 import MultiStepForm from "./pages/MultiStepForm";
+import UserDetails from "./components/event/AttendeeDetails";
+import OrderSummary from "./components/event/OrderSummary";
 
 function App() {
   return (
@@ -25,9 +27,11 @@ function App() {
           <Route path="/ProfilePage" element={<Profile />} />
           <Route path="/SignInPage" element={<SignIn />} />
           <Route path="/SignUpPage" element={<SignUp />} />
-          <Route path="/TicketBookingPage" element={<TicketBooking />} />
+          <Route path="/BookingPage" element={<Booking />} />
           <Route path="/CreateEventPage" element={<CreateEvent />} />
           <Route path="/*" element={<MultiStepForm />} />
+          <Route path="/AttendeeDetails" element={<UserDetails />} />
+          <Route path="/OrderSummary" element={<OrderSummary />} />
         </Routes>
       </div>
     </Router>
