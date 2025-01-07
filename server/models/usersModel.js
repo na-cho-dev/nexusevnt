@@ -19,8 +19,15 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     phone_number: {
-      type: Number,
+      type: String,
       required: [true, 'Phone Number is required'],
+      validate: {
+        validator: function (v) {
+          // Ensure it matches the E.164 format
+          return /^\+?[1-9]\d{1,14}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
       trim: true,
     },
     password: {
@@ -41,6 +48,13 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.pre('save', function (next) {
+  if (this.phoneNumber && !this.phoneNumber.startsWith('+')) {
+    this.phoneNumber = `+${this.phoneNumber}`; // Prepend `+` if missing
+  }
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 export default User;
