@@ -5,20 +5,31 @@ import {
   getEventTickets,
   getAttendeeTickets,
   getTicket,
-  //updateTicket,
+  getAvailableTickets,
   deleteTicket,
 } from '../../controllers/ticketController.js';
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
 
+// Create Ticket
 router
   .route('/events/:event_id/create-ticket')
-  .get(roleMiddleware(['Attendee', 'Organizer']), createTicket);
+  .post(roleMiddleware(['Attendee', 'Organizer']), createTicket);
+
+// Get Event Tickets
 router.route('/events/:event_id/tickets').get(getEventTickets);
+
+// Get Available Tickets for Event
+router
+  .route('/events/:event_id/available-tickets')
+  .get(roleMiddleware(['Organizer']), getAvailableTickets);
+
+// Get Attendee Tickets
 router.route('/attendee/:attendee_id/tickets').get(getAttendeeTickets);
+
+// Single Ticket Operations
 router
   .route('/tickets/:ticket_id')
   .get(getTicket)
-  //.put(updateTicket)
   .delete(deleteTicket);
 
 export default router;
