@@ -12,7 +12,6 @@ const DateAndTimePicker = () => {
     <div>
       <h5>Session(s)</h5>
 
-      {/* Start Date Picker */}
       <Form.Group>
         <Form.Label>Start Date</Form.Label>
         <DayPicker mode="single" selected={startDate} onSelect={setStartDate} />
@@ -21,7 +20,6 @@ const DateAndTimePicker = () => {
         )}
       </Form.Group>
 
-      {/* Start Time Input */}
       <Form.Group className="mt-3">
         <Form.Label>Start Time</Form.Label>
         <Form.Control
@@ -31,7 +29,6 @@ const DateAndTimePicker = () => {
         />
       </Form.Group>
 
-      {/* End Time Input */}
       <Form.Group className="mt-3">
         <Form.Label>End Time</Form.Label>
         <Form.Control
@@ -41,7 +38,6 @@ const DateAndTimePicker = () => {
         />
       </Form.Group>
 
-      {/* Summary */}
       <div className="mt-4">
         <h6>Summary:</h6>
         {startDate && <p>Start Date: {startDate.toLocaleDateString()}</p>}

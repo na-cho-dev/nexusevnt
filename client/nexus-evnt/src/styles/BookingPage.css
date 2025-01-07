@@ -1,0 +1,13 @@
+.ticket-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.ticket-container {
+  margin-top: 10px;
+}
+
+.btn-dropdown {
+  width: 100%;
+}
