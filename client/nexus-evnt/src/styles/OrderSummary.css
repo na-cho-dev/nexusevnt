@@ -1,106 +1,87 @@
-.order-summary-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .back-button {
-    color: black;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .ticket-section {
-    margin-bottom: 20px;
-  }
-  
-  .ticket-card {
-    position: relative;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #f9f9f9;
-    overflow: hidden;
-  }
-  
-  .ticket-card::before,
-  .ticket-card::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-  }
-  
-  .ticket-card::before {
-    left: -10px;
-  }
-  
-  .ticket-card::after {
-    right: -10px;
-  }
-  
-  .ticket-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .ticket-type {
-    font-size: 18px;
-    font-weight: bold;
-    color: #3d72de;
-  }
-  
-  .ticket-holder,
-  .ticket-email {
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .ticket-price {
-    text-align: right;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .summary-section {
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
-  }
-  
-  .summary-row {
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-  
-  .total-row {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .pay-now-button {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .pay-now-button .lock-icon {
-    margin-right: 5px;
-  }
-  
+.order-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.ticket-card {
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.ticket-card::before,
+.ticket-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+.ticket-card::before {
+  left: -10px;
+}
+
+.ticket-card::after {
+  right: -10px;
+}
+
+.ticket-type {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3d72de;
+  margin-bottom: 10px;
+}
+
+.ticket-details {
+  text-align: left;
+}
+
+.ticket-holder,
+.ticket-email {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.ticket-price {
+  text-align: right;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.summary-section {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.summary-row {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.total-row {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pay-now-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pay-now-button .lock-icon {
+  margin-right: 5px;
+}

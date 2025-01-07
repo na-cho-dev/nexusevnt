@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function OrderSummary() {
   const ticketPrice = 200;
-  const tax = 11.8;
+  const tax = 14.0;
   const total = ticketPrice + tax;
 
   return (
@@ -17,26 +17,30 @@ function OrderSummary() {
         className="order-section"
         style={{ maxWidth: "600px", margin: "auto" }}
       >
-        {/* <div className="order-summary-container"> */}
-
-        {/* <div className="ticket-section"> */}
         <Card className="ticket-card">
           <Close />
-          <Card.Header>Order Summary</Card.Header>
+          <Card.Header className="h3">Order Summary</Card.Header>
           <Card.Body>
             <Form>
-              <Form.Group className="mb-3 w-100" controlId="formGroupUserName">
-                <Form.Label className="ticket-type">Standard Ticket</Form.Label>
-
-                <Form.Label className="ticket-holder">Andrea Gomes</Form.Label>
-
-                <Form.Label className="ticket-email">
-                  andreagomes@example.com
-                </Form.Label>
-              </Form.Group>
-              <div className="ticket-price">
-                <h6>₹200</h6>
-              </div>
+              <Row className="align-items-center">
+                <Form.Group
+                  className="mb-3 w-100"
+                  controlId="formGroupUserName"
+                >
+                  <Col>
+                    <Form.Label className="ticket-type text-center">
+                      Standard Ticket
+                    </Form.Label>
+                  </Col>
+                </Form.Group>
+                <div className="ticket-details">
+                  <p className="ticket-holder">Andrea Gomes</p>
+                  <p className="ticket-email">andreagomes@example.com</p>
+                </div>
+                <div className="ticket-price">
+                  <h6>₹200</h6>
+                </div>
+              </Row>
             </Form>
           </Card.Body>
           <Card.Footer>
