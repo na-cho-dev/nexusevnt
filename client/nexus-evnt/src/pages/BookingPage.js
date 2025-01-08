@@ -11,18 +11,17 @@ import {
 } from "react-bootstrap";
 import Close from "../components/common/CloseButton";
 import NavMenu from "../components/layout/NavBarElements";
-import UserDetails from "../components/event/AttendeeDetails";
 import { Link } from "react-router-dom";
 
-
 const Booking = () => {
-  const [ticketType, setTicketType] = useState("Standard Ticket");
+  const [ticketType, setTicketType] = useState("Regular Ticket");
   const [quantity, setQuantity] = useState(1);
 
   const ticketPrices = {
-    "Standard Ticket": 200,
-    "Premium Ticket": 500,
-    "VIP Ticket": 1000,
+    "Select Ticket": 0,
+    "Regular Ticket": 200,
+    "VIP Ticket": 500,
+    "VVIP Ticket": 1000,
   };
 
   const pricePerTicket = ticketPrices[ticketType];
@@ -42,11 +41,11 @@ const Booking = () => {
       <NavMenu />
       <div
         className="ticket-section"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto" }}
       >
         <Card className="ticket-container">
           <Close />
-          <Card.Header>
+          <Card.Header className="h3">
             <Dropdown>
               <Dropdown.Toggle
                 variant="light"
@@ -96,14 +95,11 @@ const Booking = () => {
               <Col>Qty: {quantity}</Col>
               <Col>Total: ₹{(quantity * pricePerTicket).toFixed(2)}</Col>
             </Row>
-            {/* <Button href="/AttendeeDetails"  variant="dark" className="w-100 mt-2">
-              Proceed &gt;
-            </Button> */}
             <Link to="/AttendeeDetails">
               <Button variant="dark" className="w-100 mt-2">
                 Proceed &gt;
               </Button>
-           </Link>
+            </Link>
           </Card.Footer>
         </Card>
       </div>

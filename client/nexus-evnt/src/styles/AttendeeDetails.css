@@ -1,14 +1,15 @@
 .attendee-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .attendee-container {
-    margin-top: 10px;
-  }
+.attendee-container {
+  margin-top: 10px;
+  width: 80%;
+}
 
-  .form-label {
-    width: 100%;
-  }
+.form-label {
+  width: 100%;
+}

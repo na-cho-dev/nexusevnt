@@ -4,8 +4,10 @@
   align-items: center;
   height: 100vh;
 }
+
 .ticket-container {
   margin-top: 10px;
+  width: 80%;
 }
 
 .btn-dropdown {
