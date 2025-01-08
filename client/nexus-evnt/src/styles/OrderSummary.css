@@ -4,17 +4,18 @@
   align-items: center;
   height: 100vh;
 }
-.ticket-card {
+.ticket-container {
   position: relative;
   border-radius: 10px;
   border: 1px solid #ddd;
   padding: 10px;
   background-color: #f9f9f9;
   overflow: hidden;
+  width: 80%;
 }
 
-.ticket-card::before,
-.ticket-card::after {
+.ticket-container::before,
+.ticket-container::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -26,11 +27,11 @@
   border: 1px solid #ddd;
 }
 
-.ticket-card::before {
+.ticket-container::before {
   left: -10px;
 }
 
-.ticket-card::after {
+.ticket-container::after {
   right: -10px;
 }
 

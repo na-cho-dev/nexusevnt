@@ -18,6 +18,7 @@ const Booking = () => {
   const [quantity, setQuantity] = useState(1);
 
   const ticketPrices = {
+    "Select Ticket": 0,
     "Regular Ticket": 200,
     "VIP Ticket": 500,
     "VVIP Ticket": 1000,
@@ -40,7 +41,7 @@ const Booking = () => {
       <NavMenu />
       <div
         className="ticket-section"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto" }}
       >
         <Card className="ticket-container">
           <Close />

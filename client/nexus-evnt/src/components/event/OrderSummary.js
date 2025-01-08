@@ -15,9 +15,9 @@ function OrderSummary() {
       <NavMenu />
       <div
         className="order-section"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto" }}
       >
-        <Card className="ticket-card">
+        <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">Order Summary</Card.Header>
           <Card.Body>

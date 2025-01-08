@@ -22,7 +22,7 @@ const UserDetails = () => {
       <NavMenu />
       <div
         className="attendee-section"
-        style={{ maxWidth: "600px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto" }}
       >
         <Card className="attendee-container">
           <Close />
