@@ -3,6 +3,7 @@ import Event from '../models/eventsModel.js';
 import { v4 as uuidv4 } from 'uuid';
 import { sendEmail } from '../utils/emailService.js';
 import { sendSMS } from '../utils/smsService.js';
+import QRCode from 'qrcode';
 
 // Create Ticket
 export const createTicket = async (req, res) => {
@@ -35,6 +36,7 @@ export const createTicket = async (req, res) => {
       event_name: event.event_name,
       event_date: event.event_date,
       event_location: event.event_location,
+      event_venue: event.event_venue,
       event_start_time: event.event_start_time,
       tier_type,
       quantity,
@@ -47,12 +49,27 @@ export const createTicket = async (req, res) => {
     tier.available_tickets -= quantity;
     await event.save();
 
+    // Generate QR Code
+    const qrCodeData = JSON.stringify(ticketData); // You can customize this data
+    const qrCodeImage = await QRCode.toDataURL(qrCodeData); // Generate QR code as a data URL
+
     const attendee = req.user;
     await sendEmail(
       attendee.email,
       'Event Ticket Confirmation',
       'Your ticket has been booked successfully.',
-      `<p>Dear ${attendee.first_name},<br>Your ticket for ${event.event_name} is confirmed.</p>`
+      `
+      <p>Dear ${attendee.first_name},<br>Your ticket for ${event.event_name} is confirmed.</p>
+      <p>Order ID: ${order_id}</p>
+      <p>Event: ${event.event_name}</p>
+      <p>Date: ${event.event_date}</p>
+      <p>Location: ${event.event_location}</p>
+      <p>Venue: ${event.event_venue}<p>
+      <p>Tier: ${tier_type}</p>
+      <p>Quantity: ${quantity}</p>
+      <p>Price Paid: $${price_paid}</p>
+      <img src="${qrCodeImage}" alt="QR Code" />
+      `
     );
 
     //const smsMessage = `Hi ${attendee.first_name}, your ticket for "${event.event_name}" is confirmed!`;
