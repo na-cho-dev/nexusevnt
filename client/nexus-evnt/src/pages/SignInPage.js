@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import '../styles/SignInPage.css';
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,7 +15,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/login`, // Replace with your backend URL
+        '/auth/login',
         { email, password },
         { withCredentials: true } // To include cookies in the request
       );

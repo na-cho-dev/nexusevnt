@@ -13,6 +13,7 @@ import Img from "../images/wedding.jpg";
 import NavMenu from "../components/layout/NavBarElements";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import "../styles/EventPage.css";
 
 const Event = () => {
   const events = [
