@@ -8,20 +8,26 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
+    setSuccess("");
 
     try {
       const response = await axios.post(
-        '/auth/login',
+        '/auth/login', // backend URL
         { email, password },
         { withCredentials: true } // To include cookies in the request
       );
       const { accessToken } = response.data;
       console.log("Login successful:", accessToken);
       // Save access token to local storage or context if needed
+      setSuccess(response.data.message || "Logged In Successfully");
+      navigate('/HomePage'); // Redirect to the Home page after successful logging in
     } catch (error) {
       console.error("Login failed:", error.response?.data?.message || error.message);
       setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
