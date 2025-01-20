@@ -51,7 +51,7 @@ const SignUp = () => {
       // Send data to backend
       const response = await axios.post('/auth/register', formData);
       setSuccess(response.data.message);
-      navigate('/auth/login'); // Redirect to login page after successful registration
+      navigate('/SignInPage'); // Redirect to login page after successful registration
     } catch (err) {
       setError(
         err.response?.data?.message || 'An error occurred during registration'
