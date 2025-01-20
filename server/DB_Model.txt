@@ -1,0 +1,13 @@
+
+Organizer ->    Create Events
+                Update Events
+                Delete Events
+                View Events
+
+Attendee ->     View Events
+                Save Events
+                Register For Events (*)
+
+                Create Ticket
+                View Tickets
+                View Ticket

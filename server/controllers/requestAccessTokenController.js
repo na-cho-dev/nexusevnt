@@ -1,30 +1,36 @@
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 import jwt from 'jsonwebtoken';
+import redisClient from '../database/redisDBConnect.js';
 
 const requestAccessTokenController = async (req, res) => {
-  const cookies = req.cookies;
-  console.log(`JWT Token: ${cookies.JWT}`);
-  // Check Token in Cookie, Forbidden if not
-  if (!cookies?.JWT) return res.sendStatus(401);
-  // Else, get save the token to memory and use it to create an access token
-  const refreshToken = cookies.JWT;
   try {
+    const cookies = req.cookies;
+    console.log(`JWT Token: ${cookies.JWT}`);
+
+    // Check Token in Cookie, Forbidden if not
+    if (!cookies?.JWT) return res.sendStatus(401);
+
+    // Else, saves the token to memory and use it to create an access token
+    const refreshToken = cookies.JWT;
     const existingUser = await User.findOne({ refresh_token: refreshToken });
     if (!existingUser)
       return res
         .status(403)
         .json({ message: 'Forbidden: Failed to find User' });
 
-    // Check if refresh token is correct
+    // Check if refresh token is correct and generate access token
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
-      (err, decoded) => {
+      async (err, decoded) => {
         if (err || existingUser.email !== decoded.email)
           return res.status(403).json({ message: 'Forbidden' });
 
+        const tokenVersionKey = `tokenVersion:${existingUser.email}`;
+        let tokenVersion = await redisClient.incr(tokenVersionKey);
+
         const accessToken = jwt.sign(
-          { email: decoded.email },
+          { email: decoded.email, tokenVersion },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: '30s' }
         );
