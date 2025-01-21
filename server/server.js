@@ -45,8 +45,8 @@ app.use('/', ticketRouter);
 app.use('/account', attendeeRouter, organizerRouter);
 app.use('/api', paymentRouter);
 
+// Connect to the MongoDB database
 mongodb_connection();
-
 app.get('/', (req, res) => {
   res.json({ message: 'NexusEvnt Web Application!' });
 });
@@ -91,6 +91,7 @@ app.post(
         console.log(`Unhandled event type: ${event.type}`);
     }
 
+    // Respond to Stripe that the webhook was received successfully
     res.json({ received: true });
   }
 );
