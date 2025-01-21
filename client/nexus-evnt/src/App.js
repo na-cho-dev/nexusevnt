@@ -13,6 +13,9 @@ import CreateEvent from "./pages/CreateEventPage";
 import MultiStepForm from "./pages/MultiStepForm";
 import UserDetails from "./components/event/AttendeeDetails";
 import OrderSummary from "./components/event/OrderSummary";
+import Account from "./components/common/AccountInfo";
+import Email from "./components/common/ChangeEmail";
+import Password from "./components/common/ProfPassword";
 import Testing from "./pages/Testing";
 
 function App() {
@@ -31,6 +34,9 @@ function App() {
           <Route path="/BookingPage" element={<Booking />} />
           <Route path="/CreateEventPage" element={<CreateEvent />} />
           <Route path="/*" element={<MultiStepForm />} />
+          <Route path="/AccountInfo" element={<Account />} />
+          <Route path="/ChangeEmail" element={<Email />} />
+          <Route path="/ProfPassword" element={<Password />} />
           <Route path="/AttendeeDetails" element={<UserDetails />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
           <Route path="/Testing" element={<Testing />} />
