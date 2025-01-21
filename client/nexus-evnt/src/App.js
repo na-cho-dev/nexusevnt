@@ -13,6 +13,7 @@ import CreateEvent from "./pages/CreateEventPage";
 import MultiStepForm from "./pages/MultiStepForm";
 import UserDetails from "./components/event/AttendeeDetails";
 import OrderSummary from "./components/event/OrderSummary";
+import Testing from "./pages/Testing";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/*" element={<MultiStepForm />} />
           <Route path="/AttendeeDetails" element={<UserDetails />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
+          <Route path="/Testing" element={<Testing />} />
         </Routes>
       </div>
     </Router>

@@ -1,4 +1,4 @@
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 
 export const getOrganizers = async (req, res) => {
   try {

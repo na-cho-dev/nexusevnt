@@ -1,13 +1,11 @@
-import User from '../models/userModel.js';
+import User from '../models/usersModel.js';
 import bcrypt from 'bcryptjs';
 import { accessToken, refreshToken } from '../utils/generateJWT.js';
+import redisClient from '../database/redisDBConnect.js';
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  const userData = {
-    email: email,
-    password: password,
-  };
+  const userData = { email, password };
 
   for (const key in userData) {
     if (!userData[key])
@@ -33,9 +31,14 @@ const loginController = async (req, res) => {
       console.log(`Invalid Credentials`);
       return res.status(401).json({ message: `Invalid Credentials` });
     }
-    // Create JWT
-    const access_token = accessToken(existingUser.email);
-    const refresh_token = refreshToken(existingUser.email);
+
+    // CREATE JWT AUTHENTICATION TOKEN
+    // Check if token version exists in redis
+    const tokenVersionKey = `tokenVersion:${existingUser.email}`;
+    let tokenVersion = await redisClient.incr(tokenVersionKey);
+
+    const access_token = accessToken(existingUser, tokenVersion);
+    const refresh_token = refreshToken(existingUser, tokenVersion);
 
     // Save refresh token
     existingUser.refresh_token = refresh_token;
@@ -47,9 +50,6 @@ const loginController = async (req, res) => {
       secure: process.env.NODE_ENV_MODE === 'prod',
       maxAge: 24 * 60 * 60 * 1000,
     });
-
-    const cookies = req.cookies;
-    console.log(`JWT Token: ${cookies.JWT}`);
 
     res.status(200).json({
       message: 'Logged in successfully',

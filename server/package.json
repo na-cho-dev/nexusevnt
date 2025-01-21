@@ -29,7 +29,14 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-static": "^1.2.6",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.2"
+    "mongoose": "^8.9.2",
+    "nodemailer": "^6.9.16",
+    "qrcode": "^1.5.4",
+    "redis": "^4.7.0",
+    "stripe": "^17.5.0",
+    "twilio": "^5.4.0",
+    "uuid": "^11.0.3"
   }
 }

@@ -1,22 +1,20 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Form,
-  Badge,
-  Dropdown,
-} from "react-bootstrap";
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
 import Img from "../images/wedding.jpg";
 import NavMenu from "../components/layout/NavBarElements";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import EventCard from "../components/event/EventCard";
+import EventFilters from "../components/event/EventFilters";
 import "../styles/EventPage.css";
 
 const Event = () => {
   const [sortOption, setSortOption] = useState("Relevance");
+  const [filters, setFilters] = useState({
+    price: { free: false, paid: false },
+    date: { today: false, tomorrow: false, thisWeek: false },
+    category: {},
+  });
   const [events, setEvents] = useState([
     {
       image: Img,
@@ -24,7 +22,7 @@ const Event = () => {
       date: "2023-11-23",
       location: "Chengalpattu, India",
       price: 1200,
-      category: "Food & Drink",
+      category: "Art and Craft Fair",
     },
     {
       image: Img,
@@ -32,7 +30,23 @@ const Event = () => {
       date: "2023-12-17",
       location: "New Delhi, India",
       price: 0,
-      category: "Educational & Business",
+      category: "Outdoor Movie Nights",
+    },
+    {
+      image: Img,
+      title: "Startup Talks",
+      date: "2023-12-17",
+      location: "New Delhi, India",
+      price: 290,
+      category: "Art and Craft Fair",
+    },
+    {
+      image: Img,
+      title: "Startup Talks",
+      date: "2023-12-17",
+      location: "New Delhi, India",
+      price: 8902,
+      category: "Outdoor Movie Nights",
     },
     {
       image: Img,
@@ -40,41 +54,51 @@ const Event = () => {
       date: "2023-12-17",
       location: "New Delhi, India",
       price: 0,
-      category: "Educational & Business",
+      category: "Carnival and Fairs",
     },
     {
       image: Img,
       title: "Startup Talks",
       date: "2023-12-17",
       location: "New Delhi, India",
-      price: 0,
-      category: "Educational & Business",
+      price: 123,
+      category: "Music Festival",
     },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 0,
-      category: "Educational & Business",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 0,
-      category: "Educational & Business",
-    },
-    // Add more events...
   ]);
 
-  // Handle Sorting
+  const filteredEvents = events.filter((event) => {
+    // Price Filter
+    if (filters.price.free && event.price !== 0) return false;
+    if (filters.price.paid && event.price === 0) return false;
+
+    // Category Filter
+    const selectedCategories = Object.keys(filters.category).filter(
+      (key) => filters.category[key]
+    );
+    if (
+      selectedCategories.length > 0 &&
+      !selectedCategories.includes(event.category)
+    )
+      return false;
+
+    if (filters.date.today) {
+      const today = new Date();
+      const eventDate = new Date(event.date);
+      if (
+        eventDate.getDate() !== today.getDate() ||
+        eventDate.getMonth() !== today.getMonth() ||
+        eventDate.getFullYear() !== today.getFullYear()
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
   const handleSort = (option) => {
     setSortOption(option);
-
-    // Sort events based on the selected option
-    const sortedEvents = [...events];
+    const sortedEvents = [...filteredEvents];
     if (option === "Price: Low to High") {
       sortedEvents.sort((a, b) => a.price - b.price);
     } else if (option === "Price: High to Low") {
@@ -85,73 +109,73 @@ const Event = () => {
     setEvents(sortedEvents);
   };
 
+  const handleFilterChange = (category, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [category]: { ...prevFilters[category], ...value },
+    }));
+  };
+
   return (
-    <Container className="" fluid>
-      <Row className="mb-3">
-        <Col>
-          <h5>Events</h5>
-        </Col>
-        <Col className="text-end">
-          <Dropdown>
-            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
-              Sort by: {sortOption}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleSort("Relevance")}>
-                Relevance
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleSort("Price: Low to High")}>
-                Price: Low to High
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleSort("Price: High to Low")}>
-                Price: High to Low
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleSort("Date: Soonest")}>
-                Date: Soonest
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
-      </Row>
-
-      <Row>
-        {events.map((event, index) => (
-          <Col md={6} lg={4} key={index} className="mb-4">
-            <Card className=" ">
-              <Card.Img
-                // variant="top"
-                src={Img}
-                className="img-fluid "
-                style={{ height: "150px", objectFit: "cover" }}
-              ></Card.Img>
-              <Card.Body>
-                <Card.Title>{event.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {event.date}
-                </Card.Subtitle>
-                <div className="mb-2">
-                  <Badge
-                    bg={
-                      event.category === "Food & Drink" ? "success" : "primary"
-                    }
-                  >
-                    {event.category}
-                  </Badge>
-                </div>
-
-                <Card.Text>
-                  <strong>Location:</strong> {event.location} <br />
-                  <strong>Price:</strong>{" "}
-                  {event.price === 0 ? "FREE" : `INR ${event.price}`}
-                </Card.Text>
-                <Button variant="primary">View Details</Button>
-              </Card.Body>
-            </Card>
+    <div className="main-container">
+      <NavMenu />
+      <Header />
+      <Container fluid>
+        <Row className="mt-4">
+          {/* Filters Section */}
+          <Col md={3} className="bg-light p-3">
+            <EventFilters
+              filters={filters}
+              onFilterChange={handleFilterChange}
+            />
           </Col>
-        ))}
-      </Row>
-    </Container>
+
+          {/* Events Section */}
+          <Col md={9}>
+            <Row className="mb-3">
+              <Col className="text-end">
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="outline-primary"
+                    className="btn-color"
+                  >
+                    Sort by: {sortOption}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleSort("Relevance")}>
+                      Relevance
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => handleSort("Price: Low to High")}
+                    >
+                      Price: Low to High
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => handleSort("Price: High to Low")}
+                    >
+                      Price: High to Low
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSort("Date: Soonest")}>
+                      Date: Soonest
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+            </Row>
+
+            {/* Event Cards */}
+            <Row>
+              {filteredEvents.map((event, index) => (
+                <Col md={6} lg={4} key={index}>
+                  <EventCard event={event} />
+                </Col>
+              ))}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+      <Footer />
+    </div>
   );
 };
 
