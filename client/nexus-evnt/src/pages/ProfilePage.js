@@ -1,5 +1,6 @@
 import React from "react";
 import NavMenu from "../components/layout/NavBarElements";
+import Footer from "../components/layout/Footer";
 import ImageUpload from "../components/common/ImageButton";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import "../styles/ProfilePage.css";
@@ -9,7 +10,7 @@ const Profile = () => {
     <div className="main-profile-container">
       <div className="row">
         <NavMenu />
-        {/* Sidebar */}
+
         <div className="col-md-3 bg-body-secondary">
           <div className="list-group mt-5">
             <h5 className="text-center p-2">Account Settings</h5>
@@ -34,22 +35,19 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="col-md-9">
           <div className="mt-5">
             <h4>Account Information</h4>
             <hr />
 
-            {/* Profile Photo */}
             <div className="ms-4-style">
               <h4>Profile Photo</h4>
               <ImageUpload />
             </div>
 
-            {/* Profile Information */}
             <Form>
               <h5 className="ms-4-style mb-3 mt-3">Profile Information</h5>
-              {/* First Name */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="firstName">First Name:</Form.Label>
@@ -62,7 +60,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* Last Name */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="lastName">Last Name:</Form.Label>
@@ -75,7 +73,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* Website */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="website">Website:</Form.Label>
@@ -88,7 +86,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* Company */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="company">Company:</Form.Label>
@@ -107,7 +105,7 @@ const Profile = () => {
                 These details are private and only used to contact you for
                 ticketing or prizes.
               </p>
-              {/* Phone Number */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="phone">Phone Number:</Form.Label>
@@ -120,7 +118,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* Address */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="address">Address:</Form.Label>
@@ -133,7 +131,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* City */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="city">City/Town:</Form.Label>
@@ -159,7 +157,7 @@ const Profile = () => {
                   />
                 </Col>
               </Row>
-              {/* Pincode */}
+
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
                   <Form.Label htmlFor="pincode">Pincode:</Form.Label>
@@ -183,6 +181,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
