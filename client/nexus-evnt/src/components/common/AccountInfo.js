@@ -1,12 +1,12 @@
 import React from "react";
-import NavMenu from "../components/layout/NavBarElements";
-import Footer from "../components/layout/Footer";
-import ImageUpload from "../components/common/ImageButton";
+import NavMenu from "../../components/layout/NavBarElements";
+import Footer from "../../components/layout/Footer";
+import ImageUpload from "../../components/common/ImageButton";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "../styles/ProfilePage.css";
+import "../../styles/ProfilePage.css";
 
-const Profile = () => {
+const Account = () => {
   return (
     <div className="main-profile-container">
       <div className="row">
@@ -187,4 +187,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Account;

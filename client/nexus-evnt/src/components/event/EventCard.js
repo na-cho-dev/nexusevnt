@@ -1,18 +1,26 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Badge, Button } from "react-bootstrap";
 
-const EventCard = ({ image, title, text }) => {
+const EventCard = ({ event }) => {
   return (
-    <Card className="h-100">
+    <Card className="mb-4">
       <Card.Img
-        variant="top"
-        src={image}
+        src={event.image}
         className="img-fluid"
         style={{ height: "150px", objectFit: "cover" }}
       />
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>{text}</Card.Text>
+        <Card.Title>{event.title}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{event.date}</Card.Subtitle>
+        <div className="mb-2">
+          <Badge className="custom-badge">{event.category}</Badge>
+        </div>
+        <Card.Text>
+          <strong>Location:</strong> {event.location} <br />
+          <strong>Price:</strong>{" "}
+          {event.price === 0 ? "FREE" : `INR ${event.price}`}
+        </Card.Text>
+        <Button variant="primary">View Details</Button>
       </Card.Body>
     </Card>
   );
