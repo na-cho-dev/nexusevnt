@@ -45,9 +45,9 @@ const Email = () => {
                 </Col>
                 <Col md={8}>
                   <Form.Control
-                    type="email"
-                    id="currentEmail"
-                    placeholder="Enter current email"
+                    plaintext
+                    readOnly
+                    defaultValue="currentemail@example.com"
                   />
                 </Col>
               </Row>
