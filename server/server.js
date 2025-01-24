@@ -16,23 +16,21 @@ import cookieParser from 'cookie-parser';
 import refreshTokenRouter from './routers/requestAccessTokenRouter.js';
 import paymentRouter from './routers/api/paymentRouter.js';
 import { handlePaymentSuccess } from './controllers/paymentController.js';  // Import handlePaymentSuccess
+// import dotenv from 'dotenv';
 
+// dotenv.config();
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const PORT = process.env.PORT || 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 app.use(corsMiddleware);
 
-// Serve static files from the React build folder
-app.use(express.static(path.join(__dirname, '../client/nexus-evnt/build')));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const static_file_path = '../client/nexus-evnt/build'
 
-// Catch-all route to serve index.html for React's single-page app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/nexus-evnt/build', 'index.html'));
-});
+// Serve static files from the React build folder
+app.use(express.static(path.join(__dirname, static_file_path)));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -40,13 +38,20 @@ app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/refresh', refreshTokenRouter);
 app.use(verifyJWTMiddleware);
-app.use('/', eventsRouter);
-app.use('/', ticketRouter);
-app.use('/account', attendeeRouter, organizerRouter);
+app.use('/api', eventsRouter);
+app.use('/api', ticketRouter);
+app.use('/api', attendeeRouter, organizerRouter);
 app.use('/api', paymentRouter);
+
+// Catch-all route to serve index.html for React's single-page app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, static_file_path, 'index.html'));
+});
 
 // Connect to the MongoDB database
 mongodb_connection();
+
+
 app.get('/', (req, res) => {
   res.json({ message: 'NexusEvnt Web Application!' });
 });

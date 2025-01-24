@@ -27,7 +27,7 @@ const registerController = async (req, res) => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
         password
       );
-    if (!isValidPassword(userData.password)) {
+    if (isValidPassword(userData.password)) {
       return res.status(400).json({
         message:
           'Password must be at least 8 characters long, include uppercase, lowercase, numbers, and special characters.',

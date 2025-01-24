@@ -47,7 +47,7 @@ export const createTicket = async (req, res) => {
     await newTicket.save();
 
     tier.available_tickets -= quantity;
-    await event.save();
+    await event.save(); // Saves available ticket to database
 
     // Generate QR Code
     const qrCodeData = JSON.stringify(ticketData); // You can customize this data

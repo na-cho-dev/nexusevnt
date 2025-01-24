@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Event from '../models/eventsModel.js';
 
 export const createPaymentSession = async (req, res) => {
-  const { event_id, tier_name, quantity } = req.body;
+  const { event_id, tier_type, quantity } = req.body;
 
   try {
     const event = await Event.findById(event_id);
@@ -12,7 +12,7 @@ export const createPaymentSession = async (req, res) => {
 
     // Find the selected ticket tier
     const selectedTier = event.ticket_tiers.find(
-      (tier) => tier.tier_name === tier_name
+      (tier) => tier.tier_type === tier_type
     );
     if (!selectedTier) {
       return res.status(400).json({ message: 'Invalid ticket tier selected' });
@@ -34,7 +34,7 @@ export const createPaymentSession = async (req, res) => {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: `${event.event_name} - ${tier_name} Ticket`,
+              name: `${event.event_name} - ${tier_type} Ticket`,
               description: `${event.event_description}`,
             },
             unit_amount: selectedTier.price * 100, // Price in cents
@@ -43,16 +43,17 @@ export const createPaymentSession = async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `http://localhost:3300/success`,
+      // success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`
+      cancel_url: `http://localhost:3300/cancel`,
       metadata: {
         event_id: event_id,
-        tier_name: tier_name,
+        tier_type: tier_type,
         quantity: quantity,
       },  // Include metadata for post-payment processing
     });
 
-    res.status(200).json({ id: session.id });
+    res.status(200).json({ session });
   } catch (error) {
     res.status(500).json({
       message: 'Error creating payment session',
@@ -64,7 +65,7 @@ export const createPaymentSession = async (req, res) => {
 export const handlePaymentSuccess = async (session) => {
   const sessionDetails = session.metadata; // Retrieve metadata passed during session creation
 
-  const { event_id, tier_name, quantity } = sessionDetails; // Extract metadata values
+  const { event_id, tier_type, quantity } = sessionDetails; // Extract metadata values
 
   // Start Mongoose transaction
   const sessionDb = await mongoose.startSession();
@@ -77,7 +78,7 @@ export const handlePaymentSuccess = async (session) => {
 
     // Find the ticket tier
     const tierIndex = event.ticket_tiers.findIndex(
-      (tier) => tier.tier_name === tier_name
+      (tier) => tier.tier_type === tier_type
     );
     if (tierIndex === -1) throw new Error('Ticket tier not found');
 
