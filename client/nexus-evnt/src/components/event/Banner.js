@@ -8,7 +8,7 @@ import Footer from "../layout/Footer";
 const Banner = () => (
   <>
     <NavMenu />
-    <div className="container-md " style={{ height: "650px" }}>
+    <div className="container-md" style={{ height: "650px" }}>
       <h4 className="mt-5 ms-3">Upload Event Banner</h4>
       <Container className="mt-4">
         <Progress />
