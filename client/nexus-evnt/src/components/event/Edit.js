@@ -1,27 +1,19 @@
 import React from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Progress from "../../components/event/Progress";
 import "../../styles/Edit.css";
 
 const Edit = () => {
-  const navigate = useNavigate();
-
-  const handleNext = () => {
-    navigate("/banner");
-  };
-
-  const handlePrevious = () => {
-    navigate("/");
-  };
-
   return (
     <div className="container-md">
-      <h4 className="mb-2">Create a New Event</h4>
-      <Progress />
+      <h4 className="mt-5 ms-3">Create a New Event</h4>
+      <Container className="mt-4">
+        <Progress />
+      </Container>
 
       <Form className="mb-5">
-        <h5 className="ms-4-style mb-3 mt-4">Event Details</h5>
+        <h5 className="ms-4-style mb-3 mt-5">Event Details</h5>
         <Row className="mb-3 align-items-center">
           <Col md={3}>
             <Form.Label>Event Title*</Form.Label>
@@ -81,7 +73,7 @@ const Edit = () => {
         </Row>
         <Row className="mb-3 align-items-center ms-4">
           <Col md={3}>
-            <Form.Label className="mb-5 ms-4">Session(s)*</Form.Label>
+            <Form.Label className="mb-5 ms-2">Session(s)*</Form.Label>
           </Col>
           <Col md={2}>
             <Form.Label className="ms-4">Start Date*</Form.Label>
@@ -132,10 +124,10 @@ const Edit = () => {
         </Row>
 
         <div className="mt-5 me-5-style mb-5 text-end">
-          <Button variant="secondary" className="me-3" onClick={handlePrevious}>
+          <Button variant="secondary" className="me-3" as={Link} to="/">
             Back
           </Button>
-          <Button onClick={handleNext} variant="primary">
+          <Button as={Link} to="/Banner" variant="primary">
             Save & Continue
           </Button>
         </div>

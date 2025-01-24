@@ -3,10 +3,12 @@ import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import InputGroup from "react-bootstrap/InputGroup";
 import EventTypeSelector from "../common/TicketType";
+import Progress from "./Progress";
 
 const Ticketing = () => (
   <div>
     <h4 className="mb-4">Set Up Ticketing</h4>
+    <Progress />
     <Form>
       <Form.Group className="mb-3">
         <EventTypeSelector />
