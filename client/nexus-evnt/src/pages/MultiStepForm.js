@@ -9,7 +9,7 @@ import Review from "../components/event/Review";
 
 const MultiStepForm = () => (
   <Container className="mt-5">
-    <Progress />
+    {/* <Progress /> */}
     <div className="mt-4">
       <Routes>
         <Route path="/Edit" element={<Edit />} />
