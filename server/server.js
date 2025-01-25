@@ -16,6 +16,7 @@ import cookieParser from 'cookie-parser';
 import refreshTokenRouter from './routers/requestAccessTokenRouter.js';
 import paymentRouter from './routers/api/paymentRouter.js';
 import { handlePaymentSuccess } from './controllers/paymentController.js';  // Import handlePaymentSuccess
+import { handlePaymentFailure } from './controllers/paymentController.js';  // Import handlePaymentFailure
 // import dotenv from 'dotenv';
 
 // dotenv.config();
@@ -61,39 +62,43 @@ app.post(
   '/webhook',
   express.raw({ type: 'application/json' }), // Use raw to handle signature verification
   async (req, res) => {
-    const sig = req.headers['stripe-signature']; // Stripe signature header
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // Webhook secret from Stripe Dashboard
+    const stripe_signature = req.headers['stripe-signature']; // Stripe signature header
+    const endpoint_secret = process.env.STRIPE_WEBHOOK_SECRET; // Webhook secret from Stripe Dashboard
 
     let event;
 
     try {
       // Verify webhook signature
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      stripe_event = stripe.webhooks.constructEvent(req.body, stripe_signature, endpoint_secret);
     } catch (err) {
       console.error('Webhook signature verification failed:', err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     // Handle the event
-    switch (event.type) {
+    switch (stripe_event.type) {
       case 'checkout.session.completed':
-        const session = event.data.object;
+        const session_success = stripe_event.data.object;
 
         // Process successful payment
-        await handlePaymentSuccess(session);
+        await handlePaymentSuccess(session_success);
 
         break;
 
       case 'payment_intent.succeeded':
-        console.log('Payment succeeded:', event.data.object);
+        console.log('Payment succeeded:', stripe_event.data.object);
         break;
 
       case 'payment_intent.payment_failed':
-        console.log('Payment failed:', event.data.object);
+        const session_failed = stripe_event.data.object;
+
+        // Handle payment failure
+        await handlePaymentFailure(session_failed);
+
         break;
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        console.log(`Unhandled event type: ${stripe_event.type}`);
     }
 
     // Respond to Stripe that the webhook was received successfully

@@ -4,6 +4,13 @@ import redisClient from '../database/redisDBConnect.js';
 
 const verifyJWT = async (req, res, next) => {
   // Gets the token from the header
+  const excludedRoutes = ['/success', '/cancel'];
+  
+  // Skip middleware for excluded routes
+  if (excludedRoutes.includes(req.path)) {
+    return next();
+  }
+
   const auth_token = req.headers['authorization'];
   console.log(`Auth Header: ${auth_token}`); // Bearer <token>
   if (!auth_token)
