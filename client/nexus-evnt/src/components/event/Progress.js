@@ -1,26 +1,25 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
 
 const steps = ["Edit", "Banner", "Ticketing", "Review"];
 
-const Progress = () => {
-  const location = useLocation();
-  const currentStepIndex = steps.findIndex((step) =>
-    location.pathname.includes(step.toLowerCase())
-  );
-
-  const progressPercentage = ((currentStepIndex + 1) / steps.length) * 100;
+const Progress = ({ currentStep }) => {
+  const progressPercentage =
+    currentStep > 0 ? (currentStep / steps.length) * 100 : 0;
 
   return (
     <>
       <ProgressBar now={progressPercentage} />
-      <div className="d-flex justify-content-between mt-2">
+      <div className="d-flex justify-content-between mt-2 container-mb">
         {steps.map((step, index) => (
           <span
             key={index}
             className={
-              currentStepIndex >= index ? "text-primary" : "text-muted"
+              currentStep - 1 === index
+                ? "text-primary fw-bold"
+                : currentStep - 1 > index
+                ? "text-primary"
+                : "text-muted"
             }
           >
             {step}

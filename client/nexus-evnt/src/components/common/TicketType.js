@@ -12,15 +12,15 @@ const EventTypeSelector = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-5">
       <h5 className="mb-4">What type of event are you running?</h5>
       <Row>
-        <Col xs={12} sm={6}>
+        <Col xs={12} sm={6} md={4}>
           <Card
             className={`text-center p-3 mb-3 ${
               selectedEvent === "ticketed" ? "border-primary shadow-sm" : ""
             }`}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", width: "350px", heigth: "60px" }}
             onClick={() => handleSelect("ticketed")}
           >
             <Card.Body>
@@ -36,12 +36,12 @@ const EventTypeSelector = () => {
           </Card>
         </Col>
 
-        <Col xs={12} sm={6}>
+        <Col xs={12} sm={6} md={4}>
           <Card
-            className={`text-center p-3 mb-3 ${
+            className={`text-center p-3 mb-3 ms-4 ${
               selectedEvent === "free" ? "border-primary shadow-sm" : ""
             }`}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", width: "350px", heigth: "60px" }}
             onClick={() => handleSelect("free")}
           >
             <Card.Body>
