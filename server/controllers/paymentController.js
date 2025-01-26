@@ -72,7 +72,7 @@ export const createPaymentSession = async (req, res) => {
 };
 
 export const handlePaymentSuccess = async (session) => {
-  Console.log(`HANDLE PAYMENT SUCCESSS CALLED`);
+  console.log(`HANDLE PAYMENT SUCCESSS CALLED`);
 
   const sessionDetails = session.metadata; // Retrieve metadata passed during session creation
   const { event_id, ticket_id, tier_type, quantity } = sessionDetails; // Extract metadata values
@@ -114,12 +114,11 @@ export const handlePaymentSuccess = async (session) => {
     await sessionDb.commitTransaction();
     sessionDb.endSession();
 
-    console.log('Payment processed successfully, and tickets updated.');
+    console.log('PAYMENT PROCESSED SUCCESSFULLY. (TICKET AND EVENT UPDATED)');
   } catch (error) {
     // Rollback transaction in case of error
     await sessionDb.abortTransaction();
     sessionDb.endSession();
-
     console.error('Error processing payment:', error.message);
   }
 };
