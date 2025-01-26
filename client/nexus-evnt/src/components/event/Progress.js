@@ -1,23 +1,11 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
 
-const steps = [
-  { name: "Edit", path: "/CreateEventPage" },
-  { name: "Banner", path: "/Banner" },
-  { name: "Ticketing", path: "/Ticketing" },
-  { name: "Review", path: "/Review" },
-];
+const steps = ["Edit", "Banner", "Ticketing", "Review"];
 
-const Progress = () => {
-  const location = useLocation();
-
-  const currentStepIndex = steps.findIndex((step) =>
-    location.pathname.includes(step.path)
-  );
-
+const Progress = ({ currentStep }) => {
   const progressPercentage =
-    currentStepIndex !== -1 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
+    currentStep > 0 ? (currentStep / steps.length) * 100 : 0;
 
   return (
     <>
@@ -27,14 +15,14 @@ const Progress = () => {
           <span
             key={index}
             className={
-              currentStepIndex === index
+              currentStep - 1 === index
                 ? "text-primary fw-bold"
-                : currentStepIndex > index
+                : currentStep - 1 > index
                 ? "text-primary"
                 : "text-muted"
             }
           >
-            {step.name}
+            {step}
           </span>
         ))}
       </div>

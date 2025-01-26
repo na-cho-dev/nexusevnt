@@ -1,61 +1,90 @@
-import React from "react";
-import { Form, Button, Container, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import InputGroup from "react-bootstrap/InputGroup";
+import React, { useState } from "react";
+import { Form, Button, Container, Row, Col, InputGroup } from "react-bootstrap";
 import EventTypeSelector from "../common/TicketType";
+import Progress from "./Progress";
 import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
-import Progress from "./Progress";
 
-const Ticketing = () => (
-  <>
-    <NavMenu />
+const Ticketing = ({ eventData, onUpdate, onNext, onBack }) => {
+  const [ticket, setTicket] = useState({
+    ticketType: eventData.ticketType || "",
+    ticketPrice: eventData.ticketPrice || "",
+    ticketQuantity: eventData.ticketQuantity || "",
+  });
 
-    <div className="container-md" style={{ height: "850px" }}>
-      <h4 className="mt-5 ms-3">Set Up Ticketing</h4>
-      <Container className="mt-4">
-        <Progress />
-      </Container>
-      <Form>
-        <Form.Group className="mb-2">
-          <EventTypeSelector />
-        </Form.Group>
-        <h5>What tickets are you selling?</h5>
-        <Row className="mb-3">
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Ticket Type</Form.Label>
-              <Form.Control type="text" placeholder="e.g., General Admission" />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Ticket Price</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control
-                  type="number"
-                  placeholder="Enter ticket price"
-                  aria-label="Amount (to the nearest dollar)"
-                />
-                <InputGroup.Text>.00</InputGroup.Text>
-              </InputGroup>
-            </Form.Group>
-          </Col>
-        </Row>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTicket({ ...ticket, [name]: value });
+  };
 
-        <div className="mt-5 mb-5 text-end">
-          <Button variant="secondary" className="me-3" as={Link} to="/Banner">
-            Go Back
-          </Button>
-          <Button as={Link} to="/Review" variant="primary">
-            Save & Continue
-          </Button>
-        </div>
-      </Form>
-    </div>
-    <Footer />
-  </>
-);
+  const handleSave = () => {
+    onUpdate(ticket);
+    onNext();
+  };
+
+  return (
+    <>
+      <NavMenu />
+      <div className="container-md">
+        <h4 className="mt-5 ms-3">Set Up Ticketing</h4>
+        <Container className="mt-4">
+          <Progress currentStep={3} />
+        </Container>
+        <Form>
+          <Form.Group className="mb-3">
+            <EventTypeSelector />
+          </Form.Group>
+          <h5 className="">What tickets are you selling?</h5>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ticket Type</Form.Label>
+            <Form.Control
+              type="text"
+              name="ticketType"
+              value={ticket.ticketType}
+              onChange={handleChange}
+              placeholder="e.g., General Admission"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ticket Price ($)</Form.Label>
+            <InputGroup>
+              <Form.Control
+                type="number"
+                name="ticketPrice"
+                value={ticket.ticketPrice}
+                onChange={handleChange}
+                placeholder="Enter ticket price"
+              />
+              <InputGroup.Text>.00</InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ticket Quantity</Form.Label>
+            <Form.Control
+              type="number"
+              name="ticketQuantity"
+              value={ticket.ticketQuantity}
+              onChange={handleChange}
+              placeholder="Number of tickets"
+            />
+          </Form.Group>
+
+          <div className="mt-5 me-5-style mb-5 text-end">
+            <Button variant="secondary" onClick={onBack} className="me-3">
+              Go Back to Upload Banner
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Save & Continue
+            </Button>
+          </div>
+        </Form>
+      </div>
+      <Footer />
+    </>
+  );
+};
 
 export default Ticketing;
