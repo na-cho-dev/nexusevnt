@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../images/nexus-lg.png";
 import "../../styles/NavMenu.css";
 import Container from "react-bootstrap/Container";
@@ -7,6 +7,9 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
 function NavMenu() {
+  // Simulate logged-in state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <Navbar
       collapseOnSelect
@@ -40,15 +43,40 @@ function NavMenu() {
             </Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link href="/CreateEventPage" className="nav-elements">
-              Create Event
-            </Nav.Link>
-            <Nav.Link href="/SignInPage" className="nav-elements">
-              Login
-            </Nav.Link>
-            <Button href="/SignUpPage" className="singup-button">
-              Sign Up
-            </Button>
+            {isLoggedIn ? (
+              <>
+                {/* <Nav.Link href="/Dashboard" className="nav-elements">
+                  Dashboard
+                </Nav.Link> */}
+                <Nav.Link href="/ProfilePage" className="nav-elements">
+                  Profile
+                </Nav.Link>
+                <Nav.Link href="/CreateEventPage" className="nav-elements">
+                  Create Event
+                </Nav.Link>
+                <Nav.Link href="/ContactPage" className="nav-elements">
+                  Contact
+                </Nav.Link>
+                <Nav.Link href="/EventPage" className="nav-elements">
+                  Events
+                </Nav.Link>
+                <Button
+                  onClick={() => setIsLoggedIn(false)}
+                  className="logout-button"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Nav.Link href="/SignInPage" className="nav-elements">
+                  Login
+                </Nav.Link>
+                <Button href="/SignUpPage" className="singup-button">
+                  Sign Up
+                </Button>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
