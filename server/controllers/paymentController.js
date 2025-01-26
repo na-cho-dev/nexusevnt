@@ -1,18 +1,25 @@
 import stripePackage from 'stripe';
-const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 import mongoose from 'mongoose';
 import Event from '../models/eventsModel.js';
+import Ticket from '../models/ticketsModel.js';
+
+const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 
 export const createPaymentSession = async (req, res) => {
-  const { event_id, tier_name, quantity } = req.body;
+  const { ticket_id } = req.body;
 
   try {
-    const event = await Event.findById(event_id);
+    const ticket = await Ticket.findById(ticket_id);
+    if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
+
+    const event = await Event.findById(ticket.event_id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
     // Find the selected ticket tier
+    const tier_type = ticket.tier_type;
+    const quantity = ticket.quantity;
     const selectedTier = event.ticket_tiers.find(
-      (tier) => tier.tier_name === tier_name
+      (tier) => tier.tier_type === tier_type
     );
     if (!selectedTier) {
       return res.status(400).json({ message: 'Invalid ticket tier selected' });
@@ -23,7 +30,7 @@ export const createPaymentSession = async (req, res) => {
       return res.status(400).json({ message: 'Not enough tickets available' });
     }
 
-    // Calculate total price
+    // Calculate total price (NOT NEEDED)
     const totalAmount = selectedTier.price * quantity * 100; // Convert to cents
 
     // Create Stripe Checkout Session
@@ -34,7 +41,7 @@ export const createPaymentSession = async (req, res) => {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: `${event.event_name} - ${tier_name} Ticket`,
+              name: `${event.event_name} - ${tier_type} Ticket`,
               description: `${event.event_description}`,
             },
             unit_amount: selectedTier.price * 100, // Price in cents
@@ -43,16 +50,19 @@ export const createPaymentSession = async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `http://localhost:3300/success`,
+      // success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3300/cancel`,
+      // cancel_url: `${process.env.CLIENT_URL}/cancel`,
       metadata: {
-        event_id: event_id,
-        tier_name: tier_name,
+        event_id: ticket.event_id,
+        ticket_id: ticket_id,
+        tier_type: tier_type,
         quantity: quantity,
       },  // Include metadata for post-payment processing
     });
 
-    res.status(200).json({ id: session.id });
+    res.status(200).json({ session });
   } catch (error) {
     res.status(500).json({
       message: 'Error creating payment session',
@@ -62,9 +72,10 @@ export const createPaymentSession = async (req, res) => {
 };
 
 export const handlePaymentSuccess = async (session) => {
-  const sessionDetails = session.metadata; // Retrieve metadata passed during session creation
+  console.log(`HANDLE PAYMENT SUCCESSS CALLED`);
 
-  const { event_id, tier_name, quantity } = sessionDetails; // Extract metadata values
+  const sessionDetails = session.metadata; // Retrieve metadata passed during session creation
+  const { event_id, ticket_id, tier_type, quantity } = sessionDetails; // Extract metadata values
 
   // Start Mongoose transaction
   const sessionDb = await mongoose.startSession();
@@ -74,10 +85,13 @@ export const handlePaymentSuccess = async (session) => {
     // Fetch the event with the session
     const event = await Event.findById(event_id).session(sessionDb);
     if (!event) throw new Error('Event not found');
+    
+    const ticket = await Ticket.findById(ticket_id).session(sessionDb);
+    if (!ticket) throw new Error('Ticket not found');
 
     // Find the ticket tier
     const tierIndex = event.ticket_tiers.findIndex(
-      (tier) => tier.tier_name === tier_name
+      (tier) => tier.tier_type === tier_type
     );
     if (tierIndex === -1) throw new Error('Ticket tier not found');
 
@@ -88,23 +102,66 @@ export const handlePaymentSuccess = async (session) => {
 
     // Deduct tickets atomically
     event.ticket_tiers[tierIndex].available_tickets -= quantity;
+    ticket.payment_status = 'Paid';
 
     // Save the updated event within the transaction
     await event.save({ session: sessionDb });
+
+    // Save the updated ticket within the transaction
+    await ticket.save({ session: sessionDb });
 
     // Commit the transaction
     await sessionDb.commitTransaction();
     sessionDb.endSession();
 
-    console.log('Payment processed successfully, and tickets updated.');
+    console.log('PAYMENT PROCESSED SUCCESSFULLY. (TICKET AND EVENT UPDATED)');
+  } catch (error) {
+    // Rollback transaction in case of error
+    await sessionDb.abortTransaction();
+    sessionDb.endSession();
+    console.error('Error processing payment:', error.message);
+  }
+};
+
+export const handlePaymentFailure = async (session) => {
+  console.log(`HANDLE PAYMENT FAILURE CALLED`);
+
+  const sessionDetails = session.metadata; // Metadata from PaymentIntent
+  const { ticket_id } = sessionDetails; // Extract metadata values
+
+  // Start a Mongoose transaction
+  const sessionDb = await mongoose.startSession();
+  sessionDb.startTransaction();
+
+  try {
+    // Fetch the Ticket
+    const ticket = await Ticket.findById(ticket_id).session(sessionDb);
+    if (!ticket) throw new Error('Ticket not found');
+
+    if (ticket.payment_status !== 'Pending') {
+      throw new Error('Ticket is not in a pending state');
+    }
+
+    // Update ticket status to failed
+    ticket.payment_status = 'Failed';
+
+    // Save the updated ticket within the transaction
+    await ticket.save({ session: sessionDb });
+
+    // Commit the transaction
+    await sessionDb.commitTransaction();
+    sessionDb.endSession();
+
+    console.log('Payment failure handled: tickets marked as failed.');
   } catch (error) {
     // Rollback transaction in case of error
     await sessionDb.abortTransaction();
     sessionDb.endSession();
 
-    console.error('Error processing payment:', error.message);
+    console.error('Error handling payment failure:', error.message);
   }
 };
+
 
 export const getPaymentStatus = async (req, res) => {
   const { sessionId } = req.params;
@@ -113,7 +170,7 @@ export const getPaymentStatus = async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status === 'paid') {
-      return res.status(200).json({ status: 'paid' });
+      return res.status(200).json({ status: 'Paid' });
     } else {
       return res.status(200).json({ status: session.payment_status }); // 'unpaid', 'pending'
     }

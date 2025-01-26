@@ -46,8 +46,9 @@ export const createTicket = async (req, res) => {
     const newTicket = new Ticket(ticketData);
     await newTicket.save();
 
-    tier.available_tickets -= quantity;
-    await event.save();
+    // Already Implemented in PaymentController.js (Deducting twice from DB)
+    // tier.available_tickets -= quantity; 
+    await event.save(); // Saves available ticket to database
 
     // Generate QR Code
     const qrCodeData = JSON.stringify(ticketData); // You can customize this data
@@ -119,6 +120,7 @@ export const getEventTickets = async (req, res) => {
   const { event_id } = req.params;
   try {
     const tickets = await Ticket.find({ event_id });
+    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this event' });
     res.status(200).json({ message: 'Fetched event tickets successfully', tickets });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching tickets', error: error.message });
@@ -129,6 +131,7 @@ export const getEventTickets = async (req, res) => {
 export const getAttendeeTickets = async (req, res) => {
   try {
     const tickets = await Ticket.find({ attendee_id: req.user._id });
+    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this attendee' });
     res.status(200).json({ message: 'Fetched attendee tickets successfully', tickets });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching tickets', error: error.message });
