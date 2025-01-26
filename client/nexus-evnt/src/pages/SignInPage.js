@@ -76,31 +76,35 @@ const SignIn = () => {
                 <Form onSubmit={handleLogin}>
                   <Form.Group controlId="email" className="mb-3">
                     <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter your e-mail"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
+                    <Col md={6}>
+                      <Form.Control
+                        type="email"
+                        placeholder="Enter your e-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </Col>
                   </Form.Group>
                   <Form.Group controlId="password" className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                      <Button
-                        variant="outline-secondary"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                      </Button>
-                    </InputGroup>
+                    <Col md={6}>
+                      <InputGroup>
+                        <Form.Control
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                        <Button
+                          variant="outline-secondary"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </Button>
+                      </InputGroup>
+                    </Col>
                   </Form.Group>
                   {errorMessage && (
                     <p className="text-danger">{errorMessage}</p>
