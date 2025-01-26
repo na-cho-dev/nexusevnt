@@ -93,7 +93,7 @@ const Home = () => {
         </div>
 
         <div className="button-container">
-          <Button href="/" className="event-button">
+          <Button href="/EventPage" className="event-button">
             View More
           </Button>
         </div>
@@ -105,7 +105,7 @@ const Home = () => {
               favorite events slip away.
             </p>
             <div className="button-container">
-              <Button href="/" className="cta-button">
+              <Button href="/BookingPage" className="cta-button">
                 Book Now
               </Button>
             </div>

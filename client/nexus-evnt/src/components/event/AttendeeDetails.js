@@ -3,6 +3,7 @@ import { Card, Button, Form } from "react-bootstrap";
 import Close from "../../components/common/CloseButton";
 import NavMenu from "../../components/layout/NavBarElements";
 import "../../styles/AttendeeDetails.css";
+import Footer from "../layout/Footer";
 import { Link } from "react-router-dom";
 
 const UserDetails = () => {
@@ -22,7 +23,7 @@ const UserDetails = () => {
       <NavMenu />
       <div
         className="attendee-section"
-        style={{ maxWidth: "800px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto", height: "450px" }}
       >
         <Card className="attendee-container">
           <Close />
@@ -59,6 +60,7 @@ const UserDetails = () => {
           </Card.Footer>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 };

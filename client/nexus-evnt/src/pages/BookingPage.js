@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import Close from "../components/common/CloseButton";
 import NavMenu from "../components/layout/NavBarElements";
+import Footer from "../components/layout/Footer";
 import { Link } from "react-router-dom";
 
 const Booking = () => {
@@ -41,7 +42,7 @@ const Booking = () => {
       <NavMenu />
       <div
         className="ticket-section"
-        style={{ maxWidth: "800px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto", height: "450px" }}
       >
         <Card className="ticket-container">
           <Close />
@@ -103,6 +104,7 @@ const Booking = () => {
           </Card.Footer>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import logo from "../../images/nexus-lg.png";
 import "../../styles/NavMenu.css";
 import "../../styles/Footer.css";
@@ -17,6 +18,8 @@ const Footer = () => {
               width="250px"
               height="170px"
               object-fit="contain"
+              as={Link}
+              to="/"
             />
           </Col>
 
@@ -26,17 +29,17 @@ const Footer = () => {
                 <h5>Company Info</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/ContactPage" className="text-white">
                       FAQ
                     </a>
                   </li>
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/AboutPage" className="text-white">
                       About
                     </a>
                   </li>
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/ContactPage" className="text-white">
                       Contact
                     </a>
                   </li>
@@ -68,17 +71,17 @@ const Footer = () => {
                 <h5>Support</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/ContactPage" className="text-white">
                       Ticket Support
                     </a>
                   </li>
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/ContactPage" className="text-white">
                       Event Support
                     </a>
                   </li>
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/ContactPage" className="text-white">
                       Listing Support
                     </a>
                   </li>

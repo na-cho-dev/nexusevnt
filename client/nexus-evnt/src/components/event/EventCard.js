@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Badge, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const EventCard = ({ event }) => {
   return (
@@ -20,7 +21,9 @@ const EventCard = ({ event }) => {
           <strong>Price:</strong>{" "}
           {event.price === 0 ? "FREE" : `INR ${event.price}`}
         </Card.Text>
-        <Button variant="primary">View Details</Button>
+        <Button as={Link} to="/BookingPage" variant="primary">
+          Book Now
+        </Button>
       </Card.Body>
     </Card>
   );

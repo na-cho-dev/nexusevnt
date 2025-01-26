@@ -3,6 +3,7 @@ import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import "../../styles/OrderSummary.css";
 import Close from "../../components/common/CloseButton";
 import NavMenu from "../../components/layout/NavBarElements";
+import Footer from "../layout/Footer";
 import { Link } from "react-router-dom";
 
 function OrderSummary() {
@@ -15,7 +16,7 @@ function OrderSummary() {
       <NavMenu />
       <div
         className="order-section"
-        style={{ maxWidth: "800px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto", height: "450px" }}
       >
         <Card className="ticket-container">
           <Close />
@@ -70,6 +71,7 @@ function OrderSummary() {
           </Card.Footer>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 }
