@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button, Container, Col } from "react-bootstrap";
 import Progress from "../event/Progress";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 
 const Banner = ({ eventData, onUpdate, onNext, onBack }) => {
@@ -18,7 +18,7 @@ const Banner = ({ eventData, onUpdate, onNext, onBack }) => {
 
   return (
     <>
-      <NavMenu />
+      {/* <NavMenu /> */}
 
       <div className="container-md " style={{ height: "750px" }}>
         <h4 className="mt-5 ms-3">Upload Event Banner</h4>

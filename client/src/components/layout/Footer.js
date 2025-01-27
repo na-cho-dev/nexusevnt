@@ -26,17 +26,17 @@ const Footer = () => {
                 <h5>Company Info</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/Home" className="text-white">
                       FAQ
                     </a>
                   </li>
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/Home" className="text-white">
                       About
                     </a>
                   </li>
                   <li>
-                    <a href="/HomePage" className="text-white">
+                    <a href="/Home" className="text-white">
                       Contact
                     </a>
                   </li>
@@ -47,17 +47,17 @@ const Footer = () => {
                 <h5>Categories</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/EventPage" className="text-white">
+                    <a href="/Event" className="text-white">
                       Food and Drink Festivals
                     </a>
                   </li>
                   <li>
-                    <a href="/EventPage" className="text-white">
+                    <a href="/Event" className="text-white">
                       Carnivals and Fairs
                     </a>
                   </li>
                   <li>
-                    <a href="/EventPage" className="text-white">
+                    <a href="/Event" className="text-white">
                       Art and Craft Fairs
                     </a>
                   </li>
@@ -68,17 +68,17 @@ const Footer = () => {
                 <h5>Support</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/About" className="text-white">
                       Ticket Support
                     </a>
                   </li>
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/About" className="text-white">
                       Event Support
                     </a>
                   </li>
                   <li>
-                    <a href="/AboutPage" className="text-white">
+                    <a href="/About" className="text-white">
                       Listing Support
                     </a>
                   </li>

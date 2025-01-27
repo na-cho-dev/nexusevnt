@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Progress from "../../components/event/Progress";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 
 import "../../styles/Edit.css";
@@ -15,7 +15,7 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
 
   return (
     <>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <div className="container-md">
         <h4 className="mt-5 ms-3">Create a New Event</h4>
         <Container className="mt-4">

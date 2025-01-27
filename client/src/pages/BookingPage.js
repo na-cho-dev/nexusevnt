@@ -10,7 +10,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import Close from "../components/common/CloseButton";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 import { Link } from "react-router-dom";
 
 const Booking = () => {
@@ -38,7 +38,7 @@ const Booking = () => {
 
   return (
     <div>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <div
         className="ticket-section"
         style={{ maxWidth: "800px", margin: "auto" }}

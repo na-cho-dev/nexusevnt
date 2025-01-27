@@ -1,5 +1,5 @@
 import React from "react";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 import Footer from "../components/layout/Footer";
 import ImageUpload from "../components/common/ImageButton";
 import { Form, Row, Col, Button } from "react-bootstrap";
@@ -10,13 +10,13 @@ const Profile = () => {
   return (
     <div className="main-profile-container">
       <div className="row">
-        <NavMenu />
+        {/* <NavMenu /> */}
 
         <div className="col-md-3 bg-body-secondary">
           <div className="list-group mt-5">
             <h5 className="text-center p-2">Account Settings</h5>
             <Link
-              to="/ProfilePage"
+              to="/Profile"
               className="list-group-item list-group-item-action"
             >
               Account Info

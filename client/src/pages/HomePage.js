@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/HomePage.css";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 import Img from "../images/wedding.jpg";
 import EventList from "../components/event/EventList";
 import Footer from "../components/layout/Footer";
@@ -79,7 +79,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <NavMenu />
+      {/* <NavMenu /> */}
       <Header />
       <EventList />
       <section className="events-section">

@@ -46,8 +46,8 @@ const registerController = async (req, res) => {
       .json({ message: 'Error validating user input', error: error.message });
   }
 
+  
   try {
-    // Check for existing user
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
       return res.status(400).json({
