@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Dropdown } from "react-bootstrap";
 import Img from "../images/wedding.jpg";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import EventCard from "../components/event/EventCard";
@@ -118,7 +118,7 @@ const Event = () => {
 
   return (
     <div className="main-container">
-      <NavMenu />
+      {/* <NavMenu /> */}
       <Header />
       <Container fluid>
         <Row className="mt-4">

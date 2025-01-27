@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 import EventSlider from "../components/common/EventSlider";
 import Footer from "../components/layout/Footer";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ import Male2 from "../images/male-2.jpg";
 const About = () => {
   return (
     <div>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <EventSlider />
       <Container className="py-5 container-md">
         <Row className="text-center mb-4">

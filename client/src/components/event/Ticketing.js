@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, InputGroup } from "react-bootstrap";
 import EventTypeSelector from "../common/TicketType";
 import Progress from "./Progress";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 
 const Ticketing = ({ eventData, onUpdate, onNext, onBack }) => {
@@ -24,7 +24,7 @@ const Ticketing = ({ eventData, onUpdate, onNext, onBack }) => {
 
   return (
     <>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <div className="container-md">
         <h4 className="mt-5 ms-3">Set Up Ticketing</h4>
         <Container className="mt-4">

@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import "../../styles/OrderSummary.css";
 import Close from "../../components/common/CloseButton";
-import NavMenu from "../../components/layout/NavBarElements";
+// import NavMenu from "../../components/layout/NavBarElements";
 import { Link } from "react-router-dom";
 
 function OrderSummary() {
@@ -12,7 +12,7 @@ function OrderSummary() {
 
   return (
     <div>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <div
         className="order-section"
         style={{ maxWidth: "800px", margin: "auto" }}

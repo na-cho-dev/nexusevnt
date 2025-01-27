@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import Progress from "./Progress";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 
 const Review = ({ eventData, onEdit, onSubmit }) => {
@@ -22,7 +22,7 @@ const Review = ({ eventData, onEdit, onSubmit }) => {
 
   return (
     <>
-      <NavMenu />
+      {/* <NavMenu /> */}
 
       <Container className="mt-5">
         <div className="p-4 shadow">

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import axiosInstance from "../services/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import {
   Form,
@@ -14,6 +15,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Close from "../components/common/CloseButton";
 
 const SignIn = () => {
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ const SignIn = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "/auth/login", // backend URL
         { email, password },
         { withCredentials: true } // To include cookies in the request
@@ -37,7 +39,9 @@ const SignIn = () => {
       const { accessToken } = response.data;
       console.log("Login successful:", accessToken);
       setSuccess(response.data.message || "Logged In Successfully");
-      navigate("/HomePage"); // Redirect to the Home page
+      login(accessToken); // Set the login state to true
+      localStorage.setItem("accessToken", accessToken)
+      navigate("/Profile"); // Redirect to the Home page
     } catch (error) {
       console.error(
         "Login failed:",
@@ -110,7 +114,7 @@ const SignIn = () => {
                   </Button>
                 </Form>
                 <div className="text-center mt-3">
-                  Don't have an account? <a href="/SignUpPage">Sign up</a>
+                  Don't have an account? <a href="/Register">Sign up</a>
                 </div>
               </div>
             </Col>

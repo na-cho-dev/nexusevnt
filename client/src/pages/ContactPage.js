@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import NavMenu from "../components/layout/NavBarElements";
+// import NavMenu from "../components/layout/NavBarElements";
 
 const Contact = () => {
   return (
     <div>
-      <NavMenu />
+      {/* <NavMenu /> */}
 
       <div
         style={{

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button, Form } from "react-bootstrap";
 import Close from "../../components/common/CloseButton";
-import NavMenu from "../../components/layout/NavBarElements";
+// import NavMenu from "../../components/layout/NavBarElements";
 import "../../styles/AttendeeDetails.css";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const UserDetails = () => {
 
   return (
     <div>
-      <NavMenu />
+      {/* <NavMenu /> */}
       <div
         className="attendee-section"
         style={{ maxWidth: "800px", margin: "auto" }}
