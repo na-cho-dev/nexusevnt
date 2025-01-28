@@ -5,7 +5,8 @@ export const getAttendees = async (req, res) => {
     const attendees = await User.find({ role: 'Attendee' });
     if (!attendees)
       return res.status(404).json({ message: 'Attendees not found' });
-    console.log(attendees);
+    console.log();
+    console.log(`CUURENT USER: ${req.user}`);
     res.status(200).json({
       message: 'Fetched all Attendees Successfully',
       attendees: attendees,

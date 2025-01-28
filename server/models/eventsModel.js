@@ -33,24 +33,35 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'Event Organizer is required'],
       trim: true,
     },
+    event_image: {
+      type: Buffer,
+      required: false,
+    },
     event_name: {
       type: String,
       required: [true, 'Event Name is required'],
       trim: true,
+    },
+    event_category: {
+      type: String,
+      required: [true, 'Ticket Tier Type is required'],
+      enum: ['Music Festival', 'Conference'],
+      default: 'Regular',
     },
     event_description: {
       type: String,
       required: [true, 'Event Description is required'],
       trim: true,
     },
+    event_type: {
+      type: String,
+      required: [true, 'Event Type is required'],
+      enum: ['Free', 'Paid',],
+      default: 'Free',
+    },
     event_date: {
       type: Date,
       required: [true, 'Event Date is required'],
-      trim: true,
-    },
-    event_location: {
-      type: String,
-      required: [true, 'Event Location is required'],
       trim: true,
     },
     event_venue: {

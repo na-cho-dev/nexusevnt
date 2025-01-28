@@ -8,8 +8,9 @@ import {
   deleteEvent,
 } from '../../controllers/eventsController.js';
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
+import upload from '../../middlwares/multerMiddleware.js';
 
-router.route('/create-event').post(roleMiddleware(['Organizer']), createEvent);
+router.route('/create-event').post(roleMiddleware(['Organizer']), upload.single('event_image'), createEvent);
 router.route('/events').get(getEvents);
 router
   .route('/events/:event_id')

@@ -5,7 +5,19 @@
 .events-section {
   height: 100%;
   width: 100%;
+}
 
+.card-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.events-section .card-head {
+  margin-top: 4em;
+  margin-left: 3em;
 }
 
 .events-section h5 {

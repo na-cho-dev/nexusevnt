@@ -3,27 +3,39 @@ import Event from '../models/eventsModel.js';
 // Create Event
 export const createEvent = async (req, res) => {
   const {
-    event_name,
-    event_description,
-    event_date,
-    event_location,
-    event_venue,
-    event_start_time,
-    event_end_time,
-    ticket_tiers,
-  } = req.body;
+      title,
+      category,
+      description,
+      eventType,
+      date,
+      location,
+      startTime,
+      endTime,
+    } = req.body;
+    const event_image = req.file ? req.file.buffer : null;
 
-  const eventObj = {
-    event_organizer_id: String(req.user._id),
-    event_name,
-    event_description,
-    event_date,
-    event_location,
-    event_venue,
-    event_start_time,
-    event_end_time,
-    ticket_tiers,
-  };
+    let ticket_tiers = [];
+    if (req.body.ticket_tiers) {
+      try {
+        ticket_tiers = JSON.parse(req.body.ticket_tiers); // Parse ticket_tiers JSON
+      } catch (error) {
+        return res.status(400).json({ message: "Invalid ticket_tiers format" });
+      }
+    }
+
+    const eventObj = {
+      event_organizer_id: String(req.user._id),
+      event_image,
+      event_name: title,
+      event_category: category,
+      event_description: description,
+      event_type: eventType,
+      event_date: date,
+      event_location: location,
+      event_start_time: startTime,
+      event_end_time: endTime,
+      ticket_tiers,
+    };
 
   for (const key in eventObj) {
     if (!eventObj[key] && key !== 'event_end_time') {
@@ -34,9 +46,7 @@ export const createEvent = async (req, res) => {
   try {
     const newEvent = new Event(eventObj);
     await newEvent.save();
-    res
-      .status(201)
-      .json({ message: 'Event created successfully', event: newEvent });
+    res.status(201).json({ message: 'Event created successfully', event: newEvent });
   } catch (error) {  
     res.status(500).json({ message: 'Error creating event', error: error.message });
   }
