@@ -24,7 +24,7 @@ const registerController = async (req, res) => {
     }
 
     const isValidPassword = (password) =>
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(
         password
       );
     if (isValidPassword(userData.password)) {

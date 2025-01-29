@@ -38,7 +38,7 @@ const CreateEventPage = () => {
             ...prevData,
             ticket_tiers: [{
               tier_type: "Regular",
-              tier_price: "Free",
+              tier_price: 0,
               total_tickets: 100, // Default number of tickets for Free events
             }],
           }));
@@ -73,30 +73,17 @@ const CreateEventPage = () => {
   };
 
   const handleSubmit = async () => {
-    // Validation for ticket tiers
-    if (eventData.eventType === "Free" && eventData.ticket_tiers.length === 0) {
-      setEventData((prevData) => ({
-        ...prevData,
-        ticket_tiers: [{
-          tier_type: "Regular",
-          tier_price: "Free",
-          total_tickets: 100, // Default number of tickets for Free events
-        }],
-      }));
-    }
-
-    // Validation for non-free events (ensure at least one ticket tier exists)
     if (eventData.eventType !== "Free" && eventData.ticket_tiers.length === 0) {
       alert("Please add at least one ticket tier.");
       return;
     }
-
-    // Submit event data
-    let response;
+  
     try {
       const token = localStorage.getItem('accessToken');
-      console.log("Token:", token);
-
+      // console.log(`Event Banner: ${eventData.banner}`)
+  
+      const startTime = `${eventData.date}T${eventData.startTime}:00Z`; // Combine date and time
+      const endTime = `${eventData.date}T${eventData.endTime}:00Z`;
       const formData = new FormData();
       formData.append("banner", eventData.banner); // Add the file
       formData.append("title", eventData.title);
@@ -105,36 +92,31 @@ const CreateEventPage = () => {
       formData.append("eventType", eventData.eventType);
       formData.append("date", eventData.date);
       formData.append("location", eventData.location);
-      formData.append("startTime", eventData.startTime);
-      formData.append("endTime", eventData.endTime);
+      formData.append("startTime", startTime);
+      formData.append("endTime", endTime);
       formData.append("ticket_tiers", JSON.stringify(eventData.ticket_tiers));
 
-      response = await axiosInstance.post(
-        "/api/create-event",
-        { eventData },
-        { withCredentials: true,
-          headers:
-          {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-          }
+      // console.log(`Form Data: ${formData}`)
+  
+      // Correct API request
+      const response = await axiosInstance.post("/api/create-event", formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-      );
-
-      navigate("/Profile"); // Redirect to the Home page
+      });
+  
+      console.log("Event Published:", response.data);
+      navigate("/CreateEvent"); // Redirect to the Profile page
     } catch (error) {
       console.error(
         "Error Creating Event:",
         error.response?.data?.message || error.message
       );
-      // setErrorMessage(
-      //   error.response?.data?.message || "An error occurred. Please try again."
-      // );
     }
-
-    console.log("Event Published:", eventData);
-    console.log("Event Published:", response);
   };
+  
 
   const renderStep = () => {
     switch (step) {

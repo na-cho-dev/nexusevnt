@@ -40,7 +40,7 @@ app.use(cookieParser());
 // app.use(bodyParser.json());
 app.use('/auth', authRouter);
 app.use('/refresh', refreshTokenRouter);
-app.use(verifyJWTMiddleware);
+// app.use(verifyJWTMiddleware);
 app.use('/api', eventsRouter);
 app.use('/api', ticketRouter);
 app.use('/api', attendeeRouter, organizerRouter);

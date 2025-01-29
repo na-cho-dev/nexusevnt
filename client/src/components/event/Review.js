@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import Progress from "./Progress";
 import Footer from "../layout/Footer";
 
 const Review = ({ eventData, onEdit, onSubmit }) => {
+  const [previewUrl, setPreviewUrl] = useState(null);
+
   const {
     title,
     category,
@@ -17,6 +19,19 @@ const Review = ({ eventData, onEdit, onSubmit }) => {
     banner,
   } = eventData;
 
+  useEffect(() => {
+    if (banner && banner instanceof File) {
+      // Generate a temporary URL for the file
+      const objectUrl = URL.createObjectURL(banner);
+      setPreviewUrl(objectUrl);
+
+      // Clean up the object URL
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewUrl(banner); // Use the value directly if it's already a URL or base64 string
+    }
+  }, [banner]);
+
   return (
     <>
       <Container className="mt-5">
@@ -27,10 +42,10 @@ const Review = ({ eventData, onEdit, onSubmit }) => {
               <Progress currentStep={4} />
             </Container>
 
-            {banner && (
+            {previewUrl && (
               <div className="text-center mb-4 mt-4">
                 <img
-                  src={banner}
+                  src={previewUrl}
                   alt="Event Banner"
                   className="rounded w-100"
                   style={{ maxHeight: "300px", objectFit: "cover" }}
@@ -70,7 +85,6 @@ const Review = ({ eventData, onEdit, onSubmit }) => {
 
             <h5 className="mt-4">Tickets</h5>
             {eventType === "Free" ? (
-              // For free events, show the ticket quantity from the first ticket tier
               ticket_tiers && ticket_tiers.length > 0 ? (
                 <Row className="mb-3">
                   <Col>
@@ -83,7 +97,6 @@ const Review = ({ eventData, onEdit, onSubmit }) => {
                 <p>No ticket tiers added.</p>
               )
             ) : ticket_tiers && ticket_tiers.length > 0 ? (
-              // For paid events, show the ticket tiers
               ticket_tiers.map((tier, index) => (
                 <Row key={index} className="mb-3">
                   <Col>

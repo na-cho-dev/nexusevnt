@@ -4,17 +4,18 @@ const ticketTierSchema = new mongoose.Schema(
   {
     tier_type: {
       type: String,
-      required: [true, 'Ticket Tier Type is required'],
+      required: [false, 'Ticket Tier Type is required'],
       enum: ['Regular', 'VIP', 'VVIP'],
       default: 'Regular',
     },
-    price: {
+    tier_price: {
       type: Number,
       required: [true, 'Ticket Tier Price is required'],
+      default: 0,
     },
     total_tickets: {
       type: Number,
-      required: [true, 'Total Tickets are required'],
+      required: [false, 'Total Tickets are required'],
     },
     available_tickets: {
       type: Number,
@@ -34,8 +35,8 @@ const eventSchema = new mongoose.Schema(
       trim: true,
     },
     event_image: {
-      type: Buffer,
-      required: false,
+      data: { type: Buffer },  // Stores the image as a buffer
+      mimeType: { type: String },  // Stores the MIME type of the image
     },
     event_name: {
       type: String,
@@ -45,7 +46,7 @@ const eventSchema = new mongoose.Schema(
     event_category: {
       type: String,
       required: [true, 'Ticket Tier Type is required'],
-      enum: ['Music Festival', 'Conference'],
+      enum: ['Music Festivals', 'Conference', 'Outdoor Movie Nights', 'Color Runs', 'Food and Drink Festivals', 'Art and Craft Fairs'],
       default: 'Regular',
     },
     event_description: {
@@ -64,9 +65,9 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'Event Date is required'],
       trim: true,
     },
-    event_venue: {
+    event_location: {
       type: String,
-      required: [true, 'Event Venue is required'],
+      required: [true, 'Event Location is required'],
       trim: true,
     },
     event_start_time: {

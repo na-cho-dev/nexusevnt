@@ -40,17 +40,17 @@ const Home = () => {
       <section className="events-section">
         <h5 className="card-head">Popular events right now</h5>
         <div className="card-style">
-          {loading ? ( // Show a loader while fetching events
-            <p>Loading events...</p>
-          ) : events.length > 0 ? (
-            events.slice(0, 9).map((event) => (
-              <div key={event.id} className="">
-                <EventCard event={event} />
-              </div>
-            ))
-          ) : (
-            <p>No events available</p> // Handle empty events array
-          )}
+        {loading ? ( // Show a loader while fetching events
+          <p>Loading events...</p>
+        ) : events.length > 0 ? (
+          events.slice(0, 9).map((event) => (
+            <div key={event._id || event.event_name}> {/* Use _id or a fallback property */}
+              <EventCard event={event} />
+            </div>
+          ))
+        ) : (
+          <p>No events available</p> // Handle empty events array
+        )}
         </div>
 
         <div className="button-container">
