@@ -11,9 +11,7 @@
 ## HOW SETUP THE SERVER
 
 
-### Clone the project github repository
-
-
+### Clone the project github reposito
 ```
 git clone https://github.com/NexusEvnt/nexusevnt
 cd nexusevnt
