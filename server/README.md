@@ -1,3 +1,30 @@
+# NexusEvnt (Server)
+
+
+## Description
+
+
+This is a web-based platform that allows users, both Organizers and Attendees to:
+
+
+- Organizers: Create, manage and promote events.
+- Attendees: Browse, book and receive updates about events.
+
+
+## Key Features:
+
+
+- Event creation with customizable details.
+- Secure booking system integrated with payments.
+- Real-time updates and notifications for attendees.
+
+
+## Goal:
+
+
+Streamline event management while improving attendee experiences.
+
+
 ## API Features
 
 
@@ -11,7 +38,9 @@
 ## HOW SETUP THE SERVER
 
 
-### Clone the project github reposito
+### Clone the project github repository
+
+
 ```
 git clone https://github.com/NexusEvnt/nexusevnt
 cd nexusevnt
@@ -25,6 +54,7 @@ npm install
 ```
 sudo apt update && sudo apt install redis-tools
 sudo apt install redis-server
+sudo service redis-server start
 ```
 
 
@@ -116,7 +146,7 @@ npm start
 | GET    | `/api/events`            | Get all Events       |
 | GET    | `/api/events/:event_id'` | Get an Event details |
 | PUT    | `/api/events/:event_id`  | Update an Event      |
-| DELETE | `/api/events/:event_id`  | Delete an Organizers |
+| DELETE | `/api/events/:event_id`  | Delete an Event |
 
 ### Ticket Management
 
