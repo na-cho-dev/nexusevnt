@@ -4,7 +4,7 @@
 - RESTful API
 - Authentication & Authorization (JWT, OAuth, etc.)
 - Database Integration (MongoDB/MySQL/Redis)
-- Error Handling & Logging.
+- Error Handling & Logging
 - Environment Configuration Support
 
 
