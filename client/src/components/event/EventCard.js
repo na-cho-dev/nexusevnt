@@ -44,24 +44,39 @@ const EventCard = ({ event }) => {
           />
         )}
 
-        <Card.Body className="event-card">
-          <strong>Start Time:</strong> {formattedStartTime} <br />
-          <strong>End Time:</strong> {formattedEndTime} <br />
+        
+        <Card.Body className="text-start w-100">
+          <Card.Title>{event.event_name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            {new Date(formattedDate).toLocaleDateString()} {/* Format date */}
+          </Card.Subtitle>
+          <div className="mb-2">
+            <Badge className="custom-badge">
+              {event.event_location || "Venue not specified"}
+            </Badge>
+          </div>
+          <div className="event-card">
+            <strong>Start Time:</strong> {formattedStartTime} <br />
+            <strong>End Time:</strong> {formattedEndTime} <br />
 
-          <strong>Price:</strong>
-          {event.ticket_tiers?.length > 0 ? (
-            <ul className="price-list">
-              {event.ticket_tiers.map((tier, index) => (
-                <li key={index}>
-                  <strong>{tier.tier_type}</strong>: ${tier.tier_price}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            "FREE"
-          )}
+            <strong>Price:</strong>
+            {event.ticket_tiers?.length > 0 ? (
+              <ul className="price-list">
+                {event.ticket_tiers.map((tier, index) => (
+                  <li key={index}>
+                    <strong>{tier.tier_type}</strong>: ${tier.tier_price}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              "FREE"
+            )}
+          </div>
+
+          <Button as={Link} to={`/Events/${event._id}`} variant="primary">
+            View Details
+          </Button>
         </Card.Body>
-
       </Card>
     </div>
   );
