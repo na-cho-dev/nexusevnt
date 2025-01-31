@@ -1,0 +1,39 @@
+/* Center the spinner and 'Event Not Found' message */
+.center-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Center the event details */
+  .event-details-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Make event card wider */
+  .event-details-card {
+    width: 80%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  /* Event banner image */
+  .event-banner {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Category badge */
+  .category-badge {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  

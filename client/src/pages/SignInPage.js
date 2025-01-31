@@ -23,12 +23,12 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [success, setSuccess] = useState("");
+  // const [success, setSuccess] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-    setSuccess("");
+    // setSuccess("");
 
     try {
       const response = await axiosInstance.post(
@@ -36,11 +36,12 @@ const SignIn = () => {
         { email, password },
         { withCredentials: true } // To include cookies in the request
       );
-      const { accessToken } = response.data;
+      const { accessToken, currentUser } = response.data;
       console.log("Login successful:", accessToken);
-      setSuccess(response.data.message || "Logged In Successfully");
-      login(accessToken); // Set the login state to true
-      localStorage.setItem("accessToken", accessToken)
+      console.log("Current User:", currentUser);
+      localStorage.setItem("accessToken", accessToken);
+      // setSuccess(response.data.message || "Logged In Successfully");
+      login(accessToken, currentUser);
       navigate("/Profile"); // Redirect to the Home page
     } catch (error) {
       console.error(
@@ -78,8 +79,8 @@ const SignIn = () => {
                 <h3 className="text-center mb-4">Login</h3>
 
                 <Form onSubmit={handleLogin}>
-                  <Form.Group controlId="email" className="mb-3">
-                    <Form.Label>Email Address</Form.Label>
+                  <Form.Group controlId="email" className="mb-3" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                    <Form.Label style={{ width: "40%" }}>Email Address</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter your e-mail"
@@ -88,15 +89,16 @@ const SignIn = () => {
                       required
                     />
                   </Form.Group>
-                  <Form.Group controlId="password" className="mb-3">
-                    <Form.Label>Password</Form.Label>
-                    <InputGroup>
+                  <Form.Group controlId="password" className="mb-3" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                    <Form.Label style={{ width: "40%" }}>Password</Form.Label>
+                    <InputGroup style={{ flexGrow: 1 }}>
                       <Form.Control
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        style={{ flexGrow: 1 }} // Input takes the remaining space
                       />
                       <Button
                         variant="outline-secondary"

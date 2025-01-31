@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Dropdown } from "react-bootstrap";
-import Img from "../images/wedding.jpg";
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Spinner, Dropdown } from "react-bootstrap";
+// import Img from "../images/wedding.jpg";
 // import NavMenu from "../components/layout/NavBarElements";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import EventCard from "../components/event/EventCard";
 import EventFilters from "../components/event/EventFilters";
 import "../styles/EventPage.css";
+import axiosInstance from "../services/axiosInstance";
 
 const Event = () => {
   const [sortOption, setSortOption] = useState("Relevance");
@@ -15,56 +16,28 @@ const Event = () => {
     date: { today: false, tomorrow: false, thisWeek: false },
     category: {},
   });
-  const [events, setEvents] = useState([
-    {
-      image: Img,
-      title: "Delhi 6 - Traditional Food",
-      date: "2023-11-23",
-      location: "Chengalpattu, India",
-      price: 1200,
-      category: "Art and Craft Fair",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 0,
-      category: "Outdoor Movie Nights",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 290,
-      category: "Art and Craft Fair",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 8902,
-      category: "Outdoor Movie Nights",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 0,
-      category: "Carnival and Fairs",
-    },
-    {
-      image: Img,
-      title: "Startup Talks",
-      date: "2023-12-17",
-      location: "New Delhi, India",
-      price: 123,
-      category: "Music Festival",
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getEvents = async () => {
+    try {
+      const response = await axiosInstance.get("/api/events", {
+        withCredentials: true,
+      });
+      setEvents(response.data.events); // Update events state
+    } catch (error) {
+      console.error(
+        "Could not fetch events: ",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false); // Stop loading once the fetch is complete
+    }
+  };
+
+  useEffect(() => {
+    getEvents(); // Fetch events when the component mounts
+  }, []);
 
   const filteredEvents = events.filter((event) => {
     // Price Filter
@@ -115,6 +88,13 @@ const Event = () => {
       [category]: { ...prevFilters[category], ...value },
     }));
   };
+
+  if (loading)
+    return (
+      <div className="center-container">
+        <Spinner animation="border" />
+      </div>
+    );
 
   return (
     <div className="main-container">

@@ -1,29 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-const ProtectedRoute = ({ element: Component, ...rest }) => {
-  const { isLoggedIn } = useContext(AuthContext); // Access login state from context
-  const navigate = useNavigate();
-  
-  // Local state to check if the login status is determined
-  const [isCheckingLogin, setIsCheckingLogin] = useState(true);
+const ProtectedRoute = ({ element: Component, requiredRoles = [], ...rest }) => {
+  const { isLoggedIn, userData } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Check if login status has been determined (for example, from localStorage or context)
-    if (isLoggedIn !== undefined) {
-      setIsCheckingLogin(false); // Login status is checked, stop waiting
-      if (!isLoggedIn) {
-        navigate("/login"); // Redirect to login page if not logged in
-      }
-    }
-  }, [isLoggedIn, navigate]);
-
-  if (isCheckingLogin) {
-    return null; // Return null while the login state is being checked (avoid flicker)
+  // ✅ Ensure auth state is loaded before making any decision
+  if (isLoggedIn === undefined || userData === null) {
+    return <div>Loading...</div>; // Show loading state until auth is resolved
   }
 
-  return isLoggedIn ? Component : null; // Render component if logged in, otherwise return null
+  // ✅ Redirect to login if not logged in
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
+
+  // ✅ Redirect to unauthorized page if role does not match
+  if (requiredRoles.length > 0 && !requiredRoles.includes(userData.role)) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  // ✅ If everything is fine, render the component
+  return <Component {...rest} />;
 };
 
 export default ProtectedRoute;

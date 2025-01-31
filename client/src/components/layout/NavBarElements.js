@@ -52,12 +52,6 @@ function NavMenu() {
                   <Nav.Link href="/CreateEvent" className="nav-elements">
                     Create Event
                   </Nav.Link>
-                  <Nav.Link href="/Contact" className="nav-elements">
-                    Contact
-                  </Nav.Link>
-                  <Nav.Link href="/Event" className="nav-elements">
-                    Events
-                  </Nav.Link>
                   <Button
                     onClick={logout}
                     className="logout-button"

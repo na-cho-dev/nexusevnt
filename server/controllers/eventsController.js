@@ -110,11 +110,26 @@ export const getEvent = async (req, res) => {
 
   try {
     const event = await Event.findById(event_id);
-    if (!event) return res.status(404).json({ message: 'Event not found' });
-    res.status(200).json({ message: 'Fetched event successfully', event });
+    if (!event) return res.status(404).json({ message: "Event not found" });
+
+    let base64Image = null;
+
+    if (event.event_image && event.event_image.data) {
+        base64Image = Buffer.from(event.event_image.data).toString("base64");
+    }
+
+    const eventData = {
+        ...event.toObject(),
+        event_image: base64Image
+            ? { mimeType: event.event_image.mimeType, data: base64Image }
+            : null,
+    };
+
+    res.status(200).json({ message: "Fetched event successfully", event: eventData });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching event', error: error.message });
+      res.status(500).json({ message: "Error fetching event", error: error.message });
   }
+
 };
 
 // Update Event

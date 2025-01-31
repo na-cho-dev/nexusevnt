@@ -1,35 +1,50 @@
 import React, { createContext, useState, useEffect } from "react";
 
-// Create context
 export const AuthContext = createContext();
 
-// AuthProvider to manage login state
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(undefined); // Start with undefined
+  const [isLoggedIn, setIsLoggedIn] = useState(undefined);
+  const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-  // Check if user is logged in on page load
   useEffect(() => {
     const storedAccessToken = localStorage.getItem("accessToken");
-    if (storedAccessToken) {
-      setIsLoggedIn(true); // Set to true if accessToken exists
+    const storedUser = localStorage.getItem("userData"); // Retrieve from localStorage
+
+    if (storedAccessToken && storedUser) {
+      setIsLoggedIn(true);
+      const parsedUser = JSON.parse(storedUser); // Convert string back to object
+      setUserRole(parsedUser.role);
+      setUserId(parsedUser._id);
+      setUserData(parsedUser);
     } else {
-      setIsLoggedIn(false); // Set to false if no accessToken
+      setIsLoggedIn(false);
     }
   }, []);
 
-  // Handle login and logout
-  const login = (access_Token) => {
+  const login = (accessToken, currentUser) => {
     setIsLoggedIn(true);
-    localStorage.setItem("accessToken", access_Token); // Store access token in localStorage
+    setUserRole(currentUser.role);
+    setUserId(currentUser._id);
+    setUserData(currentUser);
+    
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("userData", JSON.stringify(currentUser)); // Store userData persistently
   };
 
   const logout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("accessToken"); // Remove token from localStorage
+    setUserRole(null);
+    setUserId(null);
+    setUserData(null);
+    
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userData"); // Remove user data on logout
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userRole, userId, userData, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

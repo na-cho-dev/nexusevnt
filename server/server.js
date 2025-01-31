@@ -46,10 +46,10 @@ app.use('/api', ticketRouter);
 app.use('/api', attendeeRouter, organizerRouter);
 app.use('/api', paymentRouter);
 
-app.use((req, res, next) => {
-  console.log(`Payload size: ${req.headers['content-length']} bytes`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`Payload size: ${req.headers['content-length']} bytes`);
+//   next();
+// });
 
 // Catch-all route to serve index.html for React's single-page app
 app.get('*', (req, res) => {

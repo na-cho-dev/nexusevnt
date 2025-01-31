@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Card, Badge, Button } from "react-bootstrap";
 import "../../styles/EventCard.css";
 
@@ -52,18 +53,28 @@ const EventCard = ({ event }) => {
               {event.event_location || "Venue not specified"}
             </Badge>
           </div>
-          <Card.Text>
+          <Card.Text className="event-card">
             {/* <strong>Description:</strong> {event.event_description} <br /> */}
             <strong>Start Time:</strong> {formattedStartTime} <br />
             <strong>End Time:</strong> {formattedEndTime} <br />
-            <strong>Price:</strong>{" "}
-            {event.ticket_tiers?.length > 0
-              ? event.ticket_tiers
-                  .map((tier, index) => `${tier.tier_type}: $ ${tier.tier_price}`)
-                  .join(" | ")
-              : "FREE"}
+
+            <strong>Price:</strong>
+            {event.ticket_tiers?.length > 0 ? (
+              <ul className="price-list">
+                {event.ticket_tiers.map((tier, index) => (
+                  <li key={index}>
+                    <strong>{tier.tier_type}</strong>: ${tier.tier_price}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              "FREE"
+            )}
           </Card.Text>
-          <Button variant="primary">View Details</Button>
+
+          <Button as={Link} to={`/Events/${event._id}`} variant="primary">
+            View Details
+          </Button>
         </Card.Body>
       </Card>
     </div>

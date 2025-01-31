@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
 // import NavMenu from "../components/layout/NavBarElements";
 import EventList from "../components/event/EventList";
@@ -54,9 +55,11 @@ const Home = () => {
         </div>
 
         <div className="button-container">
-          <Button href="/" className="event-button">
-            View More
-          </Button>
+          <Link to="/Event">
+            <Button href="/" className="event-button">
+              View More
+            </Button>
+          </Link>
         </div>
         <section className="cta-banner bg-dark">
           <div className="container-lg text-center text-light">

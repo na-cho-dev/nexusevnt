@@ -20,6 +20,8 @@ import Password from "./components/common/ProfPassword";
 // import Testing from "./pages/Testing";
 import { AuthProvider } from './context/AuthContext';
 import NavMenu from './components/layout/NavBarElements';
+import EventDetails from "./components/event/EventDetails";
+import Unauthorized from "./components/common/Unauthorized";
 
 function App() {
   return (
@@ -36,15 +38,18 @@ function App() {
             <Route path="/Login" element={<SignIn />} />
             <Route path="/Register" element={<SignUp />} />
             <Route path="/*" element={<MultiStepForm />} />
+            <Route path="/events/:event_id" element={<EventDetails />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
 
-            <Route path="/Profile" element={<ProtectedRoute element={<Profile />} />} />
-            <Route path="/Booking" element={<ProtectedRoute element={<Booking />} />} />
-            <Route path="/AccountInfo" element={<ProtectedRoute element={<Account />} />} />
-            <Route path="/CreateEvent" element={<ProtectedRoute element={<CreateEvent />} />} />
-            <Route path="/OrderSummary" element={<ProtectedRoute element={<OrderSummary />} />} />
-            <Route path="/AttendeeDetails" element={<ProtectedRoute element={<UserDetails />} />} />
-            <Route path="/ChangePassword" element={<ProtectedRoute element={<Password />} />} />
-            <Route path="/ChangeEmail" element={<ProtectedRoute element={<Email />} />} />
+            <Route path="/Profile" element={<ProtectedRoute element={Profile} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/Booking" element={<ProtectedRoute element={Booking} requiredRoles={["Attendee"]} />} />
+            <Route path="/AccountInfo" element={<ProtectedRoute element={Account} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/CreateEvent" element={<ProtectedRoute element={CreateEvent} requiredRoles={["Organizer"]} />} />
+            <Route path="/OrderSummary" element={<ProtectedRoute element={OrderSummary} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/AttendeeDetails" element={<ProtectedRoute element={UserDetails} requiredRoles={["Organizer"]} />} />
+            <Route path="/ChangePassword" element={<ProtectedRoute element={Password} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/ChangeEmail" element={<ProtectedRoute element={Email} requiredRoles={["Attendee", "Organizer"]} />} />
+
           </Routes>
         </div>
       </Router>

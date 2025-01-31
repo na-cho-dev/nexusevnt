@@ -54,6 +54,7 @@ const loginController = async (req, res) => {
     res.status(200).json({
       message: 'Logged in successfully',
       accessToken: access_token,
+      currentUser: existingUser,
     });
   } catch (error) {
     console.log(`An error occured while logging in user! ${error}`);
