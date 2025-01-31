@@ -56,7 +56,7 @@ const Home = () => {
 
         <div className="button-container">
           <Link to="/Event">
-            <Button href="/" className="event-button">
+            <Button className="event-button">
               View More
             </Button>
           </Link>

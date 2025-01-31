@@ -43,39 +43,25 @@ const EventCard = ({ event }) => {
             style={{ height: "150px", objectFit: "cover" }}
           />
         )}
-        <Card.Body className="text-start w-100">
-          <Card.Title>{event.event_name}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            {new Date(formattedDate).toLocaleDateString()} {/* Format date */}
-          </Card.Subtitle>
-          <div className="mb-2">
-            <Badge className="custom-badge">
-              {event.event_location || "Venue not specified"}
-            </Badge>
-          </div>
-          <Card.Text className="event-card">
-            {/* <strong>Description:</strong> {event.event_description} <br /> */}
-            <strong>Start Time:</strong> {formattedStartTime} <br />
-            <strong>End Time:</strong> {formattedEndTime} <br />
 
-            <strong>Price:</strong>
-            {event.ticket_tiers?.length > 0 ? (
-              <ul className="price-list">
-                {event.ticket_tiers.map((tier, index) => (
-                  <li key={index}>
-                    <strong>{tier.tier_type}</strong>: ${tier.tier_price}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              "FREE"
-            )}
-          </Card.Text>
+        <Card.Body className="event-card">
+          <strong>Start Time:</strong> {formattedStartTime} <br />
+          <strong>End Time:</strong> {formattedEndTime} <br />
 
-          <Button as={Link} to={`/Events/${event._id}`} variant="primary">
-            View Details
-          </Button>
+          <strong>Price:</strong>
+          {event.ticket_tiers?.length > 0 ? (
+            <ul className="price-list">
+              {event.ticket_tiers.map((tier, index) => (
+                <li key={index}>
+                  <strong>{tier.tier_type}</strong>: ${tier.tier_price}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            "FREE"
+          )}
         </Card.Body>
+
       </Card>
     </div>
   );
