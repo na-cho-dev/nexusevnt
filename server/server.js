@@ -26,16 +26,20 @@ app.use(corsMiddleware);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const static_file_path = '../client/nexus-evnt/build'
+const static_file_path = '../client/nexus-evnt/build';
 
 // Serve static files from the React build folder
 app.use(express.static(path.join(__dirname, static_file_path)));
 
 // Webhook endpoint for Stripe
-app.post('/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
+app.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  stripeWebhookHandler
+);
 
-app.use(express.json({ limit: "50mb" }))
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 // app.use(bodyParser.json());
 app.use('/auth', authRouter);
@@ -58,7 +62,6 @@ app.get('*', (req, res) => {
 
 // Connect to the MongoDB database
 mongodb_connection();
-
 
 app.get('/', (req, res) => {
   res.json({ message: 'NexusEvnt Web Application!' });

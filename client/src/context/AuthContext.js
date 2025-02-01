@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const storedAccessToken = localStorage.getItem("accessToken");
-    const storedUser = localStorage.getItem("userData"); // Retrieve from localStorage
+    const storedAccessToken = localStorage.getItem('accessToken');
+    const storedUser = localStorage.getItem('userData'); // Retrieve from localStorage
 
     if (storedAccessToken && storedUser) {
       setIsLoggedIn(true);
@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
     setUserRole(currentUser.role);
     setUserId(currentUser._id);
     setUserData(currentUser);
-    
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("userData", JSON.stringify(currentUser)); // Store userData persistently
+
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('userData', JSON.stringify(currentUser)); // Store userData persistently
   };
 
   const logout = () => {
@@ -38,13 +38,15 @@ export const AuthProvider = ({ children }) => {
     setUserRole(null);
     setUserId(null);
     setUserData(null);
-    
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userData"); // Remove user data on logout
+
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userData'); // Remove user data on logout
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userRole, userId, userData, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userRole, userId, userData, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
