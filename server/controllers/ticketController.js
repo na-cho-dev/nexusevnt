@@ -10,7 +10,7 @@ export const createTicket = async (req, res) => {
   const { event_id } = req.params;
   const { tier_type } = req.body;
   let { quantity } = req.body;
-  quantity = Number(quantity)
+  quantity = Number(quantity);
 
   // console.log("Body:", req.body);
 
@@ -48,6 +48,7 @@ export const createTicket = async (req, res) => {
       order_id,
       attendee_id: req.user._id,
       attendee_full_name: `${req.user.first_name} ${req.user.last_name}`,
+      attendee_email: req.user.email,
       event_id,
       event_name: event.event_name,
       event_date: event.event_date,
@@ -63,7 +64,7 @@ export const createTicket = async (req, res) => {
     await newTicket.save();
 
     // Already Implemented in PaymentController.js (Deducting twice from DB)
-    // tier.available_tickets -= quantity; 
+    // tier.available_tickets -= quantity;
     await event.save(); // Saves available ticket to database
 
     // Generate QR Code
@@ -92,9 +93,13 @@ export const createTicket = async (req, res) => {
     //const smsMessage = `Hi ${attendee.first_name}, your ticket for "${event.event_name}" is confirmed!`;
     //await sendSMS(attendee.phone_number, smsMessage);
 
-    res.status(201).json({ message: 'Ticket created successfully', ticket: newTicket });
+    res
+      .status(201)
+      .json({ message: 'Ticket created successfully', ticket: newTicket });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error creating ticket', error: error.message });
   }
 };
 
@@ -130,16 +135,22 @@ export const getAvailableTickets = async (req, res) => {
   }
 };
 
-
 // Get Tickets for Event
 export const getEventTickets = async (req, res) => {
   const { event_id } = req.params;
   try {
     const tickets = await Ticket.find({ event_id });
-    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this event' });
-    res.status(200).json({ message: 'Fetched event tickets successfully', tickets });
+    if (tickets.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No tickets found for this event' });
+    res
+      .status(200)
+      .json({ message: 'Fetched event tickets successfully', tickets });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching tickets', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching tickets', error: error.message });
   }
 };
 
@@ -147,10 +158,17 @@ export const getEventTickets = async (req, res) => {
 export const getAttendeeTickets = async (req, res) => {
   try {
     const tickets = await Ticket.find({ attendee_id: req.user._id });
-    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this attendee' });
-    res.status(200).json({ message: 'Fetched attendee tickets successfully', tickets });
+    if (tickets.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No tickets found for this attendee' });
+    res
+      .status(200)
+      .json({ message: 'Fetched attendee tickets successfully', tickets });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching tickets', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching tickets', error: error.message });
   }
 };
 
@@ -162,7 +180,9 @@ export const getTicket = async (req, res) => {
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
     res.status(200).json({ message: 'Fetched ticket successfully', ticket });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching ticket', error: error.message });
   }
 };
 
@@ -174,6 +194,8 @@ export const deleteTicket = async (req, res) => {
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
     res.status(200).json({ message: 'Ticket deleted successfully', ticket });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error deleting ticket', error: error.message });
   }
 };

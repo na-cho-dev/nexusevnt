@@ -59,7 +59,7 @@ export const createPaymentSession = async (req, res) => {
         ticket_id: ticket_id,
         tier_type: tier_type,
         quantity: quantity,
-      },  // Include metadata for post-payment processing
+      }, // Include metadata for post-payment processing
     });
 
     res.status(200).json({ session });
@@ -85,7 +85,7 @@ export const handlePaymentSuccess = async (session) => {
     // Fetch the event with the session
     const event = await Event.findById(event_id).session(sessionDb);
     if (!event) throw new Error('Event not found');
-    
+
     const ticket = await Ticket.findById(ticket_id).session(sessionDb);
     if (!ticket) throw new Error('Ticket not found');
 
@@ -161,7 +161,6 @@ export const handlePaymentFailure = async (session) => {
     console.error('Error handling payment failure:', error.message);
   }
 };
-
 
 export const getPaymentStatus = async (req, res) => {
   const { sessionId } = req.params;

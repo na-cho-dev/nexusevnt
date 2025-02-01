@@ -28,19 +28,6 @@ const UserDetails = () => {
     localStorage.setItem('phone', phone);
   }, [fullName, email, phone]);
 
-  // const getEventDetails =  async () => {
-  //   try {
-  //     const eventRes = await axiosInstance.get(`/api/events/${event_id}`,
-  //       {withCredentials: true,}
-  //     )
-  //     console.log(eventRes.data.event)
-  //   } catch (error) {
-  //     console.error(
-  //       "Error fetching Event:",
-  //       error.response?.data?.message || error.message
-  //     );
-  //   }
-  // }
 
   const handleSubmit = async () => {
     try {

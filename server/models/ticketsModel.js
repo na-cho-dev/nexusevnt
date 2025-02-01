@@ -17,6 +17,11 @@ const ticketSchema = new mongoose.Schema(
       required: [true, 'Attendee Full Name is required'],
       trim: true,
     },
+    attendee_email: {
+      type: String,
+      required: [true, 'Attendee Email is required'],
+      trim: true,
+    },
     event_id: {
       type: String,
       required: [true, 'Attendee ID is required'],

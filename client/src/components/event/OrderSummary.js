@@ -44,7 +44,7 @@ function OrderSummary() {
       // navigate(``);
     } catch (error) {
       console.error(
-        'Error Creating Ticket:',
+        'Error Generating Payment Session:',
         error.response?.data?.error || error.response?.data?.message
       );
 

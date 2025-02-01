@@ -46,7 +46,7 @@ const loginController = async (req, res) => {
 
     res.cookie('JWT', refresh_token, {
       httpOnly: true,
-      sameSite: 'None',
+      sameSite: 'Lax', // Change to "None" in production
       secure: process.env.NODE_ENV_MODE === 'prod',
       maxAge: 24 * 60 * 60 * 1000,
     });

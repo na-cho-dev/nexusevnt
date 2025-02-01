@@ -28,9 +28,6 @@ router
 router.route('/attendee/:attendee_id/tickets').get(getAttendeeTickets);
 
 // Single Ticket Operations
-router
-  .route('/tickets/:ticket_id')
-  .get(getTicket)
-  .delete(deleteTicket);
+router.route('/tickets/:ticket_id').get(getTicket).delete(deleteTicket);
 
 export default router;

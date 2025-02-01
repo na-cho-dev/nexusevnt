@@ -29,7 +29,7 @@ const __dirname = dirname(__filename);
 const static_file_path = '../client/nexus-evnt/build';
 
 // Serve static files from the React build folder
-app.use(express.static(path.join(__dirname, static_file_path)));
+// app.use(express.static(path.join(__dirname, static_file_path)));
 
 // Webhook endpoint for Stripe
 app.post(
@@ -56,9 +56,9 @@ app.use('/api', paymentRouter);
 // });
 
 // Catch-all route to serve index.html for React's single-page app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, static_file_path, 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, static_file_path, 'index.html'));
+// });
 
 // Connect to the MongoDB database
 mongodb_connection();

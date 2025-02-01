@@ -33,7 +33,7 @@ const logoutController = async (req, res) => {
     console.log(`Logged out User: ${existingUser}`);
     res.clearCookie('JWT', {
       httpOnly: true,
-      sameSite: 'None',
+      sameSite: 'Lax', // Cahnge to "None" in production
       secure: process.env.NODE_ENV_MODE === 'prod',
       path: '/',
     });
