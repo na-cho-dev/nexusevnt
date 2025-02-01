@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { Spinner } from 'react-bootstrap';
 
 const ProtectedRoute = ({
   element: Component,
@@ -8,6 +9,17 @@ const ProtectedRoute = ({
   ...rest
 }) => {
   const { isLoggedIn, userData } = useContext(AuthContext);
+
+  console.log('isLoggedIn:', isLoggedIn);
+  console.log('userData:', userData);
+
+  if (isLoggedIn === undefined || userData === null) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-50">
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
 
   // ✅ Redirect to login if not logged in
   if (!isLoggedIn) {

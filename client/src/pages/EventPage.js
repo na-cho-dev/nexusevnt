@@ -89,13 +89,6 @@ const Event = () => {
     }));
   };
 
-  if (loading)
-    return (
-      <div className="center-container">
-        <Spinner animation="border" />
-      </div>
-    );
-
   return (
     <div className="main-container">
       {/* <NavMenu /> */}
@@ -144,6 +137,11 @@ const Event = () => {
             </Row>
 
             {/* Event Cards */}
+            {loading ? ( 
+            <div className="d-flex justify-content-center align-items-center h-100">
+              <Spinner animation="border" variant="primary" />
+            </div>
+          ) : filteredEvents.length > 0 ? ( // ✅ Correct ternary structure
             <Row>
               {filteredEvents.map((event, index) => (
                 <Col md={6} lg={4} key={index}>
@@ -151,6 +149,10 @@ const Event = () => {
                 </Col>
               ))}
             </Row>
+          ) : (
+            <p className="d-flex justify-content-center align-items-center h-100">Error fetching Events</p>
+          )}
+
           </Col>
         </Row>
       </Container>

@@ -39,5 +39,11 @@
    */
 
 .event-card {
-  min-height: 150px;
+  min-height: 170px;
+}
+
+.card-button {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }

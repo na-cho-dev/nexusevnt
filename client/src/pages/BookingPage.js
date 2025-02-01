@@ -11,17 +11,25 @@ import {
 } from "react-bootstrap";
 import Close from "../components/common/CloseButton";
 // import NavMenu from "../components/layout/NavBarElements";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const Booking = () => {
-  const [ticketType, setTicketType] = useState("Regular Ticket");
+  const { event_id } = useParams();
+  const [ticketType, setTicketType] = useState("Regular");
   const [quantity, setQuantity] = useState(1);
+  const location = useLocation();
+  const event = location.state?.event; // Retrieve event details
+
+  if (!event) {
+    return <p className="d-flex justify-content-center align-items-center"
+    style={{ minHeight: "calc(100vh - 100px)" }}>No event details found.</p>;
+  }
 
   const ticketPrices = {
     "Select Ticket": 0,
-    "Regular Ticket": 200,
-    "VIP Ticket": 500,
-    "VVIP Ticket": 1000,
+    "Regular": event.ticket_tiers[0].tier_price,
+    "VIP": event.ticket_tiers[1]?.tier_price,
+    "VVIP": event.ticket_tiers[2]?.tier_price,
   };
 
   const pricePerTicket = ticketPrices[ticketType];
@@ -36,39 +44,41 @@ const Booking = () => {
     }
   };
 
+  const total = (quantity * pricePerTicket).toFixed(2)
+
   return (
     <div>
       {/* <NavMenu /> */}
       <div
         className="ticket-section"
-        style={{ maxWidth: "800px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto", minHeight: "calc(100vh - 100px)" }}
       >
         <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="light"
-                id="dropdown-basic"
-                className="btn-dropdown"
-              >
-                {ticketType}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {Object.keys(ticketPrices).map((type) => (
-                  <Dropdown.Item key={type} onClick={() => setTicketType(type)}>
-                    {type}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+          <Dropdown>
+            <Dropdown.Toggle variant="light" id="dropdown-basic" className="btn-dropdown">
+              {ticketType}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {Object.keys(ticketPrices).map((type) => (
+                <Dropdown.Item 
+                  key={type} 
+                  onClick={() => setTicketType(type)}
+                  disabled={event.event_type === "Free" && type !== "Regular Ticket"} // Disable other tickets
+                >
+                  {type}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
           </Card.Header>
           <Card.Body>
             <Row className="align-items-center">
               <Col>
                 <div>
                   {ticketType} <br />
-                  Price: ₹{pricePerTicket.toFixed(2)}
+                  Price: ${pricePerTicket.toFixed(2)}
                 </div>
               </Col>
               <Col>
@@ -92,10 +102,10 @@ const Booking = () => {
           </Card.Body>
           <Card.Footer>
             <Row>
-              <Col>Qty: {quantity}</Col>
-              <Col>Total: ₹{(quantity * pricePerTicket).toFixed(2)}</Col>
+              <Col>Qty: {quantity}</Col> 
+              <Col>Total: ${total}</Col>
             </Row>
-            <Link to="/AttendeeDetails">
+            <Link to={`/attendee-details/${event_id}`} state={{ event_id, quantity, total, ticketType }}>
               <Button variant="dark" className="w-100 mt-2">
                 Proceed &gt;
               </Button>

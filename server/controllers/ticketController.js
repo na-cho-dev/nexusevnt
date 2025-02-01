@@ -8,10 +8,22 @@ import QRCode from 'qrcode';
 // Create Ticket
 export const createTicket = async (req, res) => {
   const { event_id } = req.params;
-  const { tier_type, quantity } = req.body;
+  const { tier_type } = req.body;
+  let { quantity } = req.body;
+  quantity = Number(quantity)
 
-  if (!event_id || !tier_type || !quantity) {
-    return res.status(400).json({ message: 'Event ID, Ticket Tier, and Quantity are required' });
+  // console.log("Body:", req.body);
+
+  if (!event_id) {
+    return res.status(400).json({ message: 'Event ID are required' });
+  }
+
+  if (!tier_type) {
+    return res.status(400).json({ message: 'Ticket Tier are required' });
+  }
+
+  if (!quantity) {
+    return res.status(400).json({ message: 'Quantity are required' });
   }
 
   try {
@@ -26,7 +38,11 @@ export const createTicket = async (req, res) => {
     }
 
     const order_id = parseInt(uuidv4().replace(/-/g, '').slice(0, 8), 16);
-    const price_paid = tier.price * quantity;
+    const price_paid = tier.tier_price * quantity;
+
+    // console.log(`Tier Price: ${tier.tier_price} -> Type of ${typeof tier.tier_price}`)
+    // console.log(`Quantity: ${quantity} -> Type of ${typeof quantity}`)
+    // console.log(`Price Paid: ${price_paid} -> Type of ${typeof price_paid}`)
 
     const ticketData = {
       order_id,

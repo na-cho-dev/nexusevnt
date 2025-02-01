@@ -52,10 +52,11 @@ const EventCard = ({ event }) => {
           </Card.Subtitle>
           <div className="mb-2">
             <Badge className="custom-badge">
-              {event.event_location || "Venue not specified"}
+              {event.event_type}
             </Badge>
           </div>
           <div className="event-card">
+          <strong>Event Location:</strong> {event.event_location} <br />
             <strong>Start Time:</strong> {formattedStartTime} <br />
             <strong>End Time:</strong> {formattedEndTime} <br />
 
@@ -73,7 +74,7 @@ const EventCard = ({ event }) => {
             )}
           </div>
 
-          <Button as={Link} to={`/Events/${event._id}`} variant="primary">
+          <Button as={Link} to={`/events/${event._id}`} variant="primary" className="card-button mt-3">
             View Details
           </Button>
         </Card.Body>

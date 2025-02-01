@@ -1,28 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Form } from "react-bootstrap";
 import Close from "../../components/common/CloseButton";
-// import NavMenu from "../../components/layout/NavBarElements";
 import "../../styles/AttendeeDetails.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axiosInstance  from "../../services/axiosInstance";
 
 const UserDetails = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [ticketType, setTicketType] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const quantity = location.state?.quantity;
+  const total = location.state?.total;
+  const event_id = location.state?.event_id;
+  const tier_type = location.state?.ticketType;
+  const ticket_price = total / quantity;
 
-  const ticketPrices = {
-    "Regular Ticket": 200,
-    "VIP Ticket": 500,
-    "VVIP Ticket": 1000,
-  };
+  // Load saved data from local storage if available
+  const [fullName, setFullName] = useState(localStorage.getItem("fullName") || "");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const [phone, setPhone] = useState(localStorage.getItem("phone") || "");
 
-  const pricePerTicket = ticketPrices[ticketType];
+  // Save data to local storage when inputs change
+  useEffect(() => {
+    localStorage.setItem("fullName", fullName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
+  }, [fullName, email, phone]);
+
+  // const getEventDetails =  async () => {
+  //   try {
+  //     const eventRes = await axiosInstance.get(`/api/events/${event_id}`,
+  //       {withCredentials: true,}
+  //     )
+  //     console.log(eventRes.data.event)
+  //   } catch (error) {
+  //     console.error(
+  //       "Error fetching Event:",
+  //       error.response?.data?.message || error.message
+  //     );
+  //   }
+  // }
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+
+      const formData = new FormData();
+      formData.append("tier_type", tier_type);
+      formData.append("quantity", quantity);
+
+      // console.log(`Form Data: ${formData}`)
+  
+      // Correct API request
+      const response = await axiosInstance.post(`/api/events/${event_id}/create-ticket`, formData, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const state = { total, fullName, email, ticket_price, quantity };
+  
+      console.log(`Ticket created successfully: ${response}`);
+      navigate("/order-summary", state); // Redirect to the Profile page
+    } catch (error) {
+      console.error(
+        "Error Creating Ticket:",
+        error.response?.data?.error || error.response?.data?.message
+      );
+    }
+  }
 
   return (
     <div>
-      {/* <NavMenu /> */}
       <div
         className="attendee-section"
-        style={{ maxWidth: "800px", margin: "auto" }}
+        style={{ maxWidth: "800px", margin: "auto", minHeight: "calc(100vh - 100px)" }}
       >
         <Card className="attendee-container">
           <Close />
@@ -31,17 +83,29 @@ const UserDetails = () => {
             <Form>
               <Form.Group className="mb-3 w-100" controlId="formGroupUserName">
                 <Form.Label>Full Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Full Name" />
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Full Name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3 w-100" controlId="formGroupEmail">
                 <Form.Label>Email Address</Form.Label>
-                <Form.Control type="email" placeholder="Enter your Email" />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3 w-100" controlId="formGroupPhone">
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="Enter your Phone number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Form.Group>
             </Form>
@@ -49,13 +113,16 @@ const UserDetails = () => {
           <Card.Footer>
             <div className="d-flex justify-content-between">
               <span>Qty: {quantity}</span>
-              <span>Total: ₹{(quantity * pricePerTicket).toFixed(2)}</span>
+              <span>Total: ${total}</span>
             </div>
-            <Link to="/OrderSummary">
-              <Button variant="dark" className="w-100 mt-2">
+            {/* <Link to="/OrderSummary" state={{ total, fullName, email, ticket_price, quantity }}>
+              <Button onClick={onSubmit} variant="dark" className="w-100 mt-2">
                 Continue to Checkout &gt;
               </Button>
-            </Link>
+            </Link> */}
+            <Button onClick={handleSubmit} variant="dark" className="w-100 mt-2">
+              Continue to Checkout &gt;
+            </Button>
           </Card.Footer>
         </Card>
       </div>

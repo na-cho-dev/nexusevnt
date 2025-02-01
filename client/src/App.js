@@ -31,18 +31,18 @@ function App() {
           <NavMenu />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/Contact" element={<Contact />} />
-            <Route path="/Event" element={<Event />} />
-            <Route path="/Login" element={<SignIn />} />
-            <Route path="/Register" element={<SignUp />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
             <Route path="/*" element={<MultiStepForm />} />
             <Route path="/events/:event_id" element={<EventDetails />} />
             <Route path="unauthorized" element={<Unauthorized />} />
 
             <Route
-              path="/Profile"
+              path="/profile"
               element={
                 <ProtectedRoute
                   element={Profile}
@@ -51,16 +51,16 @@ function App() {
               }
             />
             <Route
-              path="/Booking"
+              path="/event/:event_id/booking"
               element={
                 <ProtectedRoute
                   element={Booking}
-                  requiredRoles={['Attendee']}
+                  requiredRoles={['Attendee', 'Organizer']}
                 />
               }
             />
             <Route
-              path="/AccountInfo"
+              path="/account-info"
               element={
                 <ProtectedRoute
                   element={Account}
@@ -69,7 +69,7 @@ function App() {
               }
             />
             <Route
-              path="/CreateEvent"
+              path="/create-event"
               element={
                 <ProtectedRoute
                   element={CreateEvent}
@@ -78,7 +78,7 @@ function App() {
               }
             />
             <Route
-              path="/OrderSummary"
+              path="/event/:event_id/order-summary"
               element={
                 <ProtectedRoute
                   element={OrderSummary}
@@ -87,7 +87,7 @@ function App() {
               }
             />
             <Route
-              path="/AttendeeDetails"
+              path="/event/:event_id/attendee-details"
               element={
                 <ProtectedRoute
                   element={UserDetails}
@@ -96,7 +96,7 @@ function App() {
               }
             />
             <Route
-              path="/ChangePassword"
+              path="/change-password"
               element={
                 <ProtectedRoute
                   element={Password}
@@ -105,7 +105,7 @@ function App() {
               }
             />
             <Route
-              path="/ChangeEmail"
+              path="/change-email"
               element={
                 <ProtectedRoute
                   element={Email}
