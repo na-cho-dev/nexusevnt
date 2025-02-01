@@ -1,5 +1,5 @@
 import React from "react";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ const Email = () => {
   return (
     <div className="main-profile-container">
       <div className="row">
-        <NavMenu />
+        {/* <NavMenu /> */}
 
         <div className="col-md-3 bg-body-secondary">
           <div className="list-group mt-5">

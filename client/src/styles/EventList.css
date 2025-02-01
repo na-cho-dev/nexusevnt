@@ -8,7 +8,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 107px;
+  gap: 90px;
   cursor: pointer;
 }
 .category-container li img {
@@ -38,4 +38,103 @@
   animation-name: dissolve;
   animation-timing-function: ease-out;
   animation-duration: 200ms;
+}
+.category-section h5 {
+  margin: 60px;
+  text-align: center;
+}
+
+/* Container for scrolling */
+.category-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+  scrollbar-width: none; /* Hide default scrollbar */
+  scroll-behavior: smooth;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.category-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* List style remains the same */
+.category-container ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 50px; /* Reduced for better scrolling */
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+/* Prevent images from shrinking */
+.category-container li {
+  flex: 0 0 auto; /* Prevent shrinking */
+  text-align: center;
+}
+
+.category-container li img {
+  border-radius: 130px;
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.category-container li div {
+  text-align: center;
+  margin-top: 10px;
+  height: fit-content;
+}
+
+/* Scroll Buttons */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+  z-index: 2;
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
+
+/* Show buttons only when scrolling is possible */
+@media (max-width: 768px) {
+  .scroll-btn {
+    display: none;
+  }
+}
+
+/* Dissolve animation */
+@keyframes dissolve {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.dissolve {
+  animation: dissolve 200ms ease-out;
 }

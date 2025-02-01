@@ -20,7 +20,7 @@ function NavMenu() {
         className="nav-section"
       >
         <Container>
-          <Navbar.Brand href="/Home" className="logo-container ">
+          <Navbar.Brand href="/home" className="logo-container ">
             <img
               src={logo}
               className="d-inline-block align-top"
@@ -30,26 +30,26 @@ function NavMenu() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/Home" className="nav-elements">
+              <Nav.Link href="/home" className="nav-elements">
                 Home
               </Nav.Link>
-              <Nav.Link href="/Event" className="nav-elements">
-                Events
-              </Nav.Link>
-              <Nav.Link href="/About" className="nav-elements">
+              <Nav.Link href="/about" className="nav-elements">
                 About
               </Nav.Link>
-              <Nav.Link href="/Contact" className="nav-elements">
+              <Nav.Link href="/contact" className="nav-elements">
                 Contact
+              </Nav.Link>
+              <Nav.Link href="/event" className="nav-elements">
+                Events
               </Nav.Link>
             </Nav>
             <Nav>
               {isLoggedIn ? (
                 <>
-                  <Nav.Link href="/Profile" className="nav-elements">
+                  <Nav.Link href="/profile" className="nav-elements">
                     Profile
                   </Nav.Link>
-                  <Nav.Link href="/CreateEvent" className="nav-elements">
+                  <Nav.Link href="/createEvent" className="nav-elements">
                     Create Event
                   </Nav.Link>
                   <Button
@@ -61,10 +61,10 @@ function NavMenu() {
                 </>
               ) : (
                 <>
-                  <Nav.Link href="/Login" className="nav-elements">
+                  <Nav.Link href="/login" className="nav-elements">
                     Login
                   </Nav.Link>
-                  <Button href="/Register" className="singup-button">
+                  <Button href="/register" className="singup-button">
                     Sign Up
                   </Button>
                 </>

@@ -31,24 +31,24 @@ function App() {
           <NavMenu />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/Contact" element={<Contact />} />
-            <Route path="/Event" element={<Event />} />
-            <Route path="/Login" element={<SignIn />} />
-            <Route path="/Register" element={<SignUp />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
             <Route path="/*" element={<MultiStepForm />} />
             <Route path="/events/:event_id" element={<EventDetails />} />
             <Route path="unauthorized" element={<Unauthorized />} />
 
-            <Route path="/Profile" element={<ProtectedRoute element={Profile} requiredRoles={["Attendee", "Organizer"]} />} />
-            <Route path="/Booking" element={<ProtectedRoute element={Booking} requiredRoles={["Attendee"]} />} />
-            <Route path="/AccountInfo" element={<ProtectedRoute element={Account} requiredRoles={["Attendee", "Organizer"]} />} />
-            <Route path="/CreateEvent" element={<ProtectedRoute element={CreateEvent} requiredRoles={["Organizer"]} />} />
-            <Route path="/OrderSummary" element={<ProtectedRoute element={OrderSummary} requiredRoles={["Attendee", "Organizer"]} />} />
-            <Route path="/AttendeeDetails" element={<ProtectedRoute element={UserDetails} requiredRoles={["Organizer"]} />} />
-            <Route path="/ChangePassword" element={<ProtectedRoute element={Password} requiredRoles={["Attendee", "Organizer"]} />} />
-            <Route path="/ChangeEmail" element={<ProtectedRoute element={Email} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/profile" element={<ProtectedRoute element={Profile} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/booking/:event_id" element={<ProtectedRoute element={Booking} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/account-info" element={<ProtectedRoute element={Account} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/create-event" element={<ProtectedRoute element={CreateEvent} requiredRoles={["Organizer"]} />} />
+            <Route path="/order-summary" element={<ProtectedRoute element={OrderSummary} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/attendee-details/:event_id" element={<ProtectedRoute element={UserDetails} requiredRoles={["Organizer"]} />} />
+            <Route path="/change-password" element={<ProtectedRoute element={Password} requiredRoles={["Attendee", "Organizer"]} />} />
+            <Route path="/change-email" element={<ProtectedRoute element={Email} requiredRoles={["Attendee", "Organizer"]} />} />
 
           </Routes>
         </div>

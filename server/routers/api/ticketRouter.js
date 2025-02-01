@@ -9,11 +9,12 @@ import {
   deleteTicket,
 } from '../../controllers/ticketController.js';
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
+import verifyJWT from '../../middlwares/verifyJWTMiddleware.js';
 
 // Create Ticket
 router
   .route('/events/:event_id/create-ticket')
-  .post(roleMiddleware(['Attendee', 'Organizer']), createTicket);
+  .post(verifyJWT, roleMiddleware(['Attendee', 'Organizer']), createTicket);
 
 // Get Event Tickets
 router.route('/events/:event_id/tickets').get(getEventTickets);

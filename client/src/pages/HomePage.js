@@ -9,6 +9,7 @@ import Header from "../components/layout/Header";
 import EventCard from "../components/event/EventCard";
 import Button from "react-bootstrap/Button";
 import axiosInstance from "../services/axiosInstance";
+import { Spinner } from "react-bootstrap";
 
 const Home = () => {
   const [events, setEvents] = useState([]); // Manage events as state
@@ -42,9 +43,11 @@ const Home = () => {
         <h5 className="card-head">Popular events right now</h5>
         <div className="card-style">
         {loading ? ( // Show a loader while fetching events
-          <p>Loading events...</p>
+          <div className="d-flex justify-content-center align-items-center vh-30">
+            <Spinner animation="border" variant="primary" />
+          </div>
         ) : events.length > 0 ? (
-          events.slice(0, 9).map((event) => (
+          events.slice(0, 8).map((event) => (
             <div key={event._id || event.event_name}> {/* Use _id or a fallback property */}
               <EventCard event={event} />
             </div>

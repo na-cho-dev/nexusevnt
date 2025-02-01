@@ -6,7 +6,7 @@ import "../../styles/Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-white mt-1 p-4 text-center">
+    <footer className="mt-4 bg-dark text-white mt-1 p-4 text-center">
       <Container>
         <Row className="align-items-center">
           <Col md={4}>

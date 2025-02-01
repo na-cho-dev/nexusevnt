@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../services/axiosInstance";
 import { Card, Button, Spinner, Badge } from "react-bootstrap";
 import "../../styles/EventDetails.css"; // Ensure styling is imported
-import Footer from "../layout/Footer";
+// import Footer from "../layout/Footer";
 
 const EventDetails = () => {
   const { event_id } = useParams(); // Get event ID from URL
@@ -29,14 +29,16 @@ const EventDetails = () => {
   // Show spinner while loading
   if (loading)
     return (
-      <div className="center-container">
+      <div className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "calc(100vh - 100px)" }}>
         <Spinner animation="border" />
       </div>
     );
 
   // Centered "Event Not Found"
   if (!event)
-    return <div className="center-container">Event not found.</div>;
+    return <div className="d-flex justify-content-center align-items-center"
+  style={{ minHeight: "calc(100vh - 100px)" }}>Failed to fetch Events.</div>;
 
   const imageSrc = event.event_image && event.event_image.data
   ? `data:${event.event_image.mimeType};base64,${event.event_image.data}`
@@ -107,13 +109,13 @@ const EventDetails = () => {
           )}
 
           <div className="text-center mt-3">
-            <Link to={`/Booking`}>
+            <Link to={`/booking/${event_id}`} state={{ event }}>
               <Button variant="primary">Book Now</Button>
             </Link>
           </div>
         </Card.Body>
       </Card>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
