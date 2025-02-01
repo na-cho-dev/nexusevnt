@@ -1,14 +1,33 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import logo from "../../images/nexus-lg.png";
-import "../../styles/NavMenu.css";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import logo from '../../images/nexus-lg.png';
+import '../../styles/NavMenu.css';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../services/axiosInstance';
 
 function NavMenu() {
+  const navigate = useNavigate();
   const { isLoggedIn, logout } = useContext(AuthContext);
+
+  const logoutRedirect = async () => {
+    try {
+      const response = await axiosInstance.post('/auth/logout', {
+        withCredentials: true,
+      });
+      console.log(`Logout successful: ${response.data.message}`);
+      logout();
+      navigate('/login'); // Redirect to the Home page
+    } catch (error) {
+      console.error(
+        'Logout failed:',
+        error.response?.data?.message || error.message
+      );
+    }
+  };
 
   return (
     <>
@@ -49,13 +68,10 @@ function NavMenu() {
                   <Nav.Link href="/profile" className="nav-elements">
                     Profile
                   </Nav.Link>
-                  <Nav.Link href="/createEvent" className="nav-elements">
+                  <Nav.Link href="/create-event" className="nav-elements">
                     Create Event
                   </Nav.Link>
-                  <Button
-                    onClick={logout}
-                    className="logout-button"
-                  >
+                  <Button onClick={logoutRedirect} className="logout-button">
                     Logout
                   </Button>
                 </>

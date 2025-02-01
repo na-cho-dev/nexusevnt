@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import axiosInstance from "../services/axiosInstance";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axiosInstance from '../services/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Card,
@@ -10,24 +10,26 @@ import {
   Button,
   Alert,
   InputGroup,
-} from "react-bootstrap";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Close from "../components/common/CloseButton";
+  Spinner,
+} from 'react-bootstrap';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Close from '../components/common/CloseButton';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone_number: "",
-    role: "",
-    password: "",
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    role: '',
+    password: '',
   });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -37,18 +39,21 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
+    setLoading(true);
 
     try {
-      const response = await axiosInstance.post("/auth/register", formData);
+      const response = await axiosInstance.post('/auth/register', formData);
       setSuccess(response.data.message);
-      navigate("/Login");
+      navigate('/login');
     } catch (err) {
-      console.error("Registration error:", err);
+      console.error('Registration error:', err);
       setError(
-        err.response?.data?.message || "An error occurred during registration"
+        err.response?.data?.message || 'An error occurred during registration'
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,9 +61,9 @@ const SignUp = () => {
     <Container
       fluid
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "80vh" }}
+      style={{ minHeight: '80vh' }}
     >
-      <div className="p-2 mt-4 mb-4 shadow w-100" style={{ maxWidth: "600px" }}>
+      <div className="p-2 mt-4 mb-4 shadow w-100" style={{ maxWidth: '600px' }}>
         <Card.Body className="d-flex justify-content-center align-items-center">
           <Row className="w-100">
             <Col md={12}>
@@ -70,7 +75,15 @@ const SignUp = () => {
 
                 {/* Form */}
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="firstName" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="firstName"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
@@ -83,7 +96,15 @@ const SignUp = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="lastName" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="lastName"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control
                       type="text"
@@ -96,7 +117,15 @@ const SignUp = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="email" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="email"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
                       type="email"
@@ -109,7 +138,15 @@ const SignUp = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="phoneNumber" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="phoneNumber"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Phone Number</Form.Label>
                     <Form.Control
                       type="text"
@@ -122,7 +159,15 @@ const SignUp = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="role" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="role"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Role</Form.Label>
                     <Form.Select
                       name="role"
@@ -137,11 +182,19 @@ const SignUp = () => {
                     </Form.Select>
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="password" style={{ display: "flex", alignItems: "flex-start", flexDirection: "column" }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="password"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Password</Form.Label>
                     <InputGroup>
                       <Form.Control
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         placeholder="Enter password"
                         value={formData.password}
@@ -157,14 +210,24 @@ const SignUp = () => {
                     </InputGroup>
                   </Form.Group>
 
-                  <Button variant="dark" type="submit" className="w-100">
-                    Create Account
+                  <Button variant="dark" type="submit" className="w-100" disabled={loading}>
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      'Create Account'
+                    )}
                   </Button>
                 </Form>
 
                 <p className="text-center mt-3">
-                  Already have an account?{" "}
-                  <a href="/Login" className="text-decoration-none">
+                  Already have an account?{' '}
+                  <a href="/login" className="text-decoration-none">
                     Log In
                   </a>
                 </p>

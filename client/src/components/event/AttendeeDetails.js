@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Form } from "react-bootstrap";
-import Close from "../../components/common/CloseButton";
-import "../../styles/AttendeeDetails.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import axiosInstance  from "../../services/axiosInstance";
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Form } from 'react-bootstrap';
+import Close from '../../components/common/CloseButton';
+import '../../styles/AttendeeDetails.css';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../services/axiosInstance';
 
 const UserDetails = () => {
   const navigate = useNavigate();
@@ -15,15 +15,17 @@ const UserDetails = () => {
   const ticket_price = total / quantity;
 
   // Load saved data from local storage if available
-  const [fullName, setFullName] = useState(localStorage.getItem("fullName") || "");
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
-  const [phone, setPhone] = useState(localStorage.getItem("phone") || "");
+  const [fullName, setFullName] = useState(
+    localStorage.getItem('fullName') || ''
+  );
+  const [email, setEmail] = useState(localStorage.getItem('email') || '');
+  const [phone, setPhone] = useState(localStorage.getItem('phone') || '');
 
   // Save data to local storage when inputs change
   useEffect(() => {
-    localStorage.setItem("fullName", fullName);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phone", phone);
+    localStorage.setItem('fullName', fullName);
+    localStorage.setItem('email', email);
+    localStorage.setItem('phone', phone);
   }, [fullName, email, phone]);
 
   // const getEventDetails =  async () => {
@@ -45,36 +47,44 @@ const UserDetails = () => {
       const token = localStorage.getItem('accessToken');
 
       const formData = new FormData();
-      formData.append("tier_type", tier_type);
-      formData.append("quantity", quantity);
+      formData.append('tier_type', tier_type);
+      formData.append('quantity', quantity);
 
       // console.log(`Form Data: ${formData}`)
-  
-      // Correct API request
-      const response = await axiosInstance.post(`/api/events/${event_id}/create-ticket`, formData, {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      // API request
+      const response = await axiosInstance.post(
+        `/api/events/${event_id}/create-ticket`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const state = { total, fullName, email, ticket_price, quantity };
-  
-      console.log(`Ticket created successfully: ${response}`);
-      navigate("/order-summary", state); // Redirect to the Profile page
+
+      console.log(`Ticket created successfully: ${response.data.ticket}`);
+      navigate(`/event/${event_id}/order-summary`, { state });
     } catch (error) {
       console.error(
-        "Error Creating Ticket:",
+        'Error Creating Ticket:',
         error.response?.data?.error || error.response?.data?.message
       );
     }
-  }
+  };
 
   return (
     <div>
       <div
         className="attendee-section"
-        style={{ maxWidth: "800px", margin: "auto", minHeight: "calc(100vh - 100px)" }}
+        style={{
+          maxWidth: '800px',
+          margin: 'auto',
+          minHeight: 'calc(100vh - 100px)',
+        }}
       >
         <Card className="attendee-container">
           <Close />
@@ -120,7 +130,11 @@ const UserDetails = () => {
                 Continue to Checkout &gt;
               </Button>
             </Link> */}
-            <Button onClick={handleSubmit} variant="dark" className="w-100 mt-2">
+            <Button
+              onClick={handleSubmit}
+              variant="dark"
+              className="w-100 mt-2"
+            >
               Continue to Checkout &gt;
             </Button>
           </Card.Footer>
