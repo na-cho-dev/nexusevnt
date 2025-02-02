@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import Close from '../components/common/CloseButton';
 // import NavMenu from "../components/layout/NavBarElements";
-import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 
 const Booking = () => {
@@ -57,13 +57,12 @@ const Booking = () => {
 
   const total = (quantity * pricePerTicket).toFixed(2);
 
+  // Handle form submission for creating a ticket
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
     try {
-      const token = localStorage.getItem('accessToken');
-
       const formData = new FormData();
       formData.append('tier_type', ticketType);
       formData.append('quantity', quantity);
@@ -122,28 +121,30 @@ const Booking = () => {
         <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="light"
-                id="dropdown-basic"
-                className="btn-dropdown"
-              >
-                {ticketType}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {Object.keys(ticketPrices).map((type) => (
-                  <Dropdown.Item
-                    key={type}
-                    onClick={() => setTicketType(type)}
-                    disabled={
-                      event.event_type === 'Free' && type !== 'Regular Ticket'
-                    } // Disable other tickets
-                  >
-                    {type}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="light"
+              id="dropdown-basic"
+              className="btn-dropdown"
+            >
+              {ticketType}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {Object.keys(ticketPrices).map((type) => (
+                <Dropdown.Item
+                  key={type}
+                  onClick={() => setTicketType(type)}
+                  disabled={
+                    (event.event_type === 'Free' && type !== 'Regular Ticket') || 
+                    (event.event_type === 'Paid' && !ticketPrices[type]) // Disable if not available
+                  }
+                >
+                  {type}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
           </Card.Header>
           <Card.Body>
             <Row className="align-items-center">

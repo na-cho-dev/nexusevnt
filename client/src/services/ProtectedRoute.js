@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 import { Spinner } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({
   element: Component,
   requiredRoles = [],
   ...rest
 }) => {
-  const { isLoggedIn, userData } = useContext(AuthContext);
+  const { isLoggedIn, userData } = useAuth()
 
   console.log('isLoggedIn:', isLoggedIn);
   console.log('userData:', userData);

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from '../services/axiosInstance';
 
@@ -90,13 +90,16 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.removeItem('accessToken');
     localStorage.removeItem('userData');
+    localStorage.removeItem("paymentSuccess");
   };
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userRole, userId, userData, token, login, logout }}
+      value={{ isLoggedIn, userRole, userId, userData, setUserData, token, login, logout }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

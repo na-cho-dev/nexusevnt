@@ -1,5 +1,5 @@
 import React from "react";
-import NavMenu from "../layout/NavBarElements";
+// import NavMenu from "../layout/NavBarElements";
 import Footer from "../layout/Footer";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -7,35 +7,26 @@ import { Link } from "react-router-dom";
 const Password = () => {
   return (
     <div className="main-profile-container">
-      <div className="row">
-        <NavMenu />
+      <div className="d-flex">
+        {/* <NavMenu /> */}
 
-        <div className="col-md-3 bg-body-secondary">
-          <div className="list-group mt-5">
-            <h5 className="text-center p-2">Account Settings</h5>
-            <Link
-              to="/AccountInfo"
-              className="list-group-item list-group-item-action"
-            >
+        <div className="bg-body-secondary pt-5 p-3" style={{ width: "280px" }}>
+          <h5 className="text-center p-2">Account Settings</h5>
+          <div className="list-group">
+            <Link to="/profile" className="list-group-item list-group-item-action">
               Account Info
             </Link>
-            <Link
-              to="/ChangeEmail"
-              className="list-group-item list-group-item-action"
-            >
+            <Link to="/change-email" className="list-group-item list-group-item-action">
               Change Email
             </Link>
-            <Link
-              to="ProfPassword"
-              className="list-group-item list-group-item-action"
-            >
+            <Link to="/change-password" className="list-group-item list-group-item-action active">
               Password
             </Link>
           </div>
         </div>
 
-        <div className="col-md-9" style={{ height: "650px" }}>
-          <div className="mt-5">
+        <div className="col-md-9 p-4" style={{ height: "650px" }}>
+          <div className="mt-4">
             <h4>Change Password</h4>
             <hr />
             <Form>

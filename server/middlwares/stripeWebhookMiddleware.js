@@ -6,6 +6,7 @@ import { handlePaymentFailure } from '../controllers/paymentController.js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const stripeWebhookHandler = async (req, res) => {
+    console.log("RECEIVED STRIPE WEBHOOK EVENT");
     const stripe_signature = req.headers["stripe-signature"]; // Stripe signature header
     const endpoint_secret = process.env.STRIPE_WEBHOOK_SECRET; // Webhook secret from Stripe Dashboard
     let stripe_event;

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 import '../../styles/OrderSummary.css';
 import Close from '../../components/common/CloseButton';
 // import NavMenu from "../../components/layout/NavBarElements";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../services/axiosInstance';
+import { loadStripe } from '@stripe/stripe-js';
 
-function OrderSummary() {
-  const navigate = useNavigate();
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+
+const OrderSummary = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const location = useLocation();
@@ -20,6 +22,20 @@ function OrderSummary() {
   const ticket_id = location.state?.ticket_id;
   const tax = 14;
   const total = Number(subTotal) + tax;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const ticketId = localStorage.getItem("ticketId");
+
+    console.log("Ticket ID FROM STORAGE:", ticketId, "Type:", typeof ticketId);
+    console.log("Ticket ID FROM STATE:", ticket_id, "Type:", typeof ticket_id);
+  
+    // If the order ID exists in localStorage, check if payment was successful for this order
+    if (ticketId === ticket_id && localStorage.getItem(`paymentSuccess_${ticketId}`) === "true") {
+      navigate("/success", { replace: true });  // Redirect to Success Page
+    }
+  });
+  
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -27,6 +43,8 @@ function OrderSummary() {
     setLoading(true);
 
     try {
+      // console.log('ticket_id:', ticket_id, 'Type:', typeof ticket_id);
+
       const formData = new FormData();
       formData.append('ticket_id', ticket_id);
 
@@ -35,18 +53,18 @@ function OrderSummary() {
         `/api/create-payment-session`,
         formData
       );
+      const sessionId = response.data.session.id;
+      const ticketId = response.data.session.metadata.ticket_id;
 
-      // console.log('Response:', response);
-      // console.log('Ticket data:', response.data);
-      // console.log('Ticket:', response.data.ticket);
+      localStorage.setItem("paymentSessionId", sessionId);
+      localStorage.setItem("ticketId", ticketId);
 
-      console.log(`Payment Session Created: `, response.data);
-      // navigate(``);
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId: sessionId });
     } catch (error) {
-      console.error(
-        'Error Generating Payment Session:',
-        error.response?.data?.error || error.response?.data?.message
-      );
+      console.error('Error Generating Payment Session (Error):', error.response?.data?.error);
+      console.error('Error Generating Payment Session (Message):', error.response?.data?.message);
 
       setErrorMessage(
         error.response?.data?.message || 'An error occurred. Please try again.'

@@ -16,12 +16,13 @@ import UserDetails from './components/event/AttendeeDetails';
 import OrderSummary from './components/event/OrderSummary';
 import Account from './components/common/AccountInfo';
 import Email from './components/common/ChangeEmail';
-import Password from './components/common/ProfPassword';
+import Password from './components/common/ChangePassword';
 // import Testing from "./pages/Testing";
 import { AuthProvider } from './context/AuthContext';
 import NavMenu from './components/layout/NavBarElements';
 import EventDetails from './components/event/EventDetails';
 import Unauthorized from './components/common/Unauthorized';
+import Success from './pages/SuccessPage';
 
 function App() {
   return (
@@ -34,12 +35,13 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/event" element={<Event />} />
+            <Route path="/events" element={<Event />} />
             <Route path="/login" element={<SignIn />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/*" element={<MultiStepForm />} />
             <Route path="/events/:event_id" element={<EventDetails />} />
-            <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/success" element={<Success />} />
 
             <Route
               path="/profile"

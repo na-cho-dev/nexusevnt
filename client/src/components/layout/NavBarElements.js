@@ -58,7 +58,7 @@ function NavMenu() {
               <Nav.Link href="/contact" className="nav-elements">
                 Contact
               </Nav.Link>
-              <Nav.Link href="/event" className="nav-elements">
+              <Nav.Link href="/events" className="nav-elements">
                 Events
               </Nav.Link>
             </Nav>

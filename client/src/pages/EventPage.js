@@ -144,7 +144,7 @@ const Event = () => {
           ) : filteredEvents.length > 0 ? ( // ✅ Correct ternary structure
             <Row>
               {filteredEvents.map((event, index) => (
-                <Col md={6} lg={4} key={index}>
+                <Col md={6} lg={4} key={index} className="mb-4">
                   <EventCard event={event} />
                 </Col>
               ))}
