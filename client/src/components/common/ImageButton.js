@@ -27,6 +27,22 @@ const ImageUpload = () => {
 
       const response = await axiosInstance.get(apiEndPoint);
 
+      // if (!response.data[userRoleType]?.profile_img) {
+      //   console.warn('No profile image found in response');
+      //   setImageSrc(null);
+      //   return;
+      // }
+
+      const imgData = response.data[userRoleType]?.profile_img;
+
+      console.log('Fetched Image Data:', imgData); // Debugging
+
+      if (!imgData.data) {
+        console.warn('Image data is empty or malformed:', imgData);
+        setImageSrc(null);
+        return;
+      }
+
       // console.log(
       //   'Image Response Data:',
       //   response.data[userRoleType]?.profile_img
@@ -42,13 +58,19 @@ const ImageUpload = () => {
       //   setImageSrc(imageUrl);
       // }
 
-      const imgSrc =
-        response.data[userRoleType]?.profile_img &&
-        response.data[userRoleType]?.profile_img?.data
-          ? `data:${response.data[userRoleType]?.profile_img?.mimeType};base64,${response.data[userRoleType]?.profile_img?.data}`
-          : null;
+      // const imgSrc =
+      //   response.data[userRoleType]?.profile_img &&
+      //   response.data[userRoleType]?.profile_img?.data
+      //     ? `data:${response.data[userRoleType]?.profile_img?.mimeType};base64,${response.data[userRoleType]?.profile_img?.data}`
+      //     : null;
 
-      setImageSrc(imgSrc);
+      const imgSrc = `data:${imgData.mimeType};base64,${imgData.data}`;
+
+      console.log('Generated Image Src:', imgSrc); // Debugging
+
+      setTimeout(() => {
+        setImageSrc(imgSrc);
+      }, 500);
     } catch (error) {
       console.error('Error fetching profile image:', error);
     }
@@ -95,8 +117,8 @@ const ImageUpload = () => {
       });
 
       // Show newly uploaded image immediately
-      const newImageUrl = URL.createObjectURL(selectedFile);
-      setImageSrc(newImageUrl);
+      // const newImageUrl = URL.createObjectURL(selectedFile);
+      // setImageSrc(newImageUrl);
 
       // Force refresh by refetching the image from the server after a short delay
       setTimeout(fetchProfileImage, 500);
@@ -116,6 +138,7 @@ const ImageUpload = () => {
         {imageSrc ? (
           <Image
             src={imageSrc}
+            key={imageSrc}
             roundedCircle
             style={{
               width: '150px',

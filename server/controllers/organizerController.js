@@ -64,6 +64,10 @@ export const updateOrganizer = async (req, res) => {
     if (!organizer)
       return res.status(404).json({ message: 'Organizer does not exist' });
 
+    if (!req.file && organizer.profile_img) {
+      updatedFields.profile_img = organizer.profile_img;
+    }
+
     // Profile Image Edit
     if (req.file) {
       updatedFields.profile_img = {

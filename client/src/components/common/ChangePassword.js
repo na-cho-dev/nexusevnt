@@ -1,31 +1,43 @@
-import React from "react";
+import React from 'react';
 // import NavMenu from "../layout/NavBarElements";
-import Footer from "../layout/Footer";
-import { Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import Footer from '../layout/Footer';
+import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Password = () => {
+  const { userData, setUserData, userRole, userId } = useAuth();
+
   return (
     <div className="main-profile-container">
       <div className="d-flex">
         {/* <NavMenu /> */}
 
-        <div className="bg-body-secondary pt-5 p-3" style={{ width: "280px" }}>
+        <div className="bg-body-secondary pt-5 p-3" style={{ width: '280px' }}>
           <h5 className="text-center p-2">Account Settings</h5>
           <div className="list-group">
-            <Link to="/profile" className="list-group-item list-group-item-action">
+            <Link
+              to={`/${userRole.toLowerCase()}/${userId}/profile`}
+              className="list-group-item list-group-item-action"
+            >
               Account Info
             </Link>
-            <Link to="/change-email" className="list-group-item list-group-item-action">
+            <Link
+              to={`/${userRole.toLowerCase()}/${userId}/change-email`}
+              className="list-group-item list-group-item-action"
+            >
               Change Email
             </Link>
-            <Link to="/change-password" className="list-group-item list-group-item-action active">
+            <Link
+              to={`/${userRole.toLowerCase()}/${userId}/change-password`}
+              className="list-group-item list-group-item-action active"
+            >
               Password
             </Link>
           </div>
         </div>
 
-        <div className="col-md-9 p-4" style={{ height: "650px" }}>
+        <div className="col-md-9 p-4" style={{ height: '650px' }}>
           <div className="mt-4">
             <h4>Change Password</h4>
             <hr />

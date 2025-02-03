@@ -15,19 +15,16 @@ const UserDetails = () => {
   const ticket_price = total / quantity;
 
   // Load saved data from local storage if available
-  const [fullName, setFullName] = useState(
-    localStorage.getItem('fullName') || ''
-  );
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [phone, setPhone] = useState(localStorage.getItem('phone') || '');
+  const [fullName, setFullName] = useState('' || '');
+  const [email, setEmail] = useState('' || '');
+  const [phone, setPhone] = useState('' || '');
 
-  // Save data to local storage when inputs change
-  useEffect(() => {
-    localStorage.setItem('fullName', fullName);
-    localStorage.setItem('email', email);
-    localStorage.setItem('phone', phone);
-  }, [fullName, email, phone]);
-
+  // // Save data to local storage when inputs change
+  // useEffect(() => {
+  //   localStorage.setItem('fullName', fullName);
+  //   localStorage.setItem('email', email);
+  //   localStorage.setItem('phone', phone);
+  // }, [fullName, email, phone]);
 
   const handleSubmit = async () => {
     try {

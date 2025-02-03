@@ -7,7 +7,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../services/axiosInstance';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+let stripePromise;
+
+if (!stripePromise) {
+  try {
+    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+  } catch (error) {
+    console.warn('Stripe failed to load:', error);
+    stripePromise = null; // Prevent further errors
+  }
+}
 
 const OrderSummary = () => {
   const [loading, setLoading] = useState(false);
@@ -25,17 +34,19 @@ const OrderSummary = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const ticketId = localStorage.getItem("ticketId");
+    const ticketId = localStorage.getItem('ticketId');
 
-    console.log("Ticket ID FROM STORAGE:", ticketId, "Type:", typeof ticketId);
-    console.log("Ticket ID FROM STATE:", ticket_id, "Type:", typeof ticket_id);
-  
+    console.log('Ticket ID FROM STORAGE:', ticketId, 'Type:', typeof ticketId);
+    console.log('Ticket ID FROM STATE:', ticket_id, 'Type:', typeof ticket_id);
+
     // If the order ID exists in localStorage, check if payment was successful for this order
-    if (ticketId === ticket_id && localStorage.getItem(`paymentSuccess_${ticketId}`) === "true") {
-      navigate("/success", { replace: true });  // Redirect to Success Page
+    if (
+      ticketId === ticket_id &&
+      localStorage.getItem(`paymentSuccess_${ticketId}`) === 'true'
+    ) {
+      navigate('/success', { replace: true }); // Redirect to Success Page
     }
   });
-  
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -56,15 +67,21 @@ const OrderSummary = () => {
       const sessionId = response.data.session.id;
       const ticketId = response.data.session.metadata.ticket_id;
 
-      localStorage.setItem("paymentSessionId", sessionId);
-      localStorage.setItem("ticketId", ticketId);
+      localStorage.setItem('paymentSessionId', sessionId);
+      localStorage.setItem('ticketId', ticketId);
 
       // Redirect to Stripe Checkout
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId: sessionId });
     } catch (error) {
-      console.error('Error Generating Payment Session (Error):', error.response?.data?.error);
-      console.error('Error Generating Payment Session (Message):', error.response?.data?.message);
+      console.error(
+        'Error Generating Payment Session (Error):',
+        error.response?.data?.error
+      );
+      console.error(
+        'Error Generating Payment Session (Message):',
+        error.response?.data?.message
+      );
 
       setErrorMessage(
         error.response?.data?.message || 'An error occurred. Please try again.'
@@ -157,6 +174,6 @@ const OrderSummary = () => {
       </div>
     </div>
   );
-}
+};
 
 export default OrderSummary;

@@ -9,7 +9,7 @@ import '../styles/ProfilePage.css';
 import { useAuth } from '../context/AuthContext';
 
 const Account = () => {
-  const { userData, setUserData, userRole } = useAuth();
+  const { userData, setUserData, userRole, userId } = useAuth();
   const [user, setUser] = useState({
     first_name: userData.first_name,
     last_name: userData.last_name,
@@ -20,6 +20,7 @@ const Account = () => {
   const [editingField, setEditingField] = useState(null);
   const [updatedUser, setUpdatedUser] = useState(userData);
   const [loading, setLoading] = useState(false);
+  const [loadingFields, setLoadingFields] = useState({});
 
   // if (!userData) {
   //   return (
@@ -52,7 +53,7 @@ const Account = () => {
   };
 
   const handleSave = async () => {
-    setLoading(true);
+    setLoadingFields((prev) => ({ ...prev, [editingField]: true }));
     try {
       const apiEndPoint =
         userRole === 'Organizer'
@@ -63,10 +64,10 @@ const Account = () => {
       setUser(updatedUser);
       setUserData(updatedUser);
       setEditingField(null);
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-      setLoading(false);
     } catch (error) {
       console.error('Error updating user:', error);
+    } finally {
+      setLoadingFields((prev) => ({ ...prev, [editingField]: false }));
     }
   };
 
@@ -87,19 +88,19 @@ const Account = () => {
             <h5 className="text-center p-2">Account Settings</h5>
             <div className="list-group">
               <Link
-                to="/profile"
+                to={`/${userRole.toLowerCase()}/${userId}/profile`}
                 className="list-group-item list-group-item-action active"
               >
                 Account Info
               </Link>
               <Link
-                to="/change-email"
+                to={`/${userRole.toLowerCase()}/${userId}/change-email`}
                 className="list-group-item list-group-item-action"
               >
                 Change Email
               </Link>
               <Link
-                to="/change-password"
+                to={`/${userRole.toLowerCase()}/${userId}/change-password`}
                 className="list-group-item list-group-item-action"
               >
                 Password
@@ -146,7 +147,7 @@ const Account = () => {
                       )}
                     </Col>
                     <Col md={2}>
-                      {loading ? (
+                      {loadingFields[field] ? (
                         <Spinner
                           as="span"
                           animation="border"
@@ -174,7 +175,7 @@ const Account = () => {
                           style={{ cursor: 'pointer' }}
                         />
                       ) : (
-                        '' // Display non-editable fields as plain text
+                        ''
                       )}
                     </Col>
                   </Row>
