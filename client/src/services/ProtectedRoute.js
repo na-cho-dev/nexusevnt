@@ -8,12 +8,12 @@ const ProtectedRoute = ({
   requiredRoles = [],
   ...rest
 }) => {
-  const { isLoggedIn, userData } = useAuth()
+  const { isLoggedIn, userData } = useAuth();
 
   console.log('isLoggedIn:', isLoggedIn);
   console.log('userData:', userData);
 
-  // ✅ Ensure auth state is fully loaded
+  // Ensure auth state is fully loaded
   if (isLoggedIn === undefined) {
     return (
       <div
@@ -25,23 +25,23 @@ const ProtectedRoute = ({
     );
   }
 
-  // ✅ Redirect to login if not logged in
+  // Redirect to login if not logged in
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
 
-  // ✅ Handle missing userData gracefully
+  // Handle missing userData gracefully
   if (!userData) {
     console.error('User data is missing, redirecting to login.');
     return <Navigate to="/login" />;
   }
 
-  // ✅ Redirect to unauthorized page if role does not match
+  // Redirect to unauthorized page if role does not match
   if (requiredRoles.length > 0 && !requiredRoles.includes(userData?.role)) {
     return <Navigate to="/unauthorized" />;
   }
 
-  // ✅ If everything is fine, render the component
+  // If everything is fine, render the component
   return <Component {...rest} />;
 };
 

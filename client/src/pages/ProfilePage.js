@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Card, Form, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
-import axiosInstance from "../services/axiosInstance";
-import ImageUpload from "../components/common/ImageButton";
-import Footer from "../components/layout/Footer";
-import "../styles/ProfilePage.css";
-import { useAuth } from "../context/AuthContext";
+import React, { useState, useEffect } from 'react';
+import { Card, Form, Row, Col, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import axiosInstance from '../services/axiosInstance';
+import ImageUpload from '../components/common/ImageButton';
+import Footer from '../components/layout/Footer';
+import '../styles/ProfilePage.css';
+import { useAuth } from '../context/AuthContext';
 
 const Account = () => {
   const { userData, setUserData, userRole } = useAuth();
@@ -17,9 +17,18 @@ const Account = () => {
     phone_number: userData.phone_number,
     role: userData.role,
   });
-
   const [editingField, setEditingField] = useState(null);
   const [updatedUser, setUpdatedUser] = useState(userData);
+  const [loading, setLoading] = useState(false);
+
+  // if (!userData) {
+  //   return (
+  //     <div className="loading-screen">
+  //       <Spinner animation="border" variant="primary" />
+  //       Loading profile...
+  //     </div>
+  //   );
+  // }
 
   // useEffect(() => {
   //   const fetchUser = async () => {
@@ -43,15 +52,21 @@ const Account = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     try {
-      const apiEndPoint = userRole === "Organizer" ? `/api/organizer/${userData._id}` : `/api/attendee/${userData._id}`;
+      const apiEndPoint =
+        userRole === 'Organizer'
+          ? `/api/organizer/${userData._id}`
+          : `/api/attendee/${userData._id}`;
       const response = await axiosInstance.put(apiEndPoint, updatedUser);
-      console.log("Updated User:", response.data)
+      console.log('Updated User:', response.data);
       setUser(updatedUser);
-      setUserData(updatedUser)
+      setUserData(updatedUser);
       setEditingField(null);
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      setLoading(false);
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error('Error updating user:', error);
     }
   };
 
@@ -65,24 +80,36 @@ const Account = () => {
       <div className="">
         <div className="d-flex">
           {/* Left Sidebar */}
-          <div className="bg-body-secondary pt-5 p-3" style={{ width: "280px" }}>
+          <div
+            className="bg-body-secondary pt-5 p-3"
+            style={{ width: '280px' }}
+          >
             <h5 className="text-center p-2">Account Settings</h5>
             <div className="list-group">
-              <Link to="/profile" className="list-group-item list-group-item-action active">
+              <Link
+                to="/profile"
+                className="list-group-item list-group-item-action active"
+              >
                 Account Info
               </Link>
-              <Link to="/change-email" className="list-group-item list-group-item-action">
+              <Link
+                to="/change-email"
+                className="list-group-item list-group-item-action"
+              >
                 Change Email
               </Link>
-              <Link to="/change-password" className="list-group-item list-group-item-action">
+              <Link
+                to="/change-password"
+                className="list-group-item list-group-item-action"
+              >
                 Password
               </Link>
             </div>
           </div>
 
           {/* Main Profile Content */}
-          <div className="mt-4" style={{ width: "calc(100% - 280px)" }}>
-            <div className="p-4" style={{ width: "100%" }}>
+          <div className="mt-4" style={{ width: 'calc(100% - 280px)' }}>
+            <div className="p-4" style={{ width: '100%' }}>
               <h4>Account Information</h4>
               <hr />
 
@@ -97,37 +124,61 @@ const Account = () => {
                 <h5 className="mb-3 mt-5">Profile Information</h5>
 
                 {[
-                  { label: "First Name", field: "first_name" },
-                  { label: "Last Name", field: "last_name" },
-                  { label: "Phone Number", field: "phone_number" },
-                  { label: "Email", field: "email", editable: false }, // Non-editable
-                  { label: "Role", field: "role", editable: false },   // Non-editable
+                  { label: 'First Name', field: 'first_name' },
+                  { label: 'Last Name', field: 'last_name' },
+                  { label: 'Phone Number', field: 'phone_number' },
+                  { label: 'Email', field: 'email', editable: false }, // Non-editable
+                  { label: 'Role', field: 'role', editable: false }, // Non-editable
                 ].map(({ label, field, editable = true }) => (
                   <Row className="mb-3 align-items-center" key={field}>
-                    <Col md={3}><strong>{label}:</strong></Col>
+                    <Col md={3}>
+                      <strong>{label}:</strong>
+                    </Col>
                     <Col md={7}>
                       {editable && editingField === field ? (
-                        <Form.Control type="text" value={updatedUser[field]} onChange={handleChange} />
+                        <Form.Control
+                          type="text"
+                          value={updatedUser[field]}
+                          onChange={handleChange}
+                        />
                       ) : (
-                        <p>{user[field] || "Click edit"}</p>
+                        <p>{user[field] || 'Click edit'}</p>
                       )}
                     </Col>
                     <Col md={2}>
-                      {editable && editingField === field ? (
+                      {loading ? (
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      ) : editable && editingField === field ? (
                         <>
-                          <FaCheck className="text-success" onClick={handleSave} style={{ cursor: "pointer" }} />
-                          <FaTimes className="text-danger ms-2" onClick={handleCancel} style={{ cursor: "pointer" }} />
+                          <FaCheck
+                            className="text-success"
+                            onClick={handleSave}
+                            style={{ cursor: 'pointer' }}
+                          />
+                          <FaTimes
+                            className="text-danger ms-2"
+                            onClick={handleCancel}
+                            style={{ cursor: 'pointer' }}
+                          />
                         </>
-                      ) : !editable ? (
-                        "" // Display non-editable fields as plain text
+                      ) : editable ? (
+                        <FaEdit
+                          className="text-primary"
+                          onClick={() => handleEdit(field)}
+                          style={{ cursor: 'pointer' }}
+                        />
                       ) : (
-                        <FaEdit className="text-primary" onClick={() => handleEdit(field)} style={{ cursor: "pointer" }} />
+                        '' // Display non-editable fields as plain text
                       )}
                     </Col>
                   </Row>
                 ))}
-
-
               </Form>
             </div>
           </div>

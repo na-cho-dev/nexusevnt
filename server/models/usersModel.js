@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Last Name is required'],
       trim: true,
     },
+    profile_img: {
+      data: { type: Buffer },
+      mimeType: { type: String },
+    },
     email: {
       type: String,
       unique: true,

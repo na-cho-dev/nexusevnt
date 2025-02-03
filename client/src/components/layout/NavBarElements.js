@@ -8,8 +8,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../services/axiosInstance';
+import { useAuth } from '../../context/AuthContext';
 
 function NavMenu() {
+  const { userId, userRole } = useAuth();
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useContext(AuthContext);
 
@@ -65,7 +67,10 @@ function NavMenu() {
             <Nav>
               {isLoggedIn ? (
                 <>
-                  <Nav.Link href="/profile" className="nav-elements">
+                  <Nav.Link
+                    href={`/${userRole.toLowerCase()}/${userId}/profile`}
+                    className="nav-elements"
+                  >
                     Profile
                   </Nav.Link>
                   <Nav.Link href="/create-event" className="nav-elements">

@@ -9,9 +9,16 @@ import {
 } from '../../controllers/eventsController.js';
 import verifyJWTMiddleware from '../../middlwares/verifyJWTMiddleware.js';
 import { roleMiddleware } from '../../middlwares/roleMiddleware.js';
-import upload from '../../middlwares/multerMiddleware.js';
+import { eventImgUpload } from '../../middlwares/multerMiddleware.js';
 
-router.route('/create-event').post(verifyJWTMiddleware, roleMiddleware(['Organizer']), upload.single('banner'), createEvent);
+router
+  .route('/create-event')
+  .post(
+    verifyJWTMiddleware,
+    roleMiddleware(['Organizer']),
+    eventImgUpload,
+    createEvent
+  );
 router.route('/events').get(getEvents);
 router
   .route('/events/:event_id')

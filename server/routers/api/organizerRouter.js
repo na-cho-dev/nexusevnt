@@ -6,12 +6,13 @@ import {
   updateOrganizer,
   deleteOrganizer,
 } from '../../controllers/organizerController.js';
+import { profileImgUpload } from '../../middlwares/multerMiddleware.js';
 
 router.route('/organizers').get(getOrganizers);
 router
   .route('/organizer/:id')
   .get(getOrganizer)
-  .put(updateOrganizer)
+  .put(profileImgUpload, updateOrganizer)
   .delete(deleteOrganizer);
 
 export default router;

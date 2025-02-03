@@ -44,7 +44,7 @@ function App() {
             <Route path="/success" element={<Success />} />
 
             <Route
-              path="/profile"
+              path="/:user_type/:user_id/profile"
               element={
                 <ProtectedRoute
                   element={Profile}
@@ -52,6 +52,15 @@ function App() {
                 />
               }
             />
+            {/* <Route
+              path="/:user_type/:attendee_id/profile"
+              element={
+                <ProtectedRoute
+                  element={Profile}
+                  requiredRoles={['Attendee', 'Organizer']}
+                />
+              }
+            /> */}
             <Route
               path="/event/:event_id/booking"
               element={
@@ -98,7 +107,7 @@ function App() {
               }
             />
             <Route
-              path="/change-password"
+              path="/:user_type/:user_id/change-password"
               element={
                 <ProtectedRoute
                   element={Password}
@@ -107,7 +116,7 @@ function App() {
               }
             />
             <Route
-              path="/change-email"
+              path="/:user_type/:user_id/change-email"
               element={
                 <ProtectedRoute
                   element={Email}

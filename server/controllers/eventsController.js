@@ -104,12 +104,10 @@ export const getEvents = async (req, res) => {
       };
     });
 
-    res
-      .status(200)
-      .json({
-        message: 'Fetched events successfully',
-        events: formattedEvents,
-      });
+    res.status(200).json({
+      message: 'Fetched events successfully',
+      events: formattedEvents,
+    });
   } catch (error) {
     res
       .status(500)

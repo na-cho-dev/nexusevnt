@@ -44,7 +44,7 @@ const SignIn = () => {
       localStorage.setItem('accessToken', accessToken);
       // setSuccess(response.data.message || "Logged In Successfully");
       login(accessToken, currentUser);
-      navigate('/profile'); // Redirect to the Home page
+      navigate(`/${currentUser.role.toLowerCase()}/${currentUser._id}/profile`); // Redirect to the Home page
     } catch (error) {
       console.error(
         'Login failed:',
@@ -133,7 +133,12 @@ const SignIn = () => {
                   {errorMessage && (
                     <p className="text-danger">{errorMessage}</p>
                   )}
-                  <Button type="submit" variant="dark" className="w-100" disabled={loading}>
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="w-100"
+                    disabled={loading}
+                  >
                     {loading ? (
                       <Spinner
                         as="span"

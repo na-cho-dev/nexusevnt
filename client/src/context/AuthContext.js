@@ -12,28 +12,45 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('accessToken'));
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('userData');
+    const token = localStorage.getItem('accessToken');
 
-    if (token && storedUser) {
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    const decoded = jwtDecode(token);
+    const jwtUserRole = decoded.role;
+
+    if (!jwtUserRole) {
+      throw new Error('Role not found in token');
+    }
+
+    const fetchUserData = async () => {
       try {
-        const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
+        const apiEndPoint =
+          jwtUserRole === 'Organizer'
+            ? `/api/organizer/${decoded.id}`
+            : `/api/attendee/${decoded.id}`;
+
+        const response = await axiosInstance.get(apiEndPoint);
+        const storedUser = response.data;
 
         if (decoded.exp > currentTime + 300) {
           setIsLoggedIn(true);
-          const parsedUser = JSON.parse(storedUser);
+          const user_role = jwtUserRole.toLowerCase();
 
-          // ✅ Ensure userData is set correctly
-          setUserRole(parsedUser?.role || null);
-          setUserId(parsedUser?._id || null);
-          setUserData(parsedUser || null);
-          return;
+          setUserRole(storedUser[user_role].role || null);
+          setUserId(storedUser[user_role]._id || null);
+          setUserData(storedUser[user_role] || null);
         }
       } catch (error) {
         console.error('Invalid token:', error);
       }
-    }
-    setIsLoggedIn(false);
+    };
+
+    fetchUserData();
   }, [token]);
 
   const checkToken = async () => {
@@ -43,7 +60,6 @@ export const AuthProvider = ({ children }) => {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
 
-      // ✅ Refresh token only if it's about to expire (less than 5 mins remaining)
       if (decoded.exp > currentTime + 300) {
         console.log('Token is still valid, no refresh needed.');
         return;
@@ -63,6 +79,7 @@ export const AuthProvider = ({ children }) => {
         error.response?.data?.message || error.message
       );
       logout();
+      setIsLoggedIn(false);
     }
   };
 
@@ -78,7 +95,6 @@ export const AuthProvider = ({ children }) => {
     setToken(accessToken);
 
     localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('userData', JSON.stringify(currentUser));
   };
 
   const logout = () => {
@@ -89,13 +105,33 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
 
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('userData');
-    localStorage.removeItem("paymentSuccess");
+    localStorage.removeItem('ticketId');
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('paymentSuccess_')) {
+        localStorage.removeItem(key);
+      }
+    });
   };
+
+  // Log updated values in a separate useEffect
+  useEffect(() => {
+    console.log('User Data:', userData);
+    console.log('User Role:', userRole);
+    console.log('User ID:', userId);
+  }, [userData, userRole, userId]);
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userRole, userId, userData, setUserData, token, login, logout }}
+      value={{
+        isLoggedIn,
+        userRole,
+        userId,
+        userData,
+        setUserData,
+        token,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

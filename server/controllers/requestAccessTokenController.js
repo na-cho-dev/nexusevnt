@@ -30,7 +30,12 @@ const requestAccessTokenController = async (req, res) => {
         let tokenVersion = await redisClient.incr(tokenVersionKey);
 
         const accessToken = jwt.sign(
-          { email: decoded.email, tokenVersion },
+          {
+            id: decoded.id,
+            email: decoded.email,
+            role: decoded.role,
+            tokenVersion,
+          },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: '30s' }
         );
