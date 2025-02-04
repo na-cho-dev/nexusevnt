@@ -33,11 +33,18 @@ const Email = () => {
         userRole === 'Organizer'
           ? `/api/organizer/${userData._id}`
           : `/api/attendee/${userData._id}`;
-      const response = await axiosInstance.put(apiEndPoint, userData);
-      console.log('Updated User:', response.data);
+      const response = await axiosInstance.put(apiEndPoint, {
+        email: newEmail,
+      });
+      console.log('Updated User:', response.data[userRole.toLowerCase()]);
+
       setUserData({ ...userData, email: newEmail }); // Update user context
       setSuccess('Email updated successfully.');
     } catch (err) {
+      console.error(
+        'Error updating email:',
+        err.response.data.error || err.message.data.message
+      );
       setError('Failed to update email. Please try again.');
     } finally {
       setLoading(false);

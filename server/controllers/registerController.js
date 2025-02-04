@@ -5,7 +5,14 @@ const registerController = async (req, res) => {
   const { first_name, last_name, email, phone_number, role, password } =
     req.body;
 
-  const userData = { first_name, last_name, email, phone_number, role, password };
+  const userData = {
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    role,
+    password,
+  };
 
   // Validate user input
   try {
@@ -17,8 +24,7 @@ const registerController = async (req, res) => {
       }
     }
 
-    const isValidEmail = (email) =>
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValidEmail(userData.email)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
@@ -46,7 +52,6 @@ const registerController = async (req, res) => {
       .json({ message: 'Error validating user input', error: error.message });
   }
 
-  
   try {
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {

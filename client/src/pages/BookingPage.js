@@ -75,9 +75,9 @@ const Booking = () => {
         formData
       );
 
-      // console.log('Response:', response);
-      // console.log('Ticket data:', response.data);
-      // console.log('Ticket:', response.data.ticket);
+      console.log('Response:', response);
+      console.log('Ticket data:', response.data);
+      console.log('Ticket:', response.data.ticket);
 
       const ticket_data = response.data.ticket;
 
@@ -121,30 +121,30 @@ const Booking = () => {
         <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="light"
-              id="dropdown-basic"
-              className="btn-dropdown"
-            >
-              {ticketType}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {Object.keys(ticketPrices).map((type) => (
-                <Dropdown.Item
-                  key={type}
-                  onClick={() => setTicketType(type)}
-                  disabled={
-                    (event.event_type === 'Free' && type !== 'Regular Ticket') || 
-                    (event.event_type === 'Paid' && !ticketPrices[type]) // Disable if not available
-                  }
-                >
-                  {type}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="light"
+                id="dropdown-basic"
+                className="btn-dropdown"
+              >
+                {ticketType}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {Object.keys(ticketPrices).map((type) => (
+                  <Dropdown.Item
+                    key={type}
+                    onClick={() => setTicketType(type)}
+                    disabled={
+                      (event.event_type === 'Free' &&
+                        type !== 'Regular Ticket') ||
+                      (event.event_type === 'Paid' && !ticketPrices[type]) // Disable if not available
+                    }
+                  >
+                    {type}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </Card.Header>
           <Card.Body>
             <Row className="align-items-center">

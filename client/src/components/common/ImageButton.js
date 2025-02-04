@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Button, Form, Image, Spinner } from 'react-bootstrap';
 import '../../styles/ImageButton.css';
 import Camera from '../../images/camera.png';
 import axiosInstance from '../../services/axiosInstance';
@@ -164,7 +164,19 @@ const ImageUpload = () => {
             <span
               style={{ fontSize: '14px', color: '#888', textAlign: 'center' }}
             >
-              No Image Selected
+              {imageSrc === null ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : !imageSrc ? (
+                'No Image Selected'
+              ) : (
+                ''
+              )}
             </span>
           </div>
         )}

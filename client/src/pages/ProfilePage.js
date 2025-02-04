@@ -62,10 +62,15 @@ const Account = () => {
       const response = await axiosInstance.put(apiEndPoint, updatedUser);
       console.log('Updated User:', response.data);
       setUser(updatedUser);
-      setUserData(updatedUser);
+      // setUserData(updatedUser);
       setEditingField(null);
     } catch (error) {
       console.error('Error updating user:', error);
+      console.error(
+        'Error updating user (Server):',
+        error.response.data.error,
+        error.response.data.message
+      );
     } finally {
       setLoadingFields((prev) => ({ ...prev, [editingField]: false }));
     }

@@ -62,6 +62,10 @@ export const updateAttendee = async (req, res) => {
     if (!attendee)
       return res.status(404).json({ message: 'Attendee does not exist' });
 
+    if (!req.file && attendee.profile_img) {
+      updatedFields.profile_img = attendee.profile_img;
+    }
+
     // Profile Image Edit
     if (req.file) {
       updatedFields.profile_img = {

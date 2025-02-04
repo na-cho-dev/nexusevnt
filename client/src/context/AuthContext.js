@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }) => {
     const decoded = jwtDecode(token);
     const jwtUserRole = decoded.role;
 
+    console.log('JWT Decoded:', decoded);
+
     if (!jwtUserRole) {
       throw new Error('Role not found in token');
     }

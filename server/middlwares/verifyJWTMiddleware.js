@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
 import User from '../models/usersModel.js';
 import redisClient from '../database/redisDBConnect.js';
 
@@ -49,12 +49,23 @@ const verifyJWT = async (req, res, next) => {
       async (err, decoded) => {
         if (err) return res.status(403).json({ message: 'Invalid Token' });
 
-        const user = await User.findOne({ email: decoded.email });
+        console.log(
+          'User ID From JWT:',
+          decoded.id,
+          'Type of ID:',
+          typeof decoded.id
+        );
+
+        const user = await User.findOne({ _id: decoded.id });
         if (!user) {
-          return res.status(404).json({ message: 'User not found' });
+          return res.status(404).json({
+            message: 'VerifyJWT: User not found.',
+          });
         }
 
         req.user = user; // Attach user to the request
+        // console.log("User In Verify JWT:", req.user)
+        req.check = true;
         next();
       }
     );

@@ -15,6 +15,10 @@ function NavMenu() {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useContext(AuthContext);
 
+  if (isLoggedIn === undefined) {
+    return '';
+  }
+
   const logoutRedirect = async () => {
     try {
       const response = await axiosInstance.post('/auth/logout', {
