@@ -22,6 +22,7 @@ import { AuthProvider } from './context/AuthContext';
 import NavMenu from './components/layout/NavBarElements';
 import EventDetails from './components/event/EventDetails';
 import Unauthorized from './components/common/Unauthorized';
+import UserTickets from './components/common/UserTickets';
 import Success from './pages/SuccessPage';
 
 function App() {
@@ -52,15 +53,15 @@ function App() {
                 />
               }
             />
-            {/* <Route
-              path="/:user_type/:attendee_id/profile"
+            <Route
+              path="/:user_type/:attendee_id/tickets"
               element={
                 <ProtectedRoute
-                  element={Profile}
+                  element={UserTickets}
                   requiredRoles={['Attendee', 'Organizer']}
                 />
               }
-            /> */}
+            />
             <Route
               path="/event/:event_id/booking"
               element={

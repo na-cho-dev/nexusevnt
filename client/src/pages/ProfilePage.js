@@ -99,6 +99,12 @@ const Account = () => {
                 Account Info
               </Link>
               <Link
+              to={`/${userRole.toLowerCase()}/${userId}/tickets`}
+              className="list-group-item list-group-item-action"
+            >
+              My Tickets
+            </Link>
+              <Link
                 to={`/${userRole.toLowerCase()}/${userId}/change-email`}
                 className="list-group-item list-group-item-action"
               >

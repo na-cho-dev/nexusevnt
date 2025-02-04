@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/BookingPage.css';
 import {
   Card,
@@ -35,6 +35,8 @@ const Booking = () => {
       </p>
     );
   }
+
+  console.log(event.ticket_tiers)
 
   const ticketPrices = {
     'Select Ticket': 0,
@@ -121,7 +123,7 @@ const Booking = () => {
         <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">
-            <Dropdown>
+            {/* <Dropdown>
               <Dropdown.Toggle
                 variant="light"
                 id="dropdown-basic"
@@ -130,19 +132,34 @@ const Booking = () => {
                 {ticketType}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {Object.keys(ticketPrices).map((type) => (
+                {event.ticket_tiers.map(({ type, price }) => (
                   <Dropdown.Item
                     key={type}
                     onClick={() => setTicketType(type)}
                     disabled={
                       (event.event_type === 'Free' &&
-                        type !== 'Regular Ticket') ||
+                        type !== 'Regular') ||
                       (event.event_type === 'Paid' && !ticketPrices[type]) // Disable if not available
                     }
                   >
                     {type}
                   </Dropdown.Item>
                 ))}
+              </Dropdown.Menu>
+            </Dropdown> */}
+            <Dropdown>
+              <Dropdown.Toggle variant="light" id="dropdown-basic" className="btn-dropdown">
+                {ticketType}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+              {event.ticket_tiers.map(({ tier_type }, index) => (
+                <Dropdown.Item
+                  key={`${tier_type}-${index}`}
+                  onClick={() => setTicketType(tier_type)}
+                >
+                  {tier_type}
+                </Dropdown.Item>
+              ))}
               </Dropdown.Menu>
             </Dropdown>
           </Card.Header>

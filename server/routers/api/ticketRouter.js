@@ -3,7 +3,7 @@ const router = express.Router();
 import {
   createTicket,
   getEventTickets,
-  getAttendeeTickets,
+  getUserTickets,
   getTicket,
   getAvailableTickets,
   deleteTicket,
@@ -24,8 +24,9 @@ router
   .route('/events/:event_id/available-tickets')
   .get(roleMiddleware(['Organizer']), getAvailableTickets);
 
-// Get Attendee Tickets
-router.route('/attendee/:attendee_id/tickets').get(getAttendeeTickets);
+// Get User Tickets
+router.route('/attendee/:attendee_id/tickets').get(verifyJWT, getUserTickets);
+router.route('/organizer/:organizer_id/tickets').get(verifyJWT, getUserTickets);
 
 // Single Ticket Operations
 router.route('/tickets/:ticket_id').get(getTicket).delete(deleteTicket);

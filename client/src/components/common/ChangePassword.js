@@ -48,7 +48,7 @@ const Password = () => {
 
   return (
     <div className="main-profile-container">
-      <div className="d-flex">
+      <div className="d-flex" style={{ minHeight: 'calc(100vh - 300px)' }}>
         {/* <NavMenu /> */}
 
         <div className="bg-body-secondary pt-5 p-3" style={{ width: '280px' }}>
@@ -59,6 +59,12 @@ const Password = () => {
               className="list-group-item list-group-item-action"
             >
               Account Info
+            </Link>
+            <Link
+              to={`/${userRole.toLowerCase()}/${userId}/tickets`}
+              className="list-group-item list-group-item-action"
+            >
+              My Tickets
             </Link>
             <Link
               to={`/${userRole.toLowerCase()}/${userId}/change-email`}
