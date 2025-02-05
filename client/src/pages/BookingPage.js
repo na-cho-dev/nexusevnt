@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../styles/BookingPage.css';
 import {
   Card,
@@ -11,7 +11,6 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import Close from '../components/common/CloseButton';
-// import NavMenu from "../components/layout/NavBarElements";
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 
@@ -36,16 +35,14 @@ const Booking = () => {
     );
   }
 
-  console.log(event.ticket_tiers)
+  console.log("Event Ticket Tiers:", event.ticket_tiers);
 
-  const ticketPrices = {
-    'Select Ticket': 0,
-    Regular: event.ticket_tiers[0].tier_price,
-    VIP: event.ticket_tiers[1]?.tier_price,
-    VVIP: event.ticket_tiers[2]?.tier_price,
-  };
+  // Find the selected ticket tier dynamically
+  const selectedTier = event.ticket_tiers.find(tier => tier.tier_type === ticketType);
+  const pricePerTicket = selectedTier ? selectedTier.tier_price : 0;
 
-  const pricePerTicket = ticketPrices[ticketType];
+  console.log("Selected Ticket Type:", ticketType);
+  console.log("Price Per Ticket:", pricePerTicket);
 
   const increment = () => {
     setQuantity(quantity + 1);
@@ -57,7 +54,7 @@ const Booking = () => {
     }
   };
 
-  const total = (quantity * pricePerTicket).toFixed(2);
+  const total = ((quantity || 0) * pricePerTicket).toFixed(2);
 
   // Handle form submission for creating a ticket
   const handleSubmit = async (e) => {
@@ -69,17 +66,11 @@ const Booking = () => {
       formData.append('tier_type', ticketType);
       formData.append('quantity', quantity);
 
-      // console.log(`Form Data: ${formData}`);
-
       // API request
       const response = await axiosInstance.post(
         `/api/events/${event_id}/create-ticket`,
         formData
       );
-
-      console.log('Response:', response);
-      console.log('Ticket data:', response.data);
-      console.log('Ticket:', response.data.ticket);
 
       const ticket_data = response.data.ticket;
 
@@ -87,8 +78,8 @@ const Booking = () => {
         total,
         order_id: ticket_data.order_id,
         ticket_id: ticket_data._id,
-        full_name: ticket_data.attendee_full_name,
-        email: ticket_data.attendee_email,
+        full_name: ticket_data.user_full_name,
+        email: ticket_data.user_email,
         ticket_price: pricePerTicket,
         quantity,
       };
@@ -105,13 +96,12 @@ const Booking = () => {
         error.response?.data?.message || 'An error occurred. Please try again.'
       );
     } finally {
-      setLoading(false); // Reset loading state after the request completes
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      {/* <NavMenu /> */}
       <div
         className="ticket-section"
         style={{
@@ -123,43 +113,19 @@ const Booking = () => {
         <Card className="ticket-container">
           <Close />
           <Card.Header className="h3">
-            {/* <Dropdown>
-              <Dropdown.Toggle
-                variant="light"
-                id="dropdown-basic"
-                className="btn-dropdown"
-              >
-                {ticketType}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {event.ticket_tiers.map(({ type, price }) => (
-                  <Dropdown.Item
-                    key={type}
-                    onClick={() => setTicketType(type)}
-                    disabled={
-                      (event.event_type === 'Free' &&
-                        type !== 'Regular') ||
-                      (event.event_type === 'Paid' && !ticketPrices[type]) // Disable if not available
-                    }
-                  >
-                    {type}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown> */}
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic" className="btn-dropdown">
                 {ticketType}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-              {event.ticket_tiers.map(({ tier_type }, index) => (
-                <Dropdown.Item
-                  key={`${tier_type}-${index}`}
-                  onClick={() => setTicketType(tier_type)}
-                >
-                  {tier_type}
-                </Dropdown.Item>
-              ))}
+                {event.ticket_tiers.map(({ tier_type }, index) => (
+                  <Dropdown.Item
+                    key={`${tier_type}-${index}`}
+                    onClick={() => setTicketType(tier_type)}
+                  >
+                    {tier_type}
+                  </Dropdown.Item>
+                ))}
               </Dropdown.Menu>
             </Dropdown>
           </Card.Header>
