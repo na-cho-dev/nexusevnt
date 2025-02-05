@@ -28,8 +28,8 @@ To get a local copy of NexusEvnt up and running, follow these steps:
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (version X.X.X or higher)
-- [npm](https://www.npmjs.com/) (version X.X.X or higher)
+- [Node.js](https://nodejs.org/) 
+- [npm](https://www.npmjs.com/)
 
 ### Installation
 
