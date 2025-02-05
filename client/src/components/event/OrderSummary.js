@@ -24,20 +24,24 @@ const OrderSummary = () => {
   const location = useLocation();
   const full_name = location.state?.full_name;
   const email = location.state?.email;
-  const subTotal = location.state?.total;
+  let subTotal = location.state?.total;
   const ticket_price = location.state?.ticket_price;
   const quantity = location.state?.quantity;
   const order_id = location.state?.order_id;
   const ticket_id = location.state?.ticket_id;
-  const tax = 14;
-  const total = Number(subTotal) + tax;
   const navigate = useNavigate();
+
+
+  subTotal = Number(subTotal);
+  const taxRate = 0.07; // 7% tax
+  const tax = Math.round(subTotal * taxRate);
+  const total = subTotal + tax;
 
   useEffect(() => {
     const ticketId = localStorage.getItem('ticketId');
 
-    console.log('Ticket ID FROM STORAGE:', ticketId, 'Type:', typeof ticketId);
-    console.log('Ticket ID FROM STATE:', ticket_id, 'Type:', typeof ticket_id);
+//     console.log('Ticket ID FROM STORAGE:', ticketId, 'Type:', typeof ticketId);
+//     console.log('Ticket ID FROM STATE:', ticket_id, 'Type:', typeof ticket_id);
 
     // If the order ID exists in localStorage, check if payment was successful for this order
     if (
@@ -54,7 +58,7 @@ const OrderSummary = () => {
     setLoading(true);
 
     try {
-      // console.log('ticket_id:', ticket_id, 'Type:', typeof ticket_id);
+//       // console.log('ticket_id:', ticket_id, 'Type:', typeof ticket_id);
 
       const formData = new FormData();
       formData.append('ticket_id', ticket_id);
