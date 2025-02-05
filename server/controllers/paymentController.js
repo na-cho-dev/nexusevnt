@@ -8,14 +8,14 @@ const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 export const createPaymentSession = async (req, res) => {
   const { ticket_id } = req.body;
 
-  // console.log('Received ticket_id:', ticket_id, 'Type:', typeof ticket_id);
+   // console.log('Received ticket_id:', ticket_id, 'Type:', typeof ticket_id);
 
   try {
     const ticket = await Ticket.findById(ticket_id);
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
 
-    // console.log('Ticket Data:', ticket);
-    // console.log('Event ID:', ticket.event_id, 'Type:', typeof ticket.event_id);
+     // console.log('Ticket Data:', ticket);
+     // console.log('Event ID:', ticket.event_id, 'Type:', typeof ticket.event_id);
 
     const event = await Event.findById(ticket.event_id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -35,13 +35,19 @@ export const createPaymentSession = async (req, res) => {
       return res.status(400).json({ message: 'Not enough tickets available' });
     }
 
-    // Calculate total price (NOT NEEDED)
-    const totalAmount = selectedTier.price * quantity * 100; // Convert to cents
-
     if (!ticket.event_id || !ticket.tier_type || !ticket.quantity) {
       return res.status(400).json({ message: 'Invalid ticket metadata' });
     }    
 
+    // Calculate total price (NOT NEEDED)
+    const total = selectedTier.tier_price * quantity; // Convert to cents
+    console.log("Total Amount For Strpe Checkout", total)
+    const taxRate = 0.07; // 7% tax
+    const tax = Math.round(total * taxRate); // Calculate tax in cents
+    const total_calculated_plus_tax = total + tax;
+
+     console.log("Amount To Pay + Tax", total_calculated_plus_tax);     
+     
     // console.log('CREATING STRIPE CHECKOUT SESSION...');
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
@@ -58,7 +64,18 @@ export const createPaymentSession = async (req, res) => {
           },
           quantity: quantity,
         },
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Tax',
+            },
+            unit_amount: tax * 100, // Price in cents
+          },
+          quantity: 1,
+        },
       ],
+      // automatic_tax: { enabled: true },
       mode: 'payment',
       // success_url: `http://localhost:3000/success`,
       success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -82,7 +99,7 @@ export const createPaymentSession = async (req, res) => {
 };
 
 export const handlePaymentSuccess = async (session) => {
-  console.log(`HANDLE PAYMENT SUCCESSS CALLED`);
+   //console.log(`HANDLE PAYMENT SUCCESSS CALLED`);
 
   const sessionDetails = session.metadata; // Retrieve metadata passed during session creation
   const { event_id, ticket_id, tier_type, quantity } = sessionDetails; // Extract metadata values
@@ -124,7 +141,7 @@ export const handlePaymentSuccess = async (session) => {
     await sessionDb.commitTransaction();
     sessionDb.endSession();
 
-    console.log('PAYMENT PROCESSED SUCCESSFULLY. (TICKET AND EVENT UPDATED)');
+//     console.log('PAYMENT PROCESSED SUCCESSFULLY. (TICKET AND EVENT UPDATED)');
   } catch (error) {
     // Rollback transaction in case of error
     await sessionDb.abortTransaction();

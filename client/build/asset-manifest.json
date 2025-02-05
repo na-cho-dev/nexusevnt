@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fe5a64f2.css",
+    "main.js": "/static/js/main.f98bc461.js",
+    "static/media/concert-festival.jpg": "/static/media/concert-festival.f05454de8629c67502ce.jpg",
+    "static/media/lantern-festival.jpg": "/static/media/lantern-festival.0c2980839fc3e9a4c04d.jpg",
+    "static/media/musician.jpg": "/static/media/musician.e8aaaa18f6390d5e60f3.jpg",
+    "static/media/concert.jpg": "/static/media/concert.b3521956b716f03d05dd.jpg",
+    "static/media/lantern.jpg": "/static/media/lantern.98a1ba52751a4138790c.jpg",
+    "static/media/male-2.jpg": "/static/media/male-2.cc4b82f510c1e50eb42c.jpg",
+    "static/media/fem-2.jpg": "/static/media/fem-2.a960399c5af71430fef8.jpg",
+    "static/media/fem-1.jpg": "/static/media/fem-1.af6a5136e3d9aa42d35f.jpg",
+    "static/media/male-1.jpg": "/static/media/male-1.80063ff923a16135f4de.jpg",
+    "static/media/wedding.jpg": "/static/media/wedding.c8c1c172e589b5eb3217.jpg",
+    "static/media/nightclub.jpg": "/static/media/nightclub.3f8b4c4de9d975a4545b.jpg",
+    "static/media/festival.jpg": "/static/media/festival.7b88a7aa97a469417f00.jpg",
+    "static/media/light.jpg": "/static/media/light.45af8c6d94f75c6afeae.jpg",
+    "static/media/nexus-lg.png": "/static/media/nexus-lg.93db001643ceba4850f2.png",
+    "index.html": "/index.html",
+    "main.fe5a64f2.css.map": "/static/css/main.fe5a64f2.css.map",
+    "main.f98bc461.js.map": "/static/js/main.f98bc461.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fe5a64f2.css",
+    "static/js/main.f98bc461.js"
+  ]
+}
