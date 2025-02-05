@@ -4,18 +4,24 @@
 
 This is a web-based platform that allows users, both Organizers and Attendees to:
 
+
 - Organizers: Create, manage and promote events.
 - Attendees: Browse, book and receive updates about events.
 
+
 ## Key Features:
+
 
 - Event creation with customizable details.
 - Secure booking system integrated with payments.
 - Real-time updates and notifications for attendees.
 
+
 ## Goal:
 
+
 Streamline event management while improving attendee experiences.
+
 
 ## API Features
 
@@ -27,6 +33,7 @@ Streamline event management while improving attendee experiences.
 
 ## HOW SETUP THE SERVER
 
+
 ### Clone the project github repository
 
 ```
@@ -37,15 +44,20 @@ npm install
 
 ### Install redis-cli
 
+
 ```
 sudo apt update && sudo apt install redis-tools
 sudo apt install redis-server
+sudo service redis-server start
 ```
+
 
 ### Configuration
 
+
 Create a .env file in the root directory and add your environment variables:
 You can create a random **ACCESS_TOKEN_SECRET** and **REFRESH_TOKEN_SECRET**.
+
 
 ```
 PORT=3300
@@ -62,10 +74,10 @@ STRIPE_WEBHOOK_SECRET=""
 ### Running The Server
 
 **Developement Server**
-
 ```
 npm run dev
 ```
+
 
 **Production Server**
 
@@ -73,9 +85,8 @@ npm run dev
 npm start
 ```
 
-## API ENDPOINTS
 
-## API Endpoints
+## API ENDPOINTS
 
 ### User Authentication
 
@@ -86,6 +97,7 @@ npm start
 | POST   | `/api/logout`   | Logout user          |
 | GET    | `/refresh`      | Refresh Access Token |
 
+
 ### Organizer Management
 
 | Method | Endpoint             | Description               |
@@ -94,6 +106,7 @@ npm start
 | GET    | `/api/organizer/:id` | Get Organizers details    |
 | PUT    | `/api/organizer/:id` | Update Organizers details |
 | DELETE | `/api/organizer/:id` | Delete an Organizers      |
+
 
 ### Attendee Management
 
@@ -104,6 +117,7 @@ npm start
 | PUT    | `/api/attendee/:id` | Update Attendee details |
 | DELETE | `/api/attendee/:id` | Delete an Attendee      |
 
+
 ### Event Management
 
 | Method | Endpoint                 | Description          |
@@ -112,7 +126,8 @@ npm start
 | GET    | `/api/events`            | Get all Events       |
 | GET    | `/api/events/:event_id'` | Get an Event details |
 | PUT    | `/api/events/:event_id`  | Update an Event      |
-| DELETE | `/api/events/:event_id`  | Delete an Organizers |
+| DELETE | `/api/events/:event_id`  | Delete an Event |
+
 
 ### Ticket Management
 
@@ -124,15 +139,18 @@ npm start
 | PUT    | `/ticket/:ticket_id`  | Update a Ticket      |
 | DELETE | `/ticket/:ticket_id`  | Delete a Ticket      |
 
+
 ### Other Features
 
 | Method | Endpoint   | Description         |
 | ------ | ---------- | ------------------- |
 | GET    | `/webhook` | Testing for payment |
 
+
 ### AUTHORS
 
+
 Fortune Iheanacho - [Github Link](https://github.com/orgs/NexusEvnt/people/na-cho-dev)  
-Keith Juma - [Github Link](https://github.com/orgs/NexusEvnt/people/TaiKeith)
+Keith Juma - [Github Link](https://github.com/orgs/NexusEvnt/people/TaiKeith)  
 Angie Monnye - [Github Link](https://github.com/orgs/NexusEvnt/people/Grey550)  
-Grace Bamidele - [Github Link](https://github.com/orgs/NexusEvnt/people/Gracy222)
+Grace Bamidele - [Github Link](https://github.com/orgs/NexusEvnt/people/Gracy222)                                                                                     
