@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import axiosInstance from "../services/axiosInstance";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axiosInstance from '../services/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Card,
@@ -10,24 +10,26 @@ import {
   Button,
   Alert,
   InputGroup,
-} from "react-bootstrap";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Close from "../components/common/CloseButton";
+  Spinner,
+} from 'react-bootstrap';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Close from '../components/common/CloseButton';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone_number: "",
-    role: "",
-    password: "",
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    role: '',
+    password: '',
   });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -37,140 +39,51 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-  
+    setError('');
+    setSuccess('');
+    setLoading(true);
+
     try {
-      // Use axiosInstance instead of axios
-      const response = await axiosInstance.post("/auth/register", formData);
+      const response = await axiosInstance.post('/auth/register', formData);
       setSuccess(response.data.message);
-      navigate("/Login");
+      navigate('/login');
     } catch (err) {
-      console.error("Registration error:", err); // Log error for debugging
+      console.error('Registration error:', err);
       setError(
-        err.response?.data?.message || "An error occurred during registration"
+        err.response?.data?.message || 'An error occurred during registration'
       );
+    } finally {
+      setLoading(false);
     }
   };
-  
 
-  // return (
-  //   <Container fluid className="mt-5">
-  //     <div className="p-4 shadow">
-  //       <Card.Body>
-  //         <Row className="w-100">
-  //           {/* Left section */}
-  //           <Col md={6} className="bg-dark text-light p-5 d-flex flex-column">
-  //             <h3 className="mb-3 text-warning">NexusEvnt</h3>
-  //             <h5 className="fw-light">
-  //               Discover tailored events. <br />
-  //               Sign up for personalized recommendations today!
-  //             </h5>
-  //           </Col>
-
-  //           {/* Right section */}
-  //           <Col md={6} className="p-5">
-  //             <div
-  //               className="form-container mx-auto"
-  //               style={{ maxWidth: "500px" }}
-  //             >
-  //               <Close />
-  //               <h2 className="mb-4 text-center">Create Account</h2>
-  //               {error && <Alert variant="danger">{error}</Alert>}
-  //               {success && <Alert variant="success">{success}</Alert>}
-
-  //               {/* Form */}
-  //               <Form onSubmit={handleSubmit}>
-  //                 <Form.Group className="mb-3" controlId="fullName">
-  //                   <Form.Label>Full Name</Form.Label>
-  //                   <Form.Control
-  //                     type="text"
-  //                     name="full_name"
-  //                     placeholder="Enter your full name"
-  //                     value={formData.full_name}
-  //                     onChange={handleChange}
-  //                     required
-  //                   />
-  //                 </Form.Group>
-
-  //                 <Form.Group className="mb-3" controlId="email">
-  //                   <Form.Label>Email Address</Form.Label>
-  //                   <Form.Control
-  //                     type="email"
-  //                     name="email"
-  //                     placeholder="Enter your e-mail"
-  //                     value={formData.email}
-  //                     onChange={handleChange}
-  //                     required
-  //                   />
-  //                 </Form.Group>
-
-  //                 <Form.Group className="mb-3" controlId="password">
-  //                   <Form.Label>Password</Form.Label>
-  //                   <InputGroup>
-  //                     <Form.Control
-  //                       type={showPassword ? "text" : "password"}
-  //                       name="password"
-  //                       placeholder="Enter password"
-  //                       value={formData.password}
-  //                       onChange={handleChange}
-  //                       required
-  //                     />
-  //                     <Button
-  //                       variant="outline-secondary"
-  //                       onClick={() => setShowPassword(!showPassword)}
-  //                     >
-  //                       {showPassword ? <FaEyeSlash /> : <FaEye />}
-  //                     </Button>
-  //                   </InputGroup>
-  //                 </Form.Group>
-
-  //                 <Button variant="dark" type="submit" className="w-100">
-  //                   Create Account
-  //                 </Button>
-  //               </Form>
-
-  //               <p className="text-center mt-3">
-  //                 Already have an account?{" "}
-  //                 <a href="/SignInPage" className="text-decoration-none">
-  //                   Log In
-  //                 </a>
-  //               </p>
-  //             </div>
-  //           </Col>
-  //         </Row>
-  //       </Card.Body>
-  //     </div>
-  //   </Container>
-  // );
   return (
-    <Container fluid className="mt-5">
-      <div className="p-4 shadow">
-        <Card.Body>
+    <Container
+      fluid
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '80vh' }}
+    >
+      <div className="p-2 mt-4 mb-4 shadow w-100" style={{ maxWidth: '600px' }}>
+        <Card.Body className="d-flex justify-content-center align-items-center">
           <Row className="w-100">
-            {/* Left section */}
-            <Col md={6} className="bg-dark text-light p-5 d-flex flex-column">
-              <h3 className="mb-3 text-warning">NexusEvnt</h3>
-              <h5 className="fw-light">
-                Discover tailored events. <br />
-                Sign up for personalized recommendations today!
-              </h5>
-            </Col>
-  
-            {/* Right section */}
-            <Col md={6} className="p-5">
-              <div
-                className="form-container mx-auto"
-                style={{ maxWidth: "500px" }}
-              >
+            <Col md={12}>
+              <div className="form-container">
                 <Close />
-                <h2 className="mb-4 text-center">Create Account</h2>
+                <h2 className="mt-3 mb-4 text-center">Create Account</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
                 {success && <Alert variant="success">{success}</Alert>}
-  
+
                 {/* Form */}
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="firstName">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="firstName"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
@@ -179,10 +92,19 @@ const SignUp = () => {
                       value={formData.first_name}
                       onChange={handleChange}
                       required
+                      className="w-100"
                     />
                   </Form.Group>
-  
-                  <Form.Group className="mb-3" controlId="lastName">
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="lastName"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control
                       type="text"
@@ -191,10 +113,19 @@ const SignUp = () => {
                       value={formData.last_name}
                       onChange={handleChange}
                       required
+                      className="w-100"
                     />
                   </Form.Group>
-  
-                  <Form.Group className="mb-3" controlId="email">
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="email"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
                       type="email"
@@ -203,10 +134,19 @@ const SignUp = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      className="w-100"
                     />
                   </Form.Group>
-  
-                  <Form.Group className="mb-3" controlId="phoneNumber">
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="phoneNumber"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Phone Number</Form.Label>
                     <Form.Control
                       type="text"
@@ -215,28 +155,46 @@ const SignUp = () => {
                       value={formData.phone_number}
                       onChange={handleChange}
                       required
+                      className="w-100"
                     />
                   </Form.Group>
-  
-                  <Form.Group className="mb-3" controlId="role">
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="role"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Role</Form.Label>
                     <Form.Select
                       name="role"
                       value={formData.role}
                       onChange={handleChange}
                       required
+                      className="w-100"
                     >
                       <option value="">Select a role</option>
                       <option value="Attendee">Attendee</option>
                       <option value="Organizer">Organizer</option>
                     </Form.Select>
                   </Form.Group>
-  
-                  <Form.Group className="mb-3" controlId="password">
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="password"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Form.Label>Password</Form.Label>
                     <InputGroup>
                       <Form.Control
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         placeholder="Enter password"
                         value={formData.password}
@@ -251,15 +209,25 @@ const SignUp = () => {
                       </Button>
                     </InputGroup>
                   </Form.Group>
-  
-                  <Button variant="dark" type="submit" className="w-100">
-                    Create Account
+
+                  <Button variant="dark" type="submit" className="w-100" disabled={loading}>
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      'Create Account'
+                    )}
                   </Button>
                 </Form>
-  
+
                 <p className="text-center mt-3">
-                  Already have an account?{" "}
-                  <a href="/SignInPage" className="text-decoration-none">
+                  Already have an account?{' '}
+                  <a href="/login" className="text-decoration-none">
                     Log In
                   </a>
                 </p>

@@ -5,7 +5,7 @@ export const getOrganizers = async (req, res) => {
     const organizers = await User.find({ role: 'Organizer' });
     if (!organizers)
       return res.status(404).json({ message: 'Organizers not found' });
-    console.log(organizers);
+    // console.log(organizers);
     res.status(200).json({
       message: 'Fetched all Organizers Successfully',
       organizers: organizers,
@@ -23,10 +23,31 @@ export const getOrganizer = async (req, res) => {
     const organizer = await User.findOne({ _id: id, role: 'Organizer' });
     if (!organizer)
       return res.status(404).json({ message: 'Organizer does not exist' });
-    console.log(organizer);
+    // console.log(organizer);
+
+    const formatOrganizer = (organizer) => {
+      if (!organizer) return null;
+
+      let base64Image = null;
+      if (organizer.profile_img?.data) {
+        base64Image = Buffer.from(organizer.profile_img.data).toString(
+          'base64'
+        );
+      }
+
+      return {
+        ...organizer.toObject(), // Convert Mongoose document to plain object
+        profile_img: base64Image
+          ? { mimeType: organizer.profile_img.mimeType, data: base64Image }
+          : null,
+      };
+    };
+
+    const formattedOrganizer = formatOrganizer(organizer);
+
     res.status(200).json({
       message: 'Fetched Organizer Successfully',
-      organizer: organizer,
+      organizer: formattedOrganizer,
     });
   } catch (error) {
     res
@@ -43,11 +64,23 @@ export const updateOrganizer = async (req, res) => {
     if (!organizer)
       return res.status(404).json({ message: 'Organizer does not exist' });
 
+    if (!req.file && organizer.profile_img) {
+      updatedFields.profile_img = organizer.profile_img;
+    }
+
+    // Profile Image Edit
+    if (req.file) {
+      updatedFields.profile_img = {
+        data: req.file.buffer,
+        mimeType: req.file.mimetype,
+      };
+    }
+
     const updatedOrganizer = await User.findByIdAndUpdate(id, updatedFields, {
       new: true,
       runValidators: true,
     });
-    console.log(updatedOrganizer);
+    // console.log(updatedOrganizer);
     res.status(200).json({
       message: 'Updated Organizer Successfully',
       organizer: updatedOrganizer,
@@ -71,7 +104,7 @@ export const deleteOrganizer = async (req, res) => {
 
     const organizer = await User.findByIdAndDelete(id);
 
-    console.log(organizer);
+    // console.log(organizer);
     res.status(200).json({
       message: 'Deleted Organizer Successfully',
       organizer: organizer,

@@ -6,7 +6,7 @@ import "../../styles/Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-white mt-1 p-4 text-center">
+    <footer className="footer bg-dark text-white mt-1 p-4 text-center">
       <Container>
         <Row className="align-items-center">
           <Col md={4}>
@@ -20,23 +20,23 @@ const Footer = () => {
             />
           </Col>
 
-          <Col md={8}>
-            <Row>
+          <Col md={8}> 
+            <Row className="footer-links">
               <Col>
                 <h5>Company Info</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/Home" className="text-white">
+                    <a href="/home" className="text-white">
                       FAQ
                     </a>
                   </li>
                   <li>
-                    <a href="/Home" className="text-white">
+                    <a href="/home" className="text-white">
                       About
                     </a>
                   </li>
                   <li>
-                    <a href="/Home" className="text-white">
+                    <a href="/home" className="text-white">
                       Contact
                     </a>
                   </li>
@@ -47,17 +47,17 @@ const Footer = () => {
                 <h5>Categories</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/Event" className="text-white">
+                    <a href="/events" className="text-white">
                       Food and Drink Festivals
                     </a>
                   </li>
                   <li>
-                    <a href="/Event" className="text-white">
+                    <a href="/events" className="text-white">
                       Carnivals and Fairs
                     </a>
                   </li>
                   <li>
-                    <a href="/Event" className="text-white">
+                    <a href="/events" className="text-white">
                       Art and Craft Fairs
                     </a>
                   </li>
@@ -68,17 +68,17 @@ const Footer = () => {
                 <h5>Support</h5>
                 <ul className="list-unstyled text-deco">
                   <li>
-                    <a href="/About" className="text-white">
+                    <a href="/about" className="text-white">
                       Ticket Support
                     </a>
                   </li>
                   <li>
-                    <a href="/About" className="text-white">
+                    <a href="/about" className="text-white">
                       Event Support
                     </a>
                   </li>
                   <li>
-                    <a href="/About" className="text-white">
+                    <a href="/about" className="text-white">
                       Listing Support
                     </a>
                   </li>

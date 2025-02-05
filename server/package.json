@@ -18,7 +18,7 @@
     "Manage Event",
     "Create Event"
   ],
-  "author": "Fortune Iheanacho, Keith Juma, Angie, Grace",
+  "author": "Fortune, Keith Juma, Angie, Grace",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/NexusEvnt/nexusevnt/issues"
@@ -32,6 +32,7 @@
     "express-static": "^1.2.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "qrcode": "^1.5.4",
     "redis": "^4.7.0",

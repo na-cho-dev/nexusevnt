@@ -8,17 +8,34 @@ import QRCode from 'qrcode';
 // Create Ticket
 export const createTicket = async (req, res) => {
   const { event_id } = req.params;
-  const { tier_type, quantity } = req.body;
+  const { tier_type } = req.body;
+  let { quantity } = req.body;
+  quantity = Number(quantity);
 
-  if (!event_id || !tier_type || !quantity) {
-    return res.status(400).json({ message: 'Event ID, Ticket Tier, and Quantity are required' });
+  // console.log("Body:", req.body);
+
+  if (!event_id) {
+    return res.status(400).json({ message: 'Event ID are required' });
+  }
+
+  if (!tier_type) {
+    return res.status(400).json({ message: 'Ticket Tier are required' });
+  }
+
+  if (!quantity) {
+    return res.status(400).json({ message: 'Quantity are required' });
   }
 
   try {
     const event = await Event.findById(event_id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
-    const tier = event.ticket_tiers.find((t) => t.tier_type === tier_type);
+    const tier = event.ticket_tiers.find((t) => {
+      console.log("T.TierType:", t.tier_type)
+      console.log("TierType From User:", tier_type)
+      t.tier_type === tier_type
+    });
+    console.log("Ticket In Ticket Controller", tier)
     if (!tier) return res.status(400).json({ message: 'Invalid ticket tier' });
 
     if (tier.available_tickets < quantity) {
@@ -26,29 +43,34 @@ export const createTicket = async (req, res) => {
     }
 
     const order_id = parseInt(uuidv4().replace(/-/g, '').slice(0, 8), 16);
-    const price_paid = tier.price * quantity;
+    const price_paid = tier.tier_price * quantity;
+
+    // console.log(`Tier Price: ${tier.tier_price} -> Type of ${typeof tier.tier_price}`)
+    // console.log(`Quantity: ${quantity} -> Type of ${typeof quantity}`)
+    // console.log(`Price Paid: ${price_paid} -> Type of ${typeof price_paid}`)
 
     const ticketData = {
       order_id,
-      attendee_id: req.user._id,
-      attendee_full_name: `${req.user.first_name} ${req.user.last_name}`,
+      user_id: req.user._id,
+      user_full_name: `${req.user.first_name} ${req.user.last_name}`,
+      user_email: req.user.email,
       event_id,
       event_name: event.event_name,
       event_date: event.event_date,
       event_location: event.event_location,
-      event_venue: event.event_venue,
       event_start_time: event.event_start_time,
       tier_type,
       quantity,
       price_paid,
     };
 
+    console.log("Ticket Data", ticketData)
     const newTicket = new Ticket(ticketData);
     await newTicket.save();
 
     // Already Implemented in PaymentController.js (Deducting twice from DB)
-    // tier.available_tickets -= quantity; 
-    await event.save(); // Saves available ticket to database
+    // tier.available_tickets -= quantity;
+    // await event.save(); // Saves available ticket to database
 
     // Generate QR Code
     const qrCodeData = JSON.stringify(ticketData); // You can customize this data
@@ -76,9 +98,14 @@ export const createTicket = async (req, res) => {
     //const smsMessage = `Hi ${attendee.first_name}, your ticket for "${event.event_name}" is confirmed!`;
     //await sendSMS(attendee.phone_number, smsMessage);
 
-    res.status(201).json({ message: 'Ticket created successfully', ticket: newTicket });
+    res
+      .status(201)
+      .json({ message: 'Ticket created successfully', ticket: newTicket });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error creating ticket', error: error.message });
+      console.log(error)
   }
 };
 
@@ -114,29 +141,51 @@ export const getAvailableTickets = async (req, res) => {
   }
 };
 
-
 // Get Tickets for Event
 export const getEventTickets = async (req, res) => {
   const { event_id } = req.params;
   try {
     const tickets = await Ticket.find({ event_id });
-    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this event' });
-    res.status(200).json({ message: 'Fetched event tickets successfully', tickets });
+    if (tickets.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No tickets found for this event' });
+    res
+      .status(200)
+      .json({ message: 'Fetched event tickets successfully', tickets });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching tickets', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching tickets', error: error.message });
   }
 };
 
-// Get Tickets for Attendee
-export const getAttendeeTickets = async (req, res) => {
+export const getUserTickets = async (req, res) => {
+  console.log('FETCHING TICKETS');
+  const userId = req.user._id; // Ensure userId is correct
+
   try {
-    const tickets = await Ticket.find({ attendee_id: req.user._id });
-    if (tickets.length === 0) return res.status(404).json({ message: 'No tickets found for this attendee' });
-    res.status(200).json({ message: 'Fetched attendee tickets successfully', tickets });
+    const tickets = await Ticket.find({ user_id: userId });
+
+    if (!tickets || tickets.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No tickets found for this attendee' });
+    }
+
+    res.status(200).json({
+      message: 'Fetched attendee tickets successfully',
+      tickets,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching tickets', error: error.message });
+    console.error(error);
+    res.status(500).json({
+      message: 'Error fetching tickets',
+      error: error.message,
+    });
   }
 };
+
 
 // Get Single Ticket
 export const getTicket = async (req, res) => {
@@ -146,7 +195,9 @@ export const getTicket = async (req, res) => {
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
     res.status(200).json({ message: 'Fetched ticket successfully', ticket });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error fetching ticket', error: error.message });
   }
 };
 
@@ -158,6 +209,8 @@ export const deleteTicket = async (req, res) => {
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
     res.status(200).json({ message: 'Ticket deleted successfully', ticket });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting ticket', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'Error deleting ticket', error: error.message });
   }
 };

@@ -46,7 +46,7 @@ const loginController = async (req, res) => {
 
     res.cookie('JWT', refresh_token, {
       httpOnly: true,
-      sameSite: 'None',
+      sameSite: 'Lax', // Change to "None" in production
       secure: process.env.NODE_ENV_MODE === 'prod',
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -54,6 +54,7 @@ const loginController = async (req, res) => {
     res.status(200).json({
       message: 'Logged in successfully',
       accessToken: access_token,
+      currentUser: existingUser,
     });
   } catch (error) {
     console.log(`An error occured while logging in user! ${error}`);

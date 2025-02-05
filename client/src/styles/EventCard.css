@@ -16,6 +16,17 @@
     width: 80%;
     height: 100%;
   }
+
+  .card-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .card-style {
+    margin: 0;
+  }
 /*   
   .custom-card .card-text {
     font-size: 0.9rem;
@@ -26,3 +37,13 @@
     -webkit-box-orient: vertical;  
   }
    */
+
+.event-card {
+  min-height: 170px;
+}
+
+.card-button {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}

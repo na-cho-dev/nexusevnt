@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+// import NavMenu from "../layout/NavBarElements";
 import Footer from '../layout/Footer';
-import { Form, Row, Col, Button, Alert, Spinner } from 'react-bootstrap';
+import { Form, Row, Col, Button, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axiosInstance from '../../services/axiosInstance';
 import { useAuth } from '../../context/AuthContext';
+import axiosInstance from '../../services/axiosInstance';
 
-const Email = () => {
+const Password = () => {
   const { userData, setUserData, userRole, userId } = useAuth();
-  const [newEmail, setNewEmail] = useState('');
-  const [confirmEmail, setConfirmEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,38 +20,32 @@ const Email = () => {
     setError(null);
     setSuccess(null);
 
-    if (!newEmail || !confirmEmail) {
+    if (!currentPassword || !newPassword || !confirmPassword) {
       setError('Please fill in all fields.');
       return;
     }
-    if (newEmail !== confirmEmail) {
-      setError('Emails do not match.');
+
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
 
     setLoading(true);
     try {
-      const apiEndPoint =
-        userRole === 'Organizer'
-          ? `/api/organizer/${userData._id}`
-          : `/api/attendee/${userData._id}`;
-      const response = await axiosInstance.put(apiEndPoint, {
-        email: newEmail,
+      const response = await axiosInstance.put('/auth/change-password', {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
       });
-      console.log('Updated User:', response.data[userRole.toLowerCase()]);
 
-      setUserData({ ...userData, email: newEmail }); // Update user context
-      setSuccess('Email updated successfully.');
+      setSuccess('Password updated successfully.');
     } catch (err) {
-      console.error(
-        'Error updating email:',
-        err.response.data.error || err.message.data.message
-      );
-      setError('Failed to update email. Please try again.');
+      console.error(err.response.data?.message, ':', err.response.data?.error);
+      setError('Failed to update password. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="main-profile-container">
       <div className="d-flex" style={{ minHeight: 'calc(100vh - 300px)' }}>
@@ -72,64 +68,64 @@ const Email = () => {
             </Link>
             <Link
               to={`/${userRole.toLowerCase()}/${userId}/change-email`}
-              className="list-group-item list-group-item-action active"
+              className="list-group-item list-group-item-action"
             >
               Change Email
             </Link>
             <Link
               to={`/${userRole.toLowerCase()}/${userId}/change-password`}
-              className="list-group-item list-group-item-action"
+              className="list-group-item list-group-item-action active"
             >
               Password
             </Link>
-            
           </div>
         </div>
 
         <div className="col-md-9 p-4" style={{ height: '650px' }}>
           <div className="mt-4">
-            <h4>Change Email</h4>
+            <h4>Change Password</h4>
             <hr />
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
             <Form>
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
-                  <Form.Label htmlFor="currentEmail">Current Email:</Form.Label>
+                  <Form.Label htmlFor="firstName">Current Password:</Form.Label>
                 </Col>
                 <Col md={8}>
                   <Form.Control
-                    plaintext
-                    readOnly
-                    defaultValue={userData.email}
+                    type="password"
+                    id="firstName"
+                    placeholder="Enter password"
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                   />
                 </Col>
               </Row>
 
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
-                  <Form.Label htmlFor="newEmail">New Email:</Form.Label>
+                  <Form.Label htmlFor="lastName">New Password:</Form.Label>
                 </Col>
                 <Col md={8}>
                   <Form.Control
-                    type="email"
-                    placeholder="Enter new email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
+                    type="password"
+                    id="lastName"
+                    placeholder="Enter new password"
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </Col>
               </Row>
 
               <Row className="mb-3 align-items-center">
                 <Col md={3}>
-                  <Form.Label htmlFor="confirmEmail">Confirm Email:</Form.Label>
+                  <Form.Label htmlFor="website">Confirm Password:</Form.Label>
                 </Col>
                 <Col md={8}>
                   <Form.Control
-                    type="email"
+                    type="password"
+                    id="website"
                     placeholder="Enter again"
-                    value={confirmEmail}
-                    onChange={(e) => setConfirmEmail(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </Col>
               </Row>
@@ -151,7 +147,7 @@ const Email = () => {
                         aria-hidden="true"
                       />
                     ) : (
-                      'Save New Email'
+                      'Save New Password'
                     )}
                   </Button>
                 </Col>
@@ -165,4 +161,4 @@ const Email = () => {
   );
 };
 
-export default Email;
+export default Password;

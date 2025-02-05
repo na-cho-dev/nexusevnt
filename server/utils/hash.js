@@ -11,3 +11,19 @@ export const hashPassword = async (password) => {
     throw err;
   }
 };
+
+export const comparePassword = async (currentPassword, userPassword) => {
+  try {
+    const match = await bcrypt.compare(currentPassword, userPassword);
+    if (match) {
+      console.log('Password Matches');
+      return true;
+    } else {
+      console.log('Password does not match');
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error Comparing Password: ${error}`);
+    throw error;
+  }
+};

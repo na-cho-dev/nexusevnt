@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Festival from "../../images/festival.jpg";
 import Light from "../../images/light.jpg";
@@ -9,19 +9,34 @@ import "../../styles/EventList.css";
 
 const EventList = () => {
   const navigate = useNavigate();
+  const carouselRef = useRef(null);
 
   const handleClick = (event) => {
     event.target.classList.add("dissolve");
-
     setTimeout(() => {
-      navigate.push("/events-category-entertainment");
-    }, 200); // 200ms matches the animation duration
+      navigate("/events-category-entertainment");
+    }, 200);
   };
+
+  // Scroll left/right
+  // const scrollLeft = () => {
+  //   carouselRef.current.scrollBy({ left: -200, behavior: "smooth" });
+  // };
+
+  // const scrollRight = () => {
+  //   carouselRef.current.scrollBy({ left: 200, behavior: "smooth" });
+  // };
 
   return (
     <section className="category-section">
       <h5>Explore Category</h5>
-      <div className="category-container">
+      
+      {/* Scroll buttons for desktop */}
+      {/* <button className="scroll-btn left" onClick={scrollLeft}>&#10094;</button>
+      <button className="scroll-btn right" onClick={scrollRight}>&#10095;</button> */}
+
+      {/* Category Carousel */}
+      <div className="category-container" ref={carouselRef}>
         <ul>
           <li onClick={handleClick}>
             <img alt="event" src={Festival} />

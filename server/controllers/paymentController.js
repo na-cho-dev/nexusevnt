@@ -8,14 +8,19 @@ const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 export const createPaymentSession = async (req, res) => {
   const { ticket_id } = req.body;
 
+  // console.log('Received ticket_id:', ticket_id, 'Type:', typeof ticket_id);
+
   try {
     const ticket = await Ticket.findById(ticket_id);
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
 
+    // console.log('Ticket Data:', ticket);
+    // console.log('Event ID:', ticket.event_id, 'Type:', typeof ticket.event_id);
+
     const event = await Event.findById(ticket.event_id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
-    // Find the selected ticket tier
+    // Find the selected ticket tier 
     const tier_type = ticket.tier_type;
     const quantity = ticket.quantity;
     const selectedTier = event.ticket_tiers.find(
@@ -33,6 +38,11 @@ export const createPaymentSession = async (req, res) => {
     // Calculate total price (NOT NEEDED)
     const totalAmount = selectedTier.price * quantity * 100; // Convert to cents
 
+    if (!ticket.event_id || !ticket.tier_type || !ticket.quantity) {
+      return res.status(400).json({ message: 'Invalid ticket metadata' });
+    }    
+
+    // console.log('CREATING STRIPE CHECKOUT SESSION...');
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -44,22 +54,22 @@ export const createPaymentSession = async (req, res) => {
               name: `${event.event_name} - ${tier_type} Ticket`,
               description: `${event.event_description}`,
             },
-            unit_amount: selectedTier.price * 100, // Price in cents
+            unit_amount: selectedTier.tier_price * 100, // Price in cents
           },
           quantity: quantity,
         },
       ],
       mode: 'payment',
-      success_url: `http://localhost:3300/success`,
-      // success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3300/cancel`,
-      // cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      // success_url: `http://localhost:3000/success`,
+      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      // cancel_url: `http://localhost:3000/cancel`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel`,
       metadata: {
         event_id: ticket.event_id,
         ticket_id: ticket_id,
         tier_type: tier_type,
         quantity: quantity,
-      },  // Include metadata for post-payment processing
+      }, // Include metadata for post-payment processing
     });
 
     res.status(200).json({ session });
@@ -85,7 +95,7 @@ export const handlePaymentSuccess = async (session) => {
     // Fetch the event with the session
     const event = await Event.findById(event_id).session(sessionDb);
     if (!event) throw new Error('Event not found');
-    
+
     const ticket = await Ticket.findById(ticket_id).session(sessionDb);
     if (!ticket) throw new Error('Ticket not found');
 
@@ -162,7 +172,6 @@ export const handlePaymentFailure = async (session) => {
   }
 };
 
-
 export const getPaymentStatus = async (req, res) => {
   const { sessionId } = req.params;
 
@@ -170,7 +179,7 @@ export const getPaymentStatus = async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status === 'paid') {
-      return res.status(200).json({ status: 'Paid' });
+      return res.status(200).json({ status: 'Paid', session: session });
     } else {
       return res.status(200).json({ status: session.payment_status }); // 'unpaid', 'pending'
     }

@@ -7,14 +7,19 @@ const ticketSchema = new mongoose.Schema(
       required: [true, 'Order ID is required'],
       trim: true,
     },
-    attendee_id: {
+    user_id: {
       type: String,
-      required: [true, 'Attendee ID is required'],
+      required: [true, 'User ID is required'],
       trim: true,
     },
-    attendee_full_name: {
+    user_full_name: {
       type: String,
       required: [true, 'Attendee Full Name is required'],
+      trim: true,
+    },
+    user_email: {
+      type: String,
+      required: [true, 'Attendee Email is required'],
       trim: true,
     },
     event_id: {

@@ -1,8 +1,6 @@
 # NexusEvnt (Server)
 
-
 ## Description
-
 
 This is a web-based platform that allows users, both Organizers and Attendees to:
 
@@ -27,26 +25,22 @@ Streamline event management while improving attendee experiences.
 
 ## API Features
 
-
 - RESTful API
 - Authentication & Authorization (JWT, OAuth, etc.)
 - Database Integration (MongoDB/MySQL/Redis)
 - Error Handling & Logging
 - Environment Configuration Support
 
-
 ## HOW SETUP THE SERVER
 
 
 ### Clone the project github repository
-
 
 ```
 git clone https://github.com/NexusEvnt/nexusevnt
 cd nexusevnt
 npm install
 ```
-
 
 ### Install redis-cli
 
@@ -72,26 +66,20 @@ MONGO_URI="mongodb+srv://nachodev:nacho369@project-database.jmny1.mongodb.net/ne
 ACCESS_TOKEN_SECRET=""
 REFRESH_TOKEN_SECRET=""
 
-
 STRIPE_SECRET_KEY=""
 STRIPE_PUBLISHABLE_KEY=""
 STRIPE_WEBHOOK_SECRET=""
 ```
 
-
 ### Running The Server
 
-
 **Developement Server**
-
-
 ```
 npm run dev
 ```
 
 
 **Production Server**
-
 
 ```
 npm start
@@ -100,12 +88,7 @@ npm start
 
 ## API ENDPOINTS
 
-
-## API Endpoints
-
-
 ### User Authentication
-
 
 | Method | Endpoint        | Description          |
 | ------ | --------------- | -------------------- |
@@ -117,7 +100,6 @@ npm start
 
 ### Organizer Management
 
-
 | Method | Endpoint             | Description               |
 | ------ | -------------------- | ------------------------- |
 | GET    | `/api/organizers`    | Fetch all Organizers      |
@@ -127,7 +109,6 @@ npm start
 
 
 ### Attendee Management
-
 
 | Method | Endpoint            | Description             |
 | ------ | ------------------- | ----------------------- |
@@ -139,7 +120,6 @@ npm start
 
 ### Event Management
 
-
 | Method | Endpoint                 | Description          |
 | ------ | ------------------------ | -------------------- |
 | POST   | `/api/create-event`      | Create an Event      |
@@ -148,8 +128,8 @@ npm start
 | PUT    | `/api/events/:event_id`  | Update an Event      |
 | DELETE | `/api/events/:event_id`  | Delete an Event |
 
-### Ticket Management
 
+### Ticket Management
 
 | Method | Endpoint              | Description          |
 | ------ | --------------------- | -------------------- |
@@ -162,7 +142,6 @@ npm start
 
 ### Other Features
 
-
 | Method | Endpoint   | Description         |
 | ------ | ---------- | ------------------- |
 | GET    | `/webhook` | Testing for payment |
@@ -174,4 +153,4 @@ npm start
 Fortune Iheanacho - [Github Link](https://github.com/orgs/NexusEvnt/people/na-cho-dev)  
 Keith Juma - [Github Link](https://github.com/orgs/NexusEvnt/people/TaiKeith)  
 Angie Monnye - [Github Link](https://github.com/orgs/NexusEvnt/people/Grey550)  
-Grace Bamidele - [Github Link](https://github.com/orgs/NexusEvnt/people/Gracy222)
+Grace Bamidele - [Github Link](https://github.com/orgs/NexusEvnt/people/Gracy222)                                                                                     

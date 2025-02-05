@@ -1,28 +1,92 @@
-import React from "react";
-import { Card, Badge, Button } from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card, Badge, Button } from 'react-bootstrap';
+import '../../styles/EventCard.css';
 
 const EventCard = ({ event }) => {
+  // Safely access image data and handle undefined values
+  const imageSrc =
+    event.event_image && event.event_image.data
+      ? `data:${event.event_image.mimeType};base64,${event.event_image.data}`
+      : null;
+
+  // console.log('Generated Image Source:', imageSrc); // Debug log
+  console.log('Event Data:', event.event_image);
+  console.log('Event MimeType:', event.event_image?.mimeType);
+
+  const formattedDate = new Date(event.event_date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const formattedStartTime = new Date(
+    event.event_start_time
+  ).toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  const formattedEndTime = new Date(event.event_end_time).toLocaleTimeString(
+    'en-US',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }
+  );
+
+  console.log(event.ticket_tiers);
+
   return (
-    <Card className="mb-4">
-      <Card.Img
-        src={event.image}
-        className="img-fluid"
-        style={{ height: "150px", objectFit: "cover" }}
-      />
-      <Card.Body>
-        <Card.Title>{event.title}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">{event.date}</Card.Subtitle>
-        <div className="mb-2">
-          <Badge className="custom-badge">{event.category}</Badge>
-        </div>
-        <Card.Text>
-          <strong>Location:</strong> {event.location} <br />
-          <strong>Price:</strong>{" "}
-          {event.price === 0 ? "FREE" : `INR ${event.price}`}
-        </Card.Text>
-        <Button variant="primary">View Details</Button>
-      </Card.Body>
-    </Card>
+    <div className="card-display">
+      <Card className="card-style">
+        {imageSrc && (
+          <Card.Img
+            src={imageSrc}
+            className="img-fluid"
+            style={{ height: '150px', objectFit: 'cover' }}
+          />
+        )}
+
+        <Card.Body className="text-start w-100">
+          <Card.Title>{event.event_name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            {new Date(formattedDate).toLocaleDateString()} {/* Format date */}
+          </Card.Subtitle>
+          <div className="mb-2">
+            <Badge className="custom-badge">{event.event_type}</Badge>
+          </div>
+          <div className="event-card">
+            <strong>Event Location:</strong> {event.event_location} <br />
+            <strong>Start Time:</strong> {formattedStartTime} <br />
+            <strong>End Time:</strong> {formattedEndTime} <br />
+            <strong>Price:</strong>
+            {event.ticket_tiers?.length > 0 ? (
+              <ul className="price-list">
+                {event.ticket_tiers.map((tier, index) => (
+                  <li key={index}>
+                    <strong>{tier.tier_type}</strong>: ${tier.tier_price}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              'FREE'
+            )}
+          </div>
+
+          <Button
+            as={Link}
+            to={`/events/${event._id}`}
+            variant="primary"
+            className="card-button mt-3"
+          >
+            View Details
+          </Button>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 

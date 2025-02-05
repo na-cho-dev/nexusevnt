@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 .ticket-container {
   position: relative;
@@ -16,7 +15,7 @@
 
 .ticket-container::before,
 .ticket-container::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -51,6 +50,11 @@
   font-size: 14px;
   color: #555;
   margin: 0;
+}
+
+.order-id {
+  font-size: 14px;
+  color: #555;
 }
 
 .ticket-price {

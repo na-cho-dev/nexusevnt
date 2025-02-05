@@ -11,7 +11,31 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onUpdate({ [name]: value });
+  
+    // If 'eventType' is changed to 'Free', set the default ticket tier
+    if (name === "eventType" && value === "Free") {
+      const freeTier = {
+        tier_type: "Regular",
+        tier_price: "Free",
+        total_tickets: eventData.ticket_tiers[0].total_tickets || 0, // Default to 0 if total_tickets is not set
+      };
+      onUpdate({
+        ticket_tiers: [freeTier], // Automatically add the free tier
+      });
+    }
+  
+    // Update ticket tier quantity if total_tickets is updated for Free events
+    if (name === "total_tickets" && eventData.eventType === "Free") {
+      const updatedTier = {
+        ...eventData.ticket_tiers[0],
+        total_tickets: value, // Update the quantity in the first tier
+      };
+      onUpdate({
+        ticket_tiers: [updatedTier], // Update ticket_tiers array with the new value
+      });
+    }
   };
+  
 
   return (
     <>
@@ -22,9 +46,9 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
           <Progress currentStep={1} />
         </Container>
         <Form className="mb-5">
-          <h5 className="ms-4-style mb-3 mt-5">Event Details</h5>
+          <h5 className="mb-3 mt-5">Event Details</h5>
           <Row className="mb-3 align-items-center">
-            <Col md={3}>
+            <Col md={5}>
               <Form.Group>
                 <Form.Label>Event Title</Form.Label>
                 <Form.Control
@@ -38,7 +62,7 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
             </Col>
           </Row>
           <Row className="mb-3 align-items-center">
-            <Col md={3}>
+            <Col md={5}>
               <Form.Group>
                 <Form.Label>Event Category</Form.Label>
                 <Form.Select
@@ -62,53 +86,48 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
               </Form.Group>
             </Col>
           </Row>
-
-          <h5 className="ms-4-style mb-3 mt-3">Date & Time</h5>
           <Row className="mb-3 align-items-center">
-            <Col md={3}>
-              <Form.Label>Event Type*</Form.Label>
-            </Col>
-            <Col md={8}>
-              <div className="d-inline-flex align-items-center me-4">
-                <Form.Check
-                  inline
-                  id="singleEvent"
+            <Col md={5}>
+              <Form.Group>
+                <Form.Label>Event Type</Form.Label>
+                <Form.Select
                   name="eventType"
-                  type="radio"
-                  className="me-2"
-                  value="singleEvent"
-                  checked={eventData.eventType === "singleEvent"}
-                  onChange={(e) => onUpdate({ eventType: e.target.value })}
-                />
-                <Form.Label htmlFor="singleEvent" className="mb-0">
-                  Single Event
-                </Form.Label>
-              </div>
-              <div className="d-inline-flex align-items-center">
-                <Form.Check
-                  inline
-                  id="recurringEvent"
-                  name="eventType"
-                  type="radio"
-                  className="me-2"
-                  value="recurringEvent"
-                  checked={eventData.eventType === "recurringEvent"}
-                  onChange={(e) => onUpdate({ eventType: e.target.value })}
-                />
-                <Form.Label htmlFor="recurringEvent" className="mb-0">
-                  Recurring Event
-                </Form.Label>
-              </div>
+                  value={eventData.eventType}
+                  onChange={handleChange}
+                >
+                  <option value="">Select an event type</option>
+                  <option value="Free">Free</option>
+                  <option value="Paid">Paid</option>
+                </Form.Select>
+              </Form.Group>
             </Col>
           </Row>
-          <Row className="mb-3 align-items-center ms-4">
-            <Col md={3}>
-              <Form.Label className="mb-5 me-4">Session(s)*</Form.Label>
-            </Col>
+
+          {eventData.eventType === "Free" && (
+            <>
+              <h5 className="mb-3 mt-3">Ticketing Details</h5>
+              <Row className="mb-3 align-items-center">
+                <Col md={5}>
+                  <Form.Group>
+                    <Form.Label>Ticket Quantity</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="total_tickets"
+                      value={eventData.ticket_tiers[0].total_tickets || ""}
+                      onChange={handleChange}
+                      placeholder="Enter the total number of tickets"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </>
+          )}
+
+          <h5 className="mb-3 mt-3">Date & Time</h5>
+          <Row className="mb-3 align-items-center">
             <Col md={2}>
-              <Form.Label className="ms-4">Start Date*</Form.Label>
+              <Form.Label className="">Start Date*</Form.Label>
               <Form.Control
-                className="ms-4"
                 type="date"
                 name="date"
                 value={eventData.date}
@@ -116,9 +135,8 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
               />
             </Col>
             <Col md={2}>
-              <Form.Label className="ms-4">Start Time*</Form.Label>
+              <Form.Label className="">Start Time*</Form.Label>
               <Form.Control
-                className="ms-4"
                 type="time"
                 name="startTime"
                 value={eventData.startTime}
@@ -126,9 +144,8 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
               />
             </Col>
             <Col md={2}>
-              <Form.Label className="ms-4">End Time*</Form.Label>
+              <Form.Label className="">End Time*</Form.Label>
               <Form.Control
-                className="ms-4"
                 type="time"
                 name="endTime"
                 value={eventData.endTime}
@@ -137,31 +154,24 @@ const Edit = ({ eventData, onUpdate, onNext }) => {
             </Col>
           </Row>
 
-          <h5 className="ms-4-style mb-3 mt-3">Location</h5>
+          <h5 className="mb-3 mt-3">Location</h5>
           <Row className="mb-3 align-items-center">
-            <Col md={3}>
+            <Col md={5}>
               <Form.Label>Where will your event take place? *</Form.Label>
-            </Col>
-            <Col md={8}>
-              <Form.Select
+              <Form.Control
+                type="text"
                 name="location"
                 value={eventData.location}
                 onChange={handleChange}
-              >
-                <option>Please select one</option>
-                <option>Venue 1</option>
-                <option>Venue 2</option>
-                <option>Venue 3</option>
-              </Form.Select>
+                placeholder="Enter the location of your event"
+              />
             </Col>
           </Row>
 
-          <h5 className="ms-4-style mb-3 mt-3">Additional Information</h5>
+          <h5 className="mb-3 mt-3">Additional Information</h5>
           <Row className="mb-3 align-items-center">
-            <Col md={3}>
+            <Col md={5}>
               <Form.Label>Event Description *</Form.Label>
-            </Col>
-            <Col md={8}>
               <Form.Control
                 as="textarea"
                 name="description"

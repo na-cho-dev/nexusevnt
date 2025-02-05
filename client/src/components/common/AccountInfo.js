@@ -1,184 +1,131 @@
-import React from "react";
-import NavMenu from "../../components/layout/NavBarElements";
-import Footer from "../../components/layout/Footer";
-import ImageUpload from "../../components/common/ImageButton";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "../../styles/ProfilePage.css";
+import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
+import axiosInstance from "../../services/axiosInstance";
+import ImageUpload from "../../components/common/ImageButton";
+import Footer from "../layout/Footer";
+import { useAuth } from "../../context/AuthContext";
 
 const Account = () => {
+  const { userData } = useAuth();
+  const [user, setUser] = useState({
+    first_name: userData.first_name,
+    last_name: userData.last_name,
+    email: userData.email,
+    phone_number: userData.phone_number,
+    role: userData.role,
+  });
+
+  const [editingField, setEditingField] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState({});
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axiosInstance.get("/api/user/me");
+        setUser(response.data);
+        setUpdatedUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleEdit = (field) => {
+    setEditingField(field);
+  };
+
+  const handleChange = (e) => {
+    setUpdatedUser({ ...updatedUser, [editingField]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      await axiosInstance.put("/api/user/update", updatedUser);
+      setUser(updatedUser);
+      setEditingField(null);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setUpdatedUser(user);
+    setEditingField(null);
+  };
+
   return (
-    <div className="main-profile-container">
-      <div className="row">
-        <NavMenu />
-
-        <div className="col-md-3 bg-body-secondary">
-          <div className="list-group mt-5">
+    <div className="">
+      <div className="">
+        <div className="d-flex">
+          {/* Left Sidebar */}
+          <div className="bg-body-secondary pt-5 p-3" style={{ width: "280px" }}>
             <h5 className="text-center p-2">Account Settings</h5>
-            <Link
-              to="/ProfilePage"
-              className="list-group-item list-group-item-action"
-            >
-              Account Info
-            </Link>
-            <Link
-              to="/ChangeEmail"
-              className="list-group-item list-group-item-action"
-            >
-              Change Email
-            </Link>
-            <Link
-              to="/ProfPassword"
-              className="list-group-item list-group-item-action"
-            >
-              Password
-            </Link>
-          </div>
-        </div>
-
-        <div className="col-md-9">
-          <div className="mt-5">
-            <h4>Account Information</h4>
-            <hr />
-
-            <div className="ms-4-style">
-              <h4>Profile Photo</h4>
-              <ImageUpload />
+            <div className="list-group">
+              <Link to="/profile" className="list-group-item list-group-item-action active">
+                Account Info
+              </Link>
+              <Link to="/change-email" className="list-group-item list-group-item-action">
+                Change Email
+              </Link>
+              <Link to="/change-password" className="list-group-item list-group-item-action">
+                Password
+              </Link>
             </div>
+          </div>
 
-            <Form>
-              <h5 className="ms-4-style mb-3 mt-3">Profile Information</h5>
+          {/* Main Profile Content */}
+          <div className="mt-4" style={{ width: "calc(100% - 280px)" }}>
+            <div className="p-4" style={{ width: "100%" }}>
+              <h4>Account Information</h4>
+              <hr />
 
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="firstName">First Name:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="firstName"
-                    placeholder="Enter first name"
-                  />
-                </Col>
-              </Row>
+              {/* Profile Photo Section */}
+              <div className="">
+                <h5 className="mt-3 mb-3">Profile Photo</h5>
+                <ImageUpload />
+              </div>
 
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="lastName">Last Name:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="lastName"
-                    placeholder="Enter last name"
-                  />
-                </Col>
-              </Row>
+              {/* User Details */}
+              <Form>
+                <h5 className="mb-3 mt-5">Profile Information</h5>
 
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="website">Website:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="url"
-                    id="website"
-                    placeholder="Enter website"
-                  />
-                </Col>
-              </Row>
+                {[
+                  { label: "First Name", field: "first_name" },
+                  { label: "Last Name", field: "last_name" },
+                  { label: "Phone Number", field: "phone_number" },
+                  { label: "Email", field: "email", editable: false }, // Non-editable
+                  { label: "Role", field: "role", editable: false },   // Non-editable
+                ].map(({ label, field, editable = true }) => (
+                  <Row className="mb-3 align-items-center" key={field}>
+                    <Col md={3}><strong>{label}:</strong></Col>
+                    <Col md={7}>
+                      {editable && editingField === field ? (
+                        <Form.Control type="text" value={updatedUser[field]} onChange={handleChange} />
+                      ) : (
+                        <p>{user[field] || "Click edit"}</p>
+                      )}
+                    </Col>
+                    <Col md={2}>
+                      {editable && editingField === field ? (
+                        <>
+                          <FaCheck className="text-success" onClick={handleSave} style={{ cursor: "pointer" }} />
+                          <FaTimes className="text-danger ms-2" onClick={handleCancel} style={{ cursor: "pointer" }} />
+                        </>
+                      ) : !editable ? (
+                        "" // Display non-editable fields as plain text
+                      ) : (
+                        <FaEdit className="text-primary" onClick={() => handleEdit(field)} style={{ cursor: "pointer" }} />
+                      )}
+                    </Col>
+                  </Row>
+                ))}
 
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="company">Company:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="company"
-                    placeholder="Enter company name"
-                  />
-                </Col>
-              </Row>
 
-              <h5 className="ms-4-style mb-3">Contact Details</h5>
-              <p className="ms-4-style">
-                These details are private and only used to contact you for
-                ticketing or prizes.
-              </p>
-
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="phone">Phone Number:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="phone"
-                    placeholder="Enter phone number"
-                  />
-                </Col>
-              </Row>
-
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="address">Address:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="address"
-                    placeholder="Enter address"
-                  />
-                </Col>
-              </Row>
-
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="city">City/Town:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="city"
-                    placeholder="Enter city"
-                  />
-                </Col>
-              </Row>
-              {/* Country */}
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="country">Country:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="country"
-                    placeholder="Enter country"
-                  />
-                </Col>
-              </Row>
-
-              <Row className="mb-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label htmlFor="pincode">Pincode:</Form.Label>
-                </Col>
-                <Col md={8}>
-                  <Form.Control
-                    type="text"
-                    id="pincode"
-                    placeholder="Enter pincode"
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-center ms-4">
-                <Col md={3}>
-                  <Button type="submit" variant="primary">
-                    Save My Profile
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
+              </Form>
+            </div>
           </div>
         </div>
       </div>
