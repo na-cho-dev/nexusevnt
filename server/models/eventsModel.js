@@ -47,7 +47,7 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Ticket Tier Type is required'],
       enum: ['Music Festivals', 'Conference', 'Outdoor Movie Nights', 'Color Runs', 'Food and Drink Festivals', 'Art and Craft Fairs'],
-      default: 'Regular',
+      default: 'Music Festivals',
     },
     event_description: {
       type: String,

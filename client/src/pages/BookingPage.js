@@ -18,11 +18,12 @@ const Booking = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { event_id } = useParams();
-  const [ticketType, setTicketType] = useState('Regular');
   const [quantity, setQuantity] = useState(1);
   const location = useLocation();
   const event = location.state?.event; // Retrieve event details
   const [errorMessage, setErrorMessage] = useState('');
+  const defaultTicketType = event.ticket_tiers[0].tier_type;
+  const [ticketType, setTicketType] = useState(defaultTicketType);
 
   if (!event) {
     return (
