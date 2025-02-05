@@ -72,7 +72,7 @@ const UserEvents = () => {
                           📅 {new Date(event.event_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
                         </Card.Text>
                         <Card.Text className="text-muted small">
-                          📍 {event.location}
+                          📍 {event.event_location}
                         </Card.Text>
                         <div className="d-flex justify-content-between mt-3">
                           <Button as={Link} to={`/events/${event._id}`} variant="primary" size="sm">

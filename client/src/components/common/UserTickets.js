@@ -93,7 +93,7 @@ const UserTickets = () => {
                       <td>{ticket.payment_status}</td>
                       <td>
                         {ticket.payment_status === 'Pending' ? (
-                          <Button variant="warning" size="sm" onClick={() => handlePayment(ticket)}>Pay Now</Button>
+                          <Button style={{color: "white"}} variant="warning" size="sm" onClick={() => handlePayment(ticket)}>Pay Now</Button>
                         ) : (
                           <span className="text-success">Paid</span>
                         )}
