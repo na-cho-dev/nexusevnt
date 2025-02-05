@@ -31,10 +31,11 @@ export const createTicket = async (req, res) => {
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
     const tier = event.ticket_tiers.find((t) => {
-      console.log("T.TierType:", t.tier_type)
-      console.log("TierType From User:", tier_type)
-      t.tier_type === tier_type
+      console.log("T.TierType:", t.tier_type);
+      console.log("TierType From User:", tier_type);
+      return t.tier_type === tier_type;  // ✅ Now it returns a value
     });
+    
     console.log("Ticket In Ticket Controller", tier)
     if (!tier) return res.status(400).json({ message: 'Invalid ticket tier' });
 

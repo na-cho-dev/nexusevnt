@@ -60,6 +60,7 @@ const Password = () => {
             >
               Account Info
             </Link>
+            <Link to={`/${userRole.toLowerCase()}/${userId}/events`} className="list-group-item list-group-item-action">My Events</Link>
             <Link
               to={`/${userRole.toLowerCase()}/${userId}/tickets`}
               className="list-group-item list-group-item-action"
@@ -76,7 +77,7 @@ const Password = () => {
               to={`/${userRole.toLowerCase()}/${userId}/change-password`}
               className="list-group-item list-group-item-action active"
             >
-              Password
+              Change Password
             </Link>
           </div>
         </div>

@@ -23,6 +23,7 @@ import NavMenu from './components/layout/NavBarElements';
 import EventDetails from './components/event/EventDetails';
 import Unauthorized from './components/common/Unauthorized';
 import UserTickets from './components/common/UserTickets';
+import UserEvents from './components/common/UserEvents';
 import Success from './pages/SuccessPage';
 
 function App() {
@@ -54,11 +55,20 @@ function App() {
               }
             />
             <Route
-              path="/:user_type/:attendee_id/tickets"
+              path="/:user_type/:user_id/tickets"
               element={
                 <ProtectedRoute
                   element={UserTickets}
                   requiredRoles={['Attendee', 'Organizer']}
+                />
+              }
+            />
+            <Route
+              path="/:user_type/:user_id/events"
+              element={
+                <ProtectedRoute
+                  element={UserEvents}
+                  requiredRoles={['Organizer']}
                 />
               }
             />

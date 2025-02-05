@@ -81,6 +81,7 @@ export const createEvent = async (req, res) => {
   }
 };
 
+// Get All Events
 export const getEvents = async (req, res) => {
   try {
     const events = await Event.find();
@@ -114,6 +115,41 @@ export const getEvents = async (req, res) => {
       .json({ message: 'Error fetching events', error: error.message });
   }
 };
+
+// Get All Events for an Organizer
+export const getUserEvents = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const events = await Event.find({ event_organizer_id: userId });
+
+    if (!events.length) {
+      return res.status(404).json({ message: 'No events found' });
+    }
+
+    const formattedEvents = events.map((event) => {
+      let base64Image = null;
+
+      if (event.event_image && event.event_image.data) {
+        base64Image = Buffer.from(event.event_image.data).toString('base64');
+      }
+
+      return {
+        ...event.toObject(),
+        event_image: base64Image
+          ? { mimeType: event.event_image.mimeType, data: base64Image }
+          : null,
+      };
+    });
+
+    res.status(200).json({
+      message: 'Fetched events successfully',
+      events: formattedEvents,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching events', error: error.message });
+  }
+};
+
 
 // Get Single Event
 export const getEvent = async (req, res) => {

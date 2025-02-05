@@ -4,6 +4,7 @@ import {
   createEvent,
   getEvent,
   getEvents,
+  getUserEvents,
   updateEvent,
   deleteEvent,
 } from '../../controllers/eventsController.js';
@@ -20,6 +21,7 @@ router
     createEvent
   );
 router.route('/events').get(getEvents);
+router.route('/user/:user_id/events').get(verifyJWTMiddleware, getUserEvents)
 router
   .route('/events/:event_id')
   .get(getEvent)
