@@ -12,71 +12,35 @@ const ImageUpload = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchProfileImage = async () => {
-    if (!userData || !userData._id) return; // Prevent running before user data is available
+    if (!userData || !userData._id) return;
 
+    setIsLoading(true);
     try {
       const apiEndPoint =
         userRole === 'Organizer'
           ? `/api/organizer/${userData._id}`
           : `/api/attendee/${userData._id}`;
       const userRoleType = userRole === 'Organizer' ? 'organizer' : 'attendee';
-
-      // console.log(apiEndPoint);
-
       const response = await axiosInstance.get(apiEndPoint);
-
-      // if (!response.data[userRoleType]?.profile_img) {
-      //   console.warn('No profile image found in response');
-      //   setImageSrc(null);
-      //   return;
-      // }
-
       const imgData = response.data[userRoleType]?.profile_img;
 
-      console.log('Fetched Image Data:', imgData); // Debugging
-
-      if (!imgData.data) {
-        console.warn('Image data is empty or malformed:', imgData);
+      if (!imgData || !imgData.data) {
+        console.warn('No profile image found.');
         setImageSrc(null);
-        return;
+      } else {
+        setImageSrc(`data:${imgData.mimeType};base64,${imgData.data}`);
       }
-
-      // console.log(
-      //   'Image Response Data:',
-      //   response.data[userRoleType]?.profile_img
-      // );
-
-      // console.log(await response.data.text());
-
-      // if (response.data.organizer?.profile_img?.data) {
-      //   const bufferData = response.data.organizer.profile_img.data.data;
-      //   const uint8Array = new Uint8Array(bufferData);
-      //   const blob = new Blob([uint8Array], { type: 'image/png' });
-      //   const imageUrl = URL.createObjectURL(blob);
-      //   setImageSrc(imageUrl);
-      // }
-
-      // const imgSrc =
-      //   response.data[userRoleType]?.profile_img &&
-      //   response.data[userRoleType]?.profile_img?.data
-      //     ? `data:${response.data[userRoleType]?.profile_img?.mimeType};base64,${response.data[userRoleType]?.profile_img?.data}`
-      //     : null;
-
-      const imgSrc = `data:${imgData.mimeType};base64,${imgData.data}`;
-
-      console.log('Generated Image Src:', imgSrc); // Debugging
-
-      setTimeout(() => {
-        setImageSrc(imgSrc);
-      }, 500);
     } catch (error) {
       console.error('Error fetching profile image:', error);
+      setImageSrc(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Fetch existing profile image from backend
   useEffect(() => {
     fetchProfileImage();
   }, [userData?._id]);
@@ -116,13 +80,7 @@ const ImageUpload = () => {
         },
       });
 
-      // Show newly uploaded image immediately
-      // const newImageUrl = URL.createObjectURL(selectedFile);
-      // setImageSrc(newImageUrl);
-
-      // Force refresh by refetching the image from the server after a short delay
       setTimeout(fetchProfileImage, 500);
-
       setSuccess(true);
     } catch (error) {
       console.error('Error uploading image', error);
@@ -135,51 +93,37 @@ const ImageUpload = () => {
   return (
     <div className="d-flex align-items-center">
       <div style={{ marginRight: '10px' }}>
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            key={imageSrc}
-            roundedCircle
-            style={{
-              width: '150px',
-              height: '150px',
-              objectFit: 'cover',
-              border: '1px solid #ccc',
-            }}
-            alt="Uploaded Preview"
-          />
-        ) : (
-          <div
-            style={{
-              width: '150px',
-              height: '150px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid #ccc',
-              borderRadius: '50%',
-              backgroundColor: '#f8f9fa',
-            }}
-          >
-            <span
-              style={{ fontSize: '14px', color: '#888', textAlign: 'center' }}
-            >
-              {imageSrc === null ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : !imageSrc ? (
-                'No Image Selected'
-              ) : (
-                ''
-              )}
-            </span>
-          </div>
-        )}
+        <div
+          style={{
+            width: '150px',
+            height: '150px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid #ccc',
+            borderRadius: '50%',
+            backgroundColor: '#f8f9fa',
+          }}
+        >
+          {isLoading ? (
+            <Spinner animation="border" size="sm" role="status" />
+          ) : imageSrc ? (
+            <Image
+              src={imageSrc}
+              key={imageSrc}
+              roundedCircle
+              style={{
+                width: '150px',
+                height: '150px',
+                objectFit: 'cover',
+                border: '1px solid #ccc',
+              }}
+              alt="Uploaded Preview"
+            />
+          ) : (
+            <span style={{ fontSize: '14px', color: '#888' }}>No Image Found</span>
+          )}
+        </div>
       </div>
 
       <div>
