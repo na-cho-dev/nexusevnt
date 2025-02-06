@@ -39,16 +39,16 @@ const Home = () => {
     <div className="home-page">
       <Header />
       <EventList />
-      <section className="events-section">
-        <h5 className="card-head">Popular events right now</h5>
-        <div className="card-style">
+      <section className="events-section d-flex justify-content-center align-items-center flex-column">
+        <h5 className="card-head text-center">Popular events right now</h5>
+        <div className="card-style" style={{ width: "80%" }}>
         {loading ? ( // Show a loader while fetching events
           <div className="d-flex justify-content-center align-items-center vh-30">
             <Spinner animation="border" variant="primary" />
           </div>
         ) : events.length > 0 ? (
           events.slice(0, 8).map((event) => (
-            <div key={event._id || event.event_name}> {/* Use _id or a fallback property */}
+            <div key={event._id || event.event_name}>
               <EventCard event={event} />
             </div>
           ))
