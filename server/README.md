@@ -83,7 +83,7 @@ This produced a 32-character UUID without hyphens.
 
 ### CREATING A STRIPE ACCOUNT AND GETTING API KEYS
 **1. Create a Stripe Account**     
-1. Go to Stripe's official website.
+1. Go to [Stripe's official website](https://stripe.com/).
 2. Click Sign Up and fill in your details (email, name, password).
 3. Verify your email and log in to your Stripe Dashboard.   
 
